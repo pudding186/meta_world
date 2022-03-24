@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="GSCS" moudleid="108" version="1" comment="WS与DB之间的通信协议" >
+    <package name="StructDef" />
+    <data type="protocol" name="LoginCSNtf" comment="登陆CS通知">
+        <item type="uint32"             name="uid"                  comment="账号ID" />
+        <item type="uint8"              name="sid"                  comment="子区ID" />
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="AttrData"           name="attrs"                array="uint16"       comment="属性数据" />
+        <item type="string"             name="name"                 comment="玩家名字"  length="32" />
+        <item type="uint32"             name="gate_index"           comment="gate服务器索引"/>
+        <item type="uint32"             name="game_index"           comment="game服务器索引"/>
+    </data>
+
+    <data type="protocol" name="SyncPlayerU32Ntf" comment="同步玩家信息">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="KeyValueU32"        name="pair"                 comment="信息" />
+    </data> 
+
+    <data type="protocol" name="SyncPlayerU64Ntf" comment="同步玩家信息">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="KeyValueU64"        name="pair"                 comment="信息" />
+    </data>
+
+    <data type="protocol" name="SyncPlayerSNtf" comment="同步玩家信息">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="KeyValueS"          name="pair"                 comment="信息" />
+    </data> 
+
+    <data type="protocol" name="GSCSChannelMsgNtf"    comment="属性通知">
+        <item type="uint64"             name="guid"           comment="玩家GUID" />
+        <item type="uint8"              name="channel"        comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item type="uint8"              name="msg"            array="uint16" comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="SubscribeChannelNtf"    comment="订阅频道通知">
+        <item type="uint64"             name="guid"           comment="玩家GUID" />
+        <item type="uint8"              name="channel"        comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item type="uint64"             name="channel_key"    comment="频道KEY" />
+        <item type="uint8"              name="subscribe"      comment="1: 订阅; 0: 取消订阅"/>
+    </data>
+
+    <data type="protocol" name="LogoutCSNtf" comment="登出CS通知">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+    </data>
+
+    <data type="protocol" name="HeadMsgGSNtf" comment="GS头顶消息通知">
+        <item type="uint64"             name="guid"                comment="对象GUID"/>
+        <item type="uint8"              name="msg"                 array="uint16"   comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="SetChannelIntervalNtf"    comment="设置通道发言间隔通知">
+        <item type="uint8"              name="channel"              comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item type="uint32"             name="interval"             comment="通道间隔"/>
+    </data>
+
+    <data type="protocol" name="SetChannelLevelNtf"    comment="设置通道发言等级通知">
+        <item type="uint8"              name="channel"              comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item type="uint32"             name="level"                comment="通道间隔"/>
+    </data>
+
+    <data type="protocol" name="SyncPlayerAttrNtf" comment="同步玩家属性通知">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="AttrData"           name="attrs"                array="uint16"       comment="属性数据" />
+    </data>
+    
+    <data type="protocol" name="SyncPlayerNameNtf" comment="同步玩家名字通知">
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="string"             name="name"                 comment="玩家名字"  length="32" />
+    </data> 
+
+    <data type="protocol" name="WorldChannelMsgGSNtf"    comment="世界频道消息通知">
+        <item type="uint64"             name="guid"           comment="玩家GUID" />
+        <item type="uint8"              name="msg"            array="uint16" comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="WorldChannelMsgCSNtf"    comment="世界频道消息通知">
+        <item type="uint64"             name="guid"           comment="玩家GUID" />
+        <item type="uint8"              name="msg"            array="uint16" comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="NoticeMsgCSNtf"    comment="Notice消息通知">
+        <item name="type"           type="uint8"       comment="类型由客户端自定义,对服务器无意义"/>
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+        <item name="scroll"         type="uint8"       comment="消息滚动次数" />
+    </data>
+
+    <data type="protocol" name="ChannelSwitchCSNtf"    comment="频道开关通知">
+        <item name="guid"           type="uint64"                  comment="玩家GUID" />
+        <item name="datas"          type="ChannelSwitchData"       array="uint8"   comment="频道开关数组"/>
+    </data>
+
+    <data type="protocol" name="EmojiDataCSNtf"    comment="聊天表情通知">
+        <item name="guid"           type="uint64"                  comment="玩家GUID" />
+        <item name="emojis"         type="EmojiData"               comment="频道开关数组"/>
+    </data>
+</protocol_define>

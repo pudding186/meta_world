@@ -1,0 +1,1055 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="StructDef" moudleid="100" version="1" comment="协议间的结构体" >
+    <data type="struct" name="CustomStrData"  comment="自定义键值对" >
+        <item type="uint8"             name="key"          comment="key"         array="uint16" alias="k" />
+        <item type="uint8"              name="value"       comment="value"       array="uint32" alias="v" />
+    </data>
+    <data type="struct" name="CustomIntData"  comment="自定义键值对" >
+        <item type="uint8"              name="key"         comment="key"         array="uint16" alias="k" />
+        <item type="int64"              name="value"       comment="value"       alias="v" />
+    </data>
+    <data type="struct" name="CustomData"   comment="自定义数据">
+        <item type="CustomStrData"      name="strdata"      comment="字符串数据集"  array="uint32" alias="s" />
+        <item type="CustomIntData"      name="intdata"      comment="数值数据集"    array="uint32" alias="i" />
+    </data>
+
+    <data type="struct" name="SkillData"    comment="Skill数据">
+        <item type="uint16"             name="id"           comment="技能id"        alias="i" />
+        <item type="uint32"             name="performance"  comment="当前熟练度"     alias="p" />
+        <item type="uint32"             name="max_performance" comment="最大熟练度"  alias="mp" />
+        <item type="uint64"             name="tick"         comment="时间"          alias="t" />
+        <item type="uint8"              name="enable"       comment="是否激活"       alias="e" />
+        <item type="uint8"              name="bind"         comment="是否绑定"       alias="b" />
+    </data>
+
+    <data type="struct" name="DynAttrData" comment="动态属性数据" >
+        <item type="uint16"             name="mark"         comment="动态标记" alias="m" />
+        <item type="uint16"             name="attr"         comment="属性名" alias="a" />
+        <item type="int64"              name="value"        comment="属性值" alias="v" />
+    </data>
+
+    <data type="struct" name="BuffData"     comment="Buff数据">
+        <item type="uint16"             name="buff_id"         comment="Buff的ID" alias="i" />
+        <item type="uint32"             name="start_times"     comment="开始时间(仅绝对时间buff有效)" alias="st" />
+        <item type="uint32"             name="duration"        comment="持续数据 相对时间buff:为剩余时间 绝时时间buff:为持续时间 次数buff:为剩余次数" alias="d" />
+        <item type="DynAttrData"        name="dyn_attrs"       array="uint16"   comment="动态属性数据(固定属性值请从buff表读取)" alias="dyn" />
+    </data>
+
+    <data type="struct" name="QuestData"    comment="Quest数据">
+        <item type="uint32"         name="quest_id"         comment="任务ID" alias="qi"/>
+        <item type="uint8"          name="quest_state"      comment="任务状态" alias="qs"/>
+        <item type="uint32"         name="accept_npc"       comment="接任务目标NPC" alias="an"/>
+        <item type="uint32"         name="commit_npc"       comment="交任务目标NPC" alias="cn"/>
+        <item type="uint32"         name="quest_store_id"   comment="任务库ID" alias="qsi" />
+        <item type="uint32"         name="accpet_time"      comment="任务接取时间" alias="at"/>
+        <item type="uint32"         name="limit_time"       comment="任务限制时间" alias="lt"/>
+        <item type="uint32"         name="changed_time"     comment="任务状态改变时间" alias="ct"/>
+        <item type="uint8"          name="ext"              array="uint16"  comment="任务扩展数据" alias="e" />
+    </data>
+
+    <data type="struct" name="QuestRingData"    comment="Quest环数据">
+        <item type="uint32"         name="quest_id"         comment="任务ID" alias="qi"/>
+        <item type="uint32"         name="quest_ring"      comment="任务环数" alias="qr"/>
+    </data>
+
+    <data type="struct" name="QuestStoreData"    comment="QuestStore数据">
+        <item type="uint32"         name="quest_store_id"       comment="任务库ID" alias="qsi"/>
+        <item type="uint32"         name="ring_auto"            comment="自动接取环数"/>
+        <item type="uint32"         name="ring_day"             comment="当天已完成的环数"/>
+        <item type="uint32"         name="ring_week"            comment="本周已完成的环数"/>
+        <item type="uint32"         name="ring_display"         comment="显示环数"/>
+        <item type="QuestRingData"  name="quest_rings"          array="uint16" comment="子任务环数"/>
+        <item type="uint32"         name="last_reset_day"       comment="上次天数重置"/>
+        <item type="uint32"         name="last_reset_week"      comment="上次周数重置"/>
+    </data>
+
+    <data type="struct" name="QuestCountData"    comment="Quest计数数据">
+        <item type="uint32"         name="quest_id"             comment="任务ID" alias="qi"/>
+        <item type="uint32"         name="count"                comment="任务计数" alias="c"/>
+    </data>
+
+    <data type="struct" name="QuestContainerData"     comment="任务容器数据">
+        <item type="QuestData"           name="quests"              array="uint16"  comment="任务" alias="i" />
+        <item type="uint32"              name="npc_visible"         array="uint16"  comment="可见npc列表" alias="nv"/>
+        <item type="uint32"              name="npc_invisible"       array="uint16"  comment="不可见npc列表" alias="niv"/>
+        <item type="QuestStoreData"      name="stores"              array="uint16"  comment="任务库" alias="s" />
+        <item type="uint32"              name="abandoned"           array="uint16"  comment="放弃任务列表" alias="ab"/>
+        <item type="uint32"              name="finished"            array="uint16"  comment="完成任务列表" alias="fi"/>
+        <item type="uint32"              name="activated"           array="uint16"  comment="激活任务列表" alias="ac"/>
+        <item type="QuestCountData"      name="failed_counts"       array="uint16"  comment="失败任务计数列表" alias="fac"/>
+        <item type="QuestCountData"      name="finished_counts"     array="uint16"  comment="完成任务计数列表" alias="fic"/>
+    </data>
+
+    <data type="struct" name="AttrData" comment="属性数据" >
+        <item type="uint16"             name="attr"         comment="属性名" alias="a" />
+        <item type="int64"              name="value"        comment="属性值" alias="v" />
+    </data>
+    
+    <data type="struct" name="ItemData"     comment="Item数据">
+        <item type="uint64"             name="guid"         comment="guid" alias="g" />
+        <item type="uint16"             name="id"           comment="模板Id" alias="i" />
+        <item type="uint64"             name="role"         comment="拥有者GUID" alias="r" />
+        <item type="uint16"             name="site"         comment="当前所在的位置" alias="s" />
+        <item type="int16"              name="battlesite"   comment="战斗物品site" alias="bs" />
+        <item type="uint16"             name="amount"       comment="当前的堆叠数量" alias="a" />
+        <item type="uint8"              name="isbound"      comment="是否已绑定" alias="ib" />
+        <item type="uint32"             name="life"         comment="限时物品截止时间，0表示永久" alias="l" />
+        <item type="DynAttrData"        name="dyn_attrs"    array="uint16"   comment="动态属性数据" alias="da" />
+        <item type="CustomData"         name="customs"      comment="自定义" alias="c" />
+    </data>
+
+    <data type="struct" name="ItemContainerData"     comment="Item容器数据">
+        <item type="uint16"             name="container_type"     comment="item容器类型" alias="ct" />
+        <item type="uint16"             name="capacity"           comment="item容器容量上限" alias="c" />
+        <item type="ItemData"           name="items"              array="uint16"  comment="道具" alias="i" />
+    </data>
+
+    <data type="struct" name="UserData" comment="账号数据" >
+        <item type="uint32"             name="uid"          comment="账号ID" />
+        <item type="uint8"              name="sid"          comment="子区ID" />
+        <item type="string"             name="uname"        comment="账号名字"  length="32" />
+        <item type="int64"              name="billinyb"     comment="累计充值元宝" />
+        <item type="int64"              name="billoutyb"    comment="累计消耗的充值元宝" />
+        <item type="int64"              name="gameinyb"     comment="累计游戏内产出元宝" />
+        <item type="int64"              name="gameoutyb"    comment="累计游戏内消耗元宝" />
+        <item type="uint32"             name="createtime"   comment="创建时间" />
+        <item type="uint32"             name="lastlogin"    comment="最后一次登陆时间" />
+    </data>
+
+    <data type="struct" name="SceneData" comment="场景数据" >
+        <item type="uint64"             name="map_guid"     comment="地图guid" />
+        <item type="uint16"             name="x"            comment="地图x坐标" />
+        <item type="uint16"             name="y"            comment="地图y坐标" />
+    </data>
+
+    <data type="struct" name="TicketData" comment="门票数据" >
+        <item type="uint64"             name="map_guid"     comment="地图guid" />
+        <item type="uint32"             name="create_time"  comment="创建时间" />
+        <item type="uint16"             name="id"           comment="地图ID" />
+        <item type="uint16"             name="x"            comment="地图x坐标" />
+        <item type="uint16"             name="y"            comment="地图y坐标" />
+    </data>
+
+    <data type="struct" name="PetData"      comment="Pet数据">
+        <item type="uint64"             name="guid"                 comment="宠物GUID" alias="g" />
+        <item type="string"             name="name"                 comment="宠物名字"  length="32" alias="n" />
+        <item type="ItemContainerData"  name="equips"               comment="宠物装备" alias="e" />
+        <item type="AttrData"           name="attrs"                array="uint16"   comment="属性数据" alias="a" />
+        <item type="AttrData"           name="extra_attrs"          array="uint16"   comment="额外属性数据" alias="ea" />
+        <item type="SkillData"          name="skills"               array="uint16"  comment="技能" alias="s" />
+        <item type="BuffData"           name="buffs"                array="uint16"  comment="buff" alias="b" />
+        <item type="DynAttrData"        name="dyn_attrs"            array="uint16"   comment="动态属性数据" alias="da" />
+        <item type="CustomData"         name="customs"              comment="自定义" alias="c" />
+    </data>
+
+    <data type="struct" name="PetContainerData"     comment="Pet容器数据">
+        <item type="uint16"             name="container_type"     comment="pet容器类型" alias="ct" />
+        <item type="uint16"             name="capacity"           comment="pet容器容量上限" alias="c" />
+        <item type="PetData"            name="pets"               array="uint16"  comment="宠物" alias="p" />
+    </data>
+
+    <data type="struct" name="TitleData"     comment="称号数据">
+        <item type="uint16"             name="title_id"           comment="称号ID" alias="ti" />
+        <item type="uint32"             name="end_time"           comment="限时称号截止时间，0表示永久称号" alias="et" />
+        <item type="CustomData"         name="custom"             comment="自定义数据"  alias="c" />
+    </data>
+
+    <data type="struct" name="TitleContainerData"     comment="称号容器数据">
+        <item type="TitleData"          name="titles"             array="uint16"  comment="称号" alias="t" />
+    </data>
+
+    <data type="struct" name="SeatBasic" comment="阵法基本数据" >
+        <item type="uint16"             name="id"                   comment="阵法id" />
+        <item type="uint8"              name="level"                comment="阵法等级" />
+        <item type="uint32"             name="score"                comment="积分值" />
+    </data>
+
+    <data type="struct" name="SeatData" comment="阵法个人数据" >
+        <item type="SeatBasic"          name="seats"  array="uint8" comment="所有阵法数据" />
+    </data>
+
+    <data type="struct" name="LineupBasic" comment="阵容基本数据" >
+        <item type="uint16"             name="seat_id"              comment="阵法id" />
+        <item type="uint64"             name="lineup" array="uint8" comment="阵容顺序" />
+    </data>
+
+    <data type="struct" name="LineupData" comment="阵容个人数据" >
+        <item type="uint8"              name="index"                 comment="当前阵容索引" />
+        <item type="LineupBasic"        name="lineups" array="uint8" comment="所有阵容" />
+    </data>
+
+    <data type="struct" name="InstructionBasic" comment="指令基础数据" >
+        <item type="uint8"              name="type"                  comment="指令类型" />
+        <item type="string"             name="content" length="32"   comment="指令内容" />
+    </data>
+
+    <data type="struct" name="PetLineupData" comment="宠物阵容基本数据" >
+        <item type="uint64"             name="lineup" array="uint8" comment="宠物阵容" />
+    </data>
+
+    <data type="struct" name="InstructionData" comment="指令个人数据" >
+        <item type="InstructionBasic"   name="frienddata" array="uint8" comment="友方指令" />
+        <item type="InstructionBasic"   name="enemydata"  array="uint8" comment="敌方指令" />
+    </data>
+
+    <data type="struct" name="EmojiData" comment="表情包数据" >
+        <item type="uint16"             name="emojis"  array="uint32"  comment="表情包记录" />
+    </data>
+
+    <data type="struct" name="PlayerBrief" comment="玩家简略" > 
+        <item type="uint32"             name="uid"          comment="账号ID" />
+        <item type="uint8"              name="sid"          comment="子区ID" />       
+        <item type="uint64"             name="guid"         comment="玩家GUID" />
+        <item type="string"             name="unid"         comment="玩家UNID"  length="32" />
+        <item type="string"             name="name"         comment="玩家名字"  length="32" />
+        <item type="AttrData"           name="attrs"        comment="属性数据"      array="uint16" />
+        <item type="uint16"             name="map"          comment="地图ID" />
+        <item type="uint16"             name="x"            comment="x坐标" />
+        <item type="uint16"             name="y"            comment="y坐标" />
+        <item type="uint8"              name="state"        comment="玩家状态 0:彻底销毁 1:使用中 2:已删除" />
+        <item type="uint32"             name="createtime"   comment="创建时间" />
+        <item type="uint32"             name="lastlogin"    comment="最后一次登陆时间" />
+        <item type="uint32"             name="destroytime"  comment="销毁时间 state为0=销毁时间 state为2=删除时间" />        
+        <item type="CustomData"         name="customs"      comment="自定义" />
+    </data>
+
+    <data type="struct" name="GuardData"    comment="Guard数据">
+        <item type="uint64"             name="guid"                 comment="侍从GUID" alias="g" />
+        <item type="ItemContainerData"  name="equips"               comment="侍从装备"  alias="e" />
+        <item type="AttrData"           name="attrs"                array="uint16"   comment="属性数据" alias="a" />
+        <item type="AttrData"           name="extra_attrs"          array="uint16"   comment="额外属性数据" alias="ea" />
+        <item type="SkillData"          name="skills"               array="uint16"   comment="技能" alias="s" />
+        <item type="BuffData"           name="buffs"                array="uint16"   comment="buff" alias="b" />
+        <item type="DynAttrData"        name="dyn_attrs"            array="uint16"   comment="动态属性数据" alias="da" />
+        <item type="CustomData"         name="customs"              comment="自定义" alias="c" />
+    </data>
+
+    <data type="struct" name="GuardContainerData"     comment="Guard容器数据">
+        <item type="GuardData"          name="guards"               array="uint16"  comment="侍从" alias="g" />
+    </data>
+    
+    <data type="struct" name="PlayerData" comment="玩家详细" >
+        <item type="uint32"             name="uid"                  comment="账号ID" />
+        <item type="uint8"              name="sid"                  comment="子区ID" />
+        <item type="uint64"             name="guid"                 comment="玩家GUID" />
+        <item type="string"             name="unid"                 comment="玩家UNID"  length="32" />
+        <item type="string"             name="name"                 comment="玩家名字"  length="32" />
+        <item type="uint8"              name="state"                comment="玩家状态 0:彻底销毁 1:使用中 2:已删除" />
+        <item type="uint32"             name="createtime"           comment="创建时间" />
+        <item type="uint32"             name="destroytime"          comment="销毁时间 state为0=销毁时间 state为2=删除时间" />
+        <item type="uint32"             name="lastlogin"            comment="最后一次登陆时间" />
+        <item type="uint32"             name="lastloginip"          comment="最后一次登陆ip" />
+        <item type="uint32"             name="lastlogout"           comment="最后一次退出时间" />
+        <item type="uint32"             name="onlines"              comment="总计在线时间" />
+        <item type="SceneData"          name="cur_map"              comment="当前地图信息" />
+        <item type="SceneData"          name="last_common_map"      comment="最后固定地图信息" />
+        <item type="AttrData"           name="attrs"                array="uint16"   comment="属性数据" />        
+        <item type="DynAttrData"        name="dyn_attrs"            array="uint16"   comment="动态属性数据" />
+        <item type="AttrData"           name="extra_attrs"          array="uint16"   comment="额外属性数据" />
+        <item type="ItemContainerData"  name="items"                array="uint8"   comment="物品容器" />
+        <item type="SkillData"          name="skills"               array="uint16"  comment="技能" />
+        <item type="BuffData"           name="buffs"                array="uint16"  comment="buff" />
+        <item type="QuestContainerData" name="quests"               comment="任务" />
+        <item type="PetContainerData"   name="pets"                 array="uint16"  comment="宠物" />
+        <item type="GuardContainerData" name="guards"               comment="侍从" />
+        <item type="TicketData"         name="tickets"              array="uint16"  comment="门票" />
+        <item type="CustomData"         name="customs"              comment="自定义" />
+        <item type="int64"              name="gameinyb"             comment="游戏内给予的元宝(不存档)" />
+        <item type="int64"              name="gameoutyb"            comment="游戏内消耗的元宝(不存档)" />
+        <item type="int64"              name="billinyb"             comment="充值给予的元宝(不存档)" />
+        <item type="int64"              name="billoutyb"            comment="充值消耗的元宝(不存档)" />
+        <item type="TitleContainerData" name="titles"               comment="称号" />
+        <item type="string"             name="username"             comment="账号名" />
+        <item type="LineupData"         name="lineups"              comment="阵容数据" />
+        <item type="SeatData"           name="seats"                comment="阵法数据" />
+        <item type="InstructionData"    name="instructions"         comment="指令数据" />
+        <item type="PetLineupData"      name="pet_lineups"          comment="宠物阵容" />
+        <item type="EmojiData"          name="emojis"               comment="表情包阵容"    default="true" />
+    </data>
+    
+    <data type="struct" name="MapRegion" comment="地图区域" >
+        <item type="uint16"             name="min_x"        comment="最小x坐标" />
+        <item type="uint16"             name="max_x"        comment="最大x坐标" />
+        <item type="uint16"             name="min_y"        comment="最小y坐标" />
+        <item type="uint16"             name="max_y"        comment="最大y坐标" />
+    </data>
+
+    <data type="struct" name="ItemAttrValue64" comment="物品属性" >
+        <item type="uint32"             name="attr_type"        comment="物品属性类型" />
+        <item type="int64"              name="attr_value"       comment="物品属性值" />
+    </data>
+
+    <data type="struct" name="ItemAttrValueS" comment="物品属性" >
+        <item type="uint32"             name="attr_type"        comment="物品属性类型" />
+        <item type="uint8"              name="attr_value"       comment="物品属性值"    array="uint16"/>
+    </data>
+
+    <data type="struct" name="ItemAttrValueS64" comment="物品属性" >
+        <item type="string"             name="attr_key"         comment="key" />
+        <item type="int64"              name="attr_value"       comment="物品属性值" />
+    </data>
+
+    <data type="struct" name="ItemAttrValueSS" comment="物品属性" >
+        <item type="string"             name="attr_key"         comment="key" />
+        <item type="uint8"              name="attr_value"       comment="物品属性值"    array="uint16"/>
+    </data>
+
+    <data type="struct" name="ItemAttrValueList" comment="物品属性值列表" >
+        <item type="uint64"             name="item_guid"        comment="物品guid" />
+        <item type="ItemAttrValue64"    name="item_values_64"  comment="物品属性值列表:U64"         array="uint16" />
+        <item type="ItemAttrValueS"     name="item_values_s"    comment="物品属性值列表:S"          array="uint16" />
+        <item type="ItemAttrValueS64"   name="item_values_s64" comment="物品属性值列表:SU64"        array="uint16" />
+        <item type="ItemAttrValueSS"    name="item_values_ss"   comment="物品属性值列表:SS"         array="uint16" />
+        <item type="DynAttrData"        name="dyn_attrs"        comment="物品属性值列表:动态属性"    array="uint16" />
+    </data>
+
+    <data type="struct" name="ChatMsg" comment="聊天消息" >
+        <item type="string"             name="role_name"        comment="角色名字" />
+        <item type="uint32"             name="role_id"          comment="角色模板ID" />
+        <item type="uint8"              name="message"          comment="消息内容"          array="uint16" />
+        <item type="uint32"             name="vip"              comment="vip等级" />
+    </data>
+
+    <data type="struct" name="ParamData" comment="命令参数" >
+        <item name="type"               type="uint8"            comment="数据类型 1=INT8 2=UINT8 3=INT16 4=UINT16 5=INT32 6=UINT32 7=INT64 8=UINT64 9=字符串" />
+        <item name="param"              type="uint8"            array="uint16" comment="命令参数" />
+    </data>
+
+    <data type="struct" name="FightPetData" comment="战斗宠物数据" >
+        <item name="guid"               type="uint64"          comment="宠物guid" />
+        <item name="state"              type="uint8"           comment="0:不可召出 1:可召出" />
+    </data>
+    
+    <data type="struct" name="FightBuffData" comment="战斗BUFF数据" >
+        <item name="id"                 type="uint16"          comment="buff id" />
+        <item name="stack"              type="uint8"           comment="堆叠数" />
+    </data>
+
+    <data type="struct" name="FighterData" comment="战斗者数据" >
+        <item name="site"               type="uint8"            comment="战斗者站位" />
+        <item name="fighter_id"         type="uint16"           comment="战斗者id" />
+        <item name="guid"               type="uint64"           comment="guid" />
+        <item name="type"               type="uint8"            comment="对象类型" />
+        <item name="template_id"        type="uint16"           comment="模板id" />
+        <item name="name"               type="string"           length="32"     comment="名称"/>
+        <item name="attrs"              type="AttrData"         array="uint16"  comment="属性数据" />
+        <item name="pets"               type="FightPetData"     array="uint8"   comment="宠物召出记录" />
+        <item name="buffs"              type="FightBuffData"    array="uint8"   comment="战斗buff数据" />
+        <item name="model"              type="uint32"           comment="默认模型,玩家填0" />
+        <item name="friend_instruction" type="string"           length="32"     comment="显示给友方看的指令"/>
+        <item name="enemy_instruction"  type="string"           length="32"     comment="显示给敌方看的指令"/>
+        <item name="customs"            type="CustomData"       comment="自定义" />
+    </data>
+    
+    <data type="struct" name="FightGroupData" comment="战斗组数据" >
+        <item name="type"               type="uint8"            comment="0=观战组 1=组1 2=组2" />
+        <item name="lineup_id"          type="uint16"           comment="阵型id" />
+        <item name="lineup_lv"          type="uint16"           comment="阵型lv" />
+        <item name="fighters"           type="FighterData"      array="uint8"   comment="战斗者数据" />     
+    </data>
+
+    <data type="struct" name="FightOperateData" comment="战斗操作数据" >
+        <item name="actor"      type="uint64"               comment="发起者guid 玩家自己:填0 宠物:填宠物guid" />
+        <item name="operate"    type="uint8"                comment="指令" />
+        <item name="target"     type="uint64"               comment="目标guid" />
+        <item name="param"      type="uint64"               comment="参数(使用技能时的技能ID，使用物品时物品的GUID，召唤宠物时宠物的GUID)" />
+    </data>
+
+    <data type="struct" name="MemberData" comment="队伍成员数据" >
+        <item type="uint64"             name="guid"         comment="玩家GUID" />
+        <item type="string"             name="name"         comment="玩家名字"  length="32" />
+        <item type="uint8"              name="temp_leave"   comment="暂离标记" />
+        <item type="AttrData"           name="attrs"        array="uint16"   comment="属性数据" />
+        <item type="CustomData"         name="customs"      comment="自定义" />
+    </data>
+
+    <data type="struct" name="KeyValueU32" comment="键值对" >
+        <item type="uint32"             name="key"          comment="键" />
+        <item type="uint32"             name="value"       comment="值" />
+    </data>
+
+    <data type="struct" name="KeyValueU64" comment="键值对" >
+        <item type="uint32"             name="key"          comment="键" />
+        <item type="uint64"             name="value"       comment="值" />
+    </data>
+
+    <data type="struct" name="KeyValueS" comment="键值对" >
+        <item type="uint32"             name="key"         comment="键" />
+        <item type="string"             name="value"       comment="值" />
+    </data>
+    
+    <data type="struct" name="OptionData" comment="选项数据">
+        <item type="uint16"             name="id"           comment="选项id"/>
+        <item type="uint32"             name="mark"         comment="选项标识" />
+        <item type="string"             name="text"         comment="选项文字" />
+    </data>
+        
+    <data type="struct" name="ShopItemData" comment="商品数据">
+        <item type="uint16"             name="id"           comment="根据商店类型决定是道具或者宠物id"/>
+        <item type="uint16"             name="price_type"   comment="价格类型 数值参考属性表对应字段" />
+        <item type="uint32"             name="price"        comment="价格" />
+        <item type="uint8"              name="bind"         comment="0为不绑定 1为绑定" />
+    </data>
+    
+    <data type="struct" name="SellItemData" comment="出售商品数据">
+        <item type="uint64"             name="guid"         comment="出售物品guid"/>
+        <item type="uint16"             name="amount"       comment="出售物品数量" />
+    </data>
+
+    <data type="struct" name="Col1Data" comment="列数据1">
+        <item type="string"             name="col1"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col2Data" comment="列数据2">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col3Data" comment="列数据3">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col4Data" comment="列数据4">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col5Data" comment="列数据5">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col6Data" comment="列数据6">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+        <item type="string"             name="col6"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col7Data" comment="列数据7">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+        <item type="string"             name="col6"        comment="列数据" />
+        <item type="string"             name="col7"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col8Data" comment="列数据8">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+        <item type="string"             name="col6"        comment="列数据" />
+        <item type="string"             name="col7"        comment="列数据" />
+        <item type="string"             name="col8"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col9Data" comment="列数据9">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+        <item type="string"             name="col6"        comment="列数据" />
+        <item type="string"             name="col7"        comment="列数据" />
+        <item type="string"             name="col8"        comment="列数据" />
+        <item type="string"             name="col9"        comment="列数据" />
+    </data>
+
+    <data type="struct" name="Col10Data" comment="列数据10">
+        <item type="string"             name="col1"        comment="列数据" />
+        <item type="string"             name="col2"        comment="列数据" />
+        <item type="string"             name="col3"        comment="列数据" />
+        <item type="string"             name="col4"        comment="列数据" />
+        <item type="string"             name="col5"        comment="列数据" />
+        <item type="string"             name="col6"        comment="列数据" />
+        <item type="string"             name="col7"        comment="列数据" />
+        <item type="string"             name="col8"        comment="列数据" />
+        <item type="string"             name="col9"        comment="列数据" />
+        <item type="string"             name="col10"       comment="列数据" />
+    </data>
+
+    <data type="struct" name="TalkNodeData"    comment="对话节点数据">
+        <item type="string"             name="node_type"        comment="列数据" />
+        <item type="string"             name="node_id"          comment="列数据" />
+        <item type="string"             name="display_text"     comment="列数据" />
+        <item type="string"             name="connect_text"     comment="列数据" />
+        <item type="string"             name="npc_id"           comment="列数据" />
+        <item type="string"             name="npc_emotion"      comment="列数据" />
+        <item type="string"             name="npc_talk"         length="512"    comment="列数据" />
+        <item type="string"             name="npc_template"     comment="列数据" />
+        <item type="string"             name="func_type"        comment="列数据" />
+        <item type="string"             name="link_node"        comment="列数据" />
+        <item type="string"             name="belong_to"        comment="列数据" />
+        <item type="string"             name="player_talk"      comment="列数据" />
+    </data>
+
+    <data type="struct" name="QuestClientData"    comment="Quest客户端数据">
+        <item name="quest_id"            type="uint32"       comment="任务ID"/>
+        <item name="quest_type"          type="uint32"       comment="任务类型"/>
+        <item name="quest_type_name"     type="string"       length="128"    comment="任务类型名称"/>
+        <item name="quest_name"          type="string"       length="32"     comment="任务名称"/>
+        <item name="quest_color"         type="uint32"       comment="任务颜色"/>
+        <item name="quest_state"         type="uint8"        comment="任务状态"/>
+        <item name="display_location"    type="uint8"        comment="显示位置，0:显示在可接列表 1:显示在已接列表"/>
+        <item name="display_accept_tip"  type="uint8"        comment="是否发送接受任务提示"/>
+        <item name="display_accomplish_tip" type="uint8"    comment="是否发送完成任务提示"/>
+        <item name="can_track"          type="uint8"        comment="任务追踪可见"/>
+        <item name="can_abandon"        type="uint8"        comment="任务是否可放弃"/>
+        <item name="accpet_time"        type="uint32"       comment="任务接受时间"/>
+        <item name="limit_time"         type="uint32"       comment="任务结束时间"/>
+        <item name="changed_time"       type="uint32"       comment="任务状态变更时间"/>
+        <item name="accept_npc"         type="uint64"       comment="接任务目标NPC"/>
+        <item name="accept_npc_info"    type="string"       length="256"    comment="任务目标NPC信息"/>
+        <item name="commit_npc"         type="uint64"       comment="交任务目标NPC"/>
+        <item name="commit_npc_info"    type="string"       length="256" comment="交任务目标NPC信息"/>
+        <item name="quest_goal_type"    type="uint16"       comment="任务目标信息"/>
+        <item name="quest_goal"         type="uint8"        array="uint16"   comment="任务目标信息"/>
+        <item name="quest_award"        type="uint8"        array="uint16"   comment="任务奖励信息"/>
+        <item name="track_desc"         type="string"       length="512"    comment="任务目标追踪信息"/>
+        <item name="cant_accept_track_desc"         type="string"       length="512"    comment="不可接任务目标追踪信息"/>
+        <item name="cant_accept_desc"               type="string"       length="512"    comment="不可接描述信息"/>
+        <item name="can_accept_desc"                type="string"       length="512"    comment="可接描述信息"/>
+        <item name="accepted_desc"                  type="string"       length="512"    comment="已接描述信息"/>
+        <item name="is_display_cycle_num" type="uint8"      comment="是否显示轮环数"/>
+        <item name="finish_cycle_num"   type="uint32"       comment="完成环数"/>
+        <item name="total_cycle_num"    type="uint32"       comment="总环数"/>
+    </data>
+
+    <data type="struct" name="QuestTalkData"    comment="任务对话数据">
+        <item type="uint32"             name="npc_id"           comment="NPC头像ID" />
+        <item type="uint32"             name="node_id"          comment="对话节点ID" />
+        <item type="uint8"              name="talk_text"        array="uint16" comment="对话内容"/>
+        <item type="OptionData"         name="options"          array="uint8"  comment="对话选项"/>
+    </data>
+
+    <data type="struct" name="IDCountData" comment="ID数量">
+        <item type="uint32"             name="id"           comment="ID"/>
+        <item type="uint16"             name="amount"       comment="数量" />
+    </data>
+
+    <data type="struct" name="GUIDCountData" comment="GUID数量">
+        <item type="uint64"             name="guid"         comment="GUID"/>
+        <item type="uint16"             name="amount"       comment="数量" />
+    </data>
+
+    <data type="struct" name="SkillTipsData" comment="技能tips数据">
+        <item type="uint8"              name="name"         comment="tips名字"/>
+        <item type="uint16"             name="attr"         comment="属性名" />
+        <item type="int64"              name="value"        comment="属性值" />
+    </data>
+
+    <data type="struct" name="GoalVisitNpcData" comment="拜访NPC目标数据">
+        <item type="uint32"             name="npc_id"        comment="NPC ID"/>
+    </data>
+
+    <data type="struct" name="GoalKillBossData" comment="杀死BOSS目标数据">
+        <item type="uint32"             name="boss_id"        comment="BOSS ID"/>
+        <item type="uint16"             name="map_id"         comment="地图"/>
+        <item type="uint16"             name="loc_x"          comment="x坐标"/>
+        <item type="uint16"             name="loc_y"          comment="y坐标"/>
+        <item type="uint16"             name="kill_count"     comment="杀死次数"/>
+    </data>
+
+    <data type="struct" name="GoalCommitItemData" comment="提交物品目标数据">
+        <item type="uint32"             name="item_id"        comment="物品ID"/>
+        <item type="uint32"             name="item_count"     comment="物品数量"/>
+    </data>
+
+    <data type="struct" name="GoalCommitPetData" comment="提交宠物目标数据">
+        <item type="uint32"             name="pet_id"         comment="宠物ID"/>
+        <item type="uint32"             name="pet_count"      comment="宠物数量"/>
+    </data>
+
+    <data type="struct" name="GoalEscortNpcData" comment="护送NPC目标数据">
+        <item type="uint32"             name="npc_id"         comment="NPC ID"/>
+    </data>
+
+    <data type="struct" name="GoalArriveAddrData" comment="到达地址目标数据">
+        <item type="uint16"             name="map_id"         comment="地图ID"/>
+        <item type="uint16"             name="loc_x"          comment="x坐标"/>
+        <item type="uint16"             name="loc_y"          comment="y坐标"/>
+        <item type="uint16"             name="range"          comment="范围"/>
+        <item type="uint32"             name="item_id"        comment="物品ID"/>
+        <item type="uint32"             name="npc_id"         comment="NPC ID"/>
+        <item type="string"             name="desc"           comment="描述"/>
+    </data>
+
+    <data type="struct" name="GoalFightMapData" comment="地图战斗目标数据">
+        <item type="uint16"             name="map_id"         comment="地图ID"/>
+        <item type="uint16"             name="count"          comment="次数"/>
+        <item type="uint16"             name="count_required" comment="要求次数"/>
+    </data>
+
+    <data type="struct" name="GoalFightMapCountData" comment="地图战斗目标数据">
+        <item type="GoalFightMapData"   name="fight_map"      array="uint8" comment="地图战斗"/>
+    </data>
+
+    <data type="struct" name="GoalKillMonsterData" comment="杀怪目标数据">
+        <item type="uint32"             name="monster_id"     comment="怪物ID"/>
+        <item type="uint16"             name="count"          comment="次数"/>
+        <item type="uint16"             name="count_required" comment="要求次数"/>
+        <item type="uint16"             name="map_id"         comment="地图ID"/>
+        <item type="uint16"             name="left"           comment="左"/>
+        <item type="uint16"             name="top"            comment="上"/>
+        <item type="uint16"             name="width"          comment="宽"/>
+        <item type="uint16"             name="height"         comment="高"/>
+    </data>
+
+    <data type="struct" name="GoalKillMonsterCountData" comment="杀怪目标数据">
+        <item type="GoalKillMonsterData"   name="kill_monster" array="uint8" comment="杀怪"/>
+    </data>
+
+    <data type="struct" name="GoalEncounterFightData" comment="遭遇战斗目标数据">
+        <item type="uint8"             name="cur_num"         comment="次数"/>
+        <item type="uint8"             name="max_num"         comment="最大次数"/>
+    </data>
+
+    <data type="struct" name="GoalUseItemData" comment="使用物品目标数据">
+        <item type="uint16"             name="map_id"         comment="地图ID"/>
+        <item type="uint16"             name="loc_x"          comment="x坐标"/>
+        <item type="uint16"             name="loc_y"          comment="y坐标"/>
+        <item type="uint16"             name="range"          comment="范围"/>
+        <item type="uint32"             name="item_id"        comment="物品ID"/>
+        <item type="uint32"             name="npc_id"         comment="NPC ID"/>
+        <item type="string"             name="desc"           comment="描述"/>
+    </data>
+
+    <data type="struct" name="GoalCapturePetData" comment="捕获目标数据">
+        <item type="uint16"             name="pet_id"         comment="宠物ID"/>
+        <item type="uint16"             name="count"          comment="次数"/>
+        <item type="uint16"             name="count_required" comment="要求次数"/>
+    </data>
+
+    <data type="struct" name="GoalPVEData" comment="PVE任务数据">
+        <item type="uint32"             name="win_cur"         comment="胜利次数"/>
+        <item type="uint32"             name="win_required"    comment="要求胜利次数"/>
+    </data>
+    
+    <data type="struct" name="IPConfig" comment="链接配置">
+        <item type="uint8"              name="type"           comment="服务器类型"/>
+        <item type="uint16"             name="port"           comment="服务器端口"/>
+        <item type="uint32"             name="recv_buf"       comment="接收缓冲大小"/>
+        <item type="uint32"             name="send_buf"       comment="发送缓冲大小"/>
+        <item type="string"             name="ip"             comment="服务器IP"/>
+    </data>
+
+    <data type="struct" name="ActivityData" comment="活动数据">
+        <item type="uint16"            name="id"              comment="活动id"/>
+        <item type="uint8"             name="state"           comment="活动状态 0:未开启 1:进行中 2:已过期" />
+        <item type="uint8"             name="today"           comment="是否今天的活动" />
+        <item type="uint8"             name="custom"          array="uint16"   comment="脚本填充的自定义数据"/>
+    </data>
+
+    <data type="struct" name="StringData" comment="长字符串数据" >
+        <item type="uint8"             name="str"             array="uint16"    comment="字符串" />
+    </data>
+
+    <data type="struct" name="GUIDData"   comment="GUID数组" >
+        <item type="uint64"            name="guid"            comment="guids" />
+    </data>
+
+    <data type="struct" name="AuctionObjectData" comment="拍卖品数据">
+        <item name="guid"               type="uint64"       comment="拍卖品guid"/>
+        <item name="id"                 type="uint16"       comment="道具ID或宠物ID"/>
+        <item name="type"               type="uint16"       comment="1代表道具 2代表宠物"/>
+        <item name="custom1"            type="int32"        comment="脚本自定义分类1"/>
+        <item name="custom2"            type="int32"        comment="脚本自定义分类2"/>
+        <item name="custom3"            type="int32"        comment="脚本自定义分类3"/>
+        <item name="level"              type="uint16"       comment="道具:无 宠物:等级"/>
+        <item name="fight_value"        type="int32"        comment="道具:无 宠物:战力"/>        
+        <item name="coin_type"          type="uint16"       comment="attr表里的货币属性名"/>
+        <item name="coin_value"         type="int64"        comment="货币值"/>
+        <item name="amount"             type="uint16"       comment="堆叠数量"/>
+        <item name="state"              type="uint8"        comment="是否上架 0:公示中(预留) 1:上架中 2:已下架"/>
+        <item name="puton_times"        type="uint32"       comment="上架时间"/>
+        <item name="pulloff_times"      type="uint32"       comment="下架时间"/>
+        <item name="seller_guid"        type="uint64"       comment="出售者guid"/>
+        <item name="seller_name"        type="string"       length="32"   comment="出售者姓名"/>
+        <item name="item_data"          type="ItemData"     comment="item数据(拍卖品为道具)"/>
+        <item name="pet_data"           type="PetData"      comment="pet数据(拍卖品为宠物)"/>
+    </data>
+
+    <data type="struct" name="AuctionCookieData" comment="拍卖行个人数据">
+        <item type="uint64"            name="guid"            comment="玩家guid"/>
+        <item type="AttrData"          name="coins"           array="uint16"     comment="各种货币" />
+        <item type="GUIDData"          name="favorites"       array="uint8"     comment="收藏的拍卖品" />
+        <item type="StringData"        name="records"         array="uint8"     comment="交易记录" />
+    </data>
+
+    <data type="struct" name="GuildMemberBriefData" comment="帮派成员简略信息">
+        <item type="uint64"            name="player_guid"           comment="玩家guid" />
+        <item type="string"            name="player_name"           length="32"         comment="玩家姓名" />
+        <item type="uint32"            name="level"                 comment="等级"/>
+        <item type="uint8"             name="role"                  comment="角色"/>
+        <item type="uint8"             name="guild_job"             comment="成员职位"/>
+        <item type="uint32"            name="total_contrb"          comment="历史贡献度" />
+        <item type="uint32"            name="join_time"             comment="加入帮派时间" />
+        <item type="uint32"            name="last_login_time"       comment="上次登陆时间" />
+        <item type="uint32"            name="last_logout_time"      comment="上次离线时间" />
+        <item type="uint32"            name="status"                comment="成员玩家状态(参见logic_def的枚举guild_member_status)" />
+        <item type="uint32"            name="vip"                   comment="vip等级" />
+        <item type="uint32"            name="reincarnation"         comment="转生等级"/>
+        <item type="uint8"             name="job"                   comment="职业" />
+        <item type="CustomData"        name="customs"               comment="自定义" />
+    </data>
+
+    <data type="struct" name="GuildMemberData" comment="帮派成员信息">
+        <item type="uint64"            name="player_guid"           comment="玩家guid" />
+        <item type="string"            name="player_name"           length="32"         comment="玩家姓名" />
+        <item type="uint32"            name="level"                 comment="等级"/>
+        <item type="uint8"             name="role"                  comment="角色"/>
+        <item type="uint8"             name="guild_job"             comment="成员职位"/>
+        <item type="uint32"            name="total_contrb"          comment="历史贡献度" />
+        <item type="uint32"            name="surplus_contrb"        comment="剩余贡献度" />
+        <item type="uint32"            name="last_week_contrb"      comment="上周贡献度" />
+        <item type="uint32"            name="this_week_contrb"      comment="本周贡献度" />
+        <item type="uint32"            name="permission"            comment="帮派权限(参见logic_def的枚举guild_permission)"/>
+        <item type="uint32"            name="join_time"             comment="加入帮派时间" />
+        <item type="uint32"            name="donate_bind_gold"       comment="捐赠金币" />
+        <item type="uint32"            name="last_donate_time"      comment="上次捐赠时间" />
+        <item type="uint32"            name="last_dividend_time"    comment="上次分红时间" />
+        <item type="uint32"            name="last_login_time"       comment="上次登陆时间" />
+        <item type="uint32"            name="last_logout_time"      comment="上次离线时间" />
+        <item type="uint32"            name="forbid_end_time"       comment="禁言结束时间" />
+        <item type="uint32"            name="status"                comment="成员玩家状态(参见logic_def的枚举guild_member_status)" />
+        <item type="uint32"            name="vip"                   comment="vip等级" />
+        <item type="uint32"            name="reincarnation"         comment="转生等级"/>
+        <item type="CustomData"        name="customs"               comment="自定义" />
+        <item type="uint8"             name="job"                   comment="职业" />
+    </data>
+
+    <data type="struct" name="GuildApplicantData" comment="申请者信息">
+        <item type="uint64"             name="guid"                 comment="申请人guid" />
+        <item type="string"             name="name"                 length="32"         comment="申请人姓名" />
+        <item type="uint32"             name="level"                comment="申请人等级"/>
+        <item type="uint8"              name="role"                 comment="申请人角色"/>
+        <item type="uint32"             name="sn"                   comment="申请人串号"/>
+        <item type="uint32"             name="guild_contrb"         comment="帮贡" />
+        <item type="uint32"             name="last_apply_time"      comment="申请截止时间"/>
+        <item type="uint32"             name="vip"                  comment="vip等级" />
+        <item type="uint32"             name="reincarnation"        comment="转生等级"/>
+        <item type="uint8"             name="job"                   comment="职业" />
+    </data>
+
+    <data type="struct" name="GuildEventData" comment="帮派事件信息">
+        <item type="uint32" name="event_type"                        comment="(参见logic_def的枚举guild_event_type)"/>
+        <item type="uint32" name="event_time"                        comment="时间时间"/>
+        <item type="uint8"  name="event_msg"                         array="uint16"     comment="事件消息"/>
+    </data>
+
+    <data type="struct" name="GuildBriefData" comment="帮派简略数据">
+        <item type="uint64"            name="guid"                  comment="帮派guid" />
+        <item type="uint32"            name="guild_id"              comment="帮派id" />
+        <item type="string"            name="name"                  length="32"         comment="帮派名称" />
+        <item type="uint64"            name="leader_guid"           comment="帮主guid" />
+        <item type="string"            name="leader_name"           length="32"         comment="帮主名称" />
+        <item type="uint32"            name="leader_level"          comment="帮主等级" />
+        <item type="uint8"             name="leader_role"           comment="帮主角色"/>
+        <item type="uint32"            name="level"                 comment="帮派等级" />
+        <item type="uint16"            name="member_count"          comment="帮派成员数量" />
+        <item type="uint16"            name="max_member_count"      comment="最大成员数量(对应当前等级)" />
+        <item type="string"            name="declaration"           comment="帮派宣言" />
+        <item type="uint8"             name="applyed"               comment="是否申请：1是已申请， 0是未申请" />
+        <item type="uint32"            name="leader_school"         comment="帮主门派ID" />
+    </data>
+
+    <data type="struct" name="GuildData" comment="帮派数据">
+        <item type="uint64"            name="guid"                  comment="帮派guid" />
+        <item type="uint32"            name="guild_id"              comment="帮派id" />
+        <item type="string"            name="name"                  length="32"         comment="帮派名称" />
+        <item type="uint64"            name="leader_guid"           comment="帮主GUID" />
+        <item type="string"            name="leader_name"           length="32"         comment="帮主名称" />
+        <item type="uint32"            name="level"                 comment="帮派等级" />        
+        <item type="uint32"            name="base_level"            comment="帮派忠义堂等级" />
+        <item type="uint32"            name="wing_room_level"       comment="帮派厢房/赏功堂等级" />
+        <item type="uint32"            name="vault_level"           comment="帮派金库/帮派商店等级" />
+        <item type="uint32"            name="academy_level"         comment="帮派书院/堂口等级" />
+        <item type="uint32"            name="pharmacy_level"        comment="帮派宝阁等级" />
+        <item type="uint32"            name="upgrade_cooldown"      comment="帮派建筑升级冷却时间" />
+        <item type="uint16"            name="member_count"          comment="帮派成员数量" />
+        <item type="uint32"            name="max_member_count"      comment="最大成员数量(对应当前等级)" />
+        <item type="uint16"            name="online_count"          comment="在线成员数量" />
+        <item type="uint32"            name="fund"                  comment="帮派资金" />
+        <item type="uint32"            name="liveness"              comment="活跃度" />
+        <item type="uint32"            name="build_degree"          comment="帮派建设度" />
+        <item type="uint32"            name="prestige"              comment="威望" />
+        <item type="uint32"            name="fight_score"           comment="战绩" />
+        <item type="uint32"            name="config"                comment="帮派设置" />
+        <item type="uint32"            name="create_time"           comment="创建时间" />
+        <item type="uint32"            name="dismissed_time"        comment="解散时间(为0表示不会解散，不为0表示解散最后时限)" />
+        <item type="uint32"            name="impeach_time"          comment="弹劾帮主开始时间" />
+        <item type="uint64"            name="impeach_guid"          comment="弹劾帮主者的GUID" />
+        <item type="string"            name="declaration"           comment="帮派宣言" />
+        <item type="GuildEventData"    name="events"                array="uint16" comment="帮派事件消息" />
+        <item type="CustomData"        name="customs"               comment="自定义" />
+    </data>
+
+    <data type="struct" name="NoticeData" comment="通知内容">
+        <item type="uint32"            name="notice_time"     comment="发送通知时间" />
+        <item type="string"            name="notice"          length="1024" comment="通知内容" />
+    </data>
+
+    <data type="struct" name="DBGuildData" comment="帮派数据">
+        <item type="GuildData"         name="guild"           comment="帮派数据" />
+        <item type="NoticeData"        name="notice"          comment="通知数据" />
+        <item type="ItemData"          name="items"           array="uint8"     comment="物品列表"/>
+    </data>
+
+    <data type="struct" name="DBGuildMemberData" comment="帮派成员数据">
+        <item type="GuildMemberData"   name="member"        comment="帮派成员数据" />
+        <item type="uint64"            name="guild_guid"    comment="帮派guid" />
+        <item type="int64"             name="total_fight_value"   comment="战力"/>        
+    </data>
+
+    <data type="struct" name="DBGuildApplicantData" comment="帮派申请数据">
+        <item type="GuildApplicantData"   name="applicant"     comment="帮派申请数据" />
+        <item type="uint64"               name="guild_guid"    comment="帮派guid" />
+        <item type="int64"                name="total_fight_value"   comment="战力"/>        
+    </data>
+    
+    <data type="struct" name="ContactData" comment="联系人数据">
+        <item name="guid"               type="uint64"           comment="联系人GUID"/>
+        <item name="contact_type"       type="uint8"            comment="联系人类型：对应枚举ContactType的最近联系人、好友、黑名单" />
+        <item name="name"               type="string"           length="32" comment="好友名字"/>
+        <item name="role"               type="uint8"            comment="role"/>
+        <item name="job"                type="uint8"            comment="职业"/>
+        <item name="level"              type="uint32"           comment="等级"/>
+        <item name="friendship"         type="uint32"           comment="好友度"/>
+        <item name="last_contact_time"  type="uint32"           comment="最近联系时间"/>
+        <item name="sn"                 type="int32"            comment="用户序列号"/>
+        <item name="status"             type="uint32"           comment="是否在线：1在线，0离线"/>
+        <item name="vip"                type="uint32"           comment="vip等级"/>
+        <item name="reincarnation"      type="uint32"           comment="转生等级"/>
+        <item type="CustomData"         name="customs"          comment="自定义" />
+    </data>
+
+    <data type="struct" name="DBContactData" comment="DB联系人数据">
+        <item name="player_guid"        type="uint64"           comment="玩家GUID"/>
+        <item name="contact_guid"       type="uint64"           comment="联系人GUID"/>
+        <item name="contact_type"       type="uint8"            comment="联系人类型：对应枚举ContactType的最近联系人、好友、黑名单" />
+        <item name="friendship"         type="uint32"           comment="好友度"/>
+        <item name="last_contact_time"  type="uint32"           comment="最近联系时间"/>
+        <item type="CustomData"         name="customs"          comment="自定义" />
+    </data>
+
+    <data type="struct" name="MessageData" comment="联系人消息数据">
+        <item type="uint8"              name="message"          array="uint16"   comment="发送信息内容" />
+        <item type="uint64"             name="send_guid"        comment="发送者GUID" />
+        <item type="uint32"             name="send_time"        comment="发送时间" />
+        <item type="uint64"             name="recv_guid"        comment="接受者GUID" />
+        <item type="uint8"              name="auto_reply"       comment="是否自动回复消息" />
+    </data>
+
+    <data type="struct" name="ContactInfoData" comment="联系人数据">
+        <item name="guid"               type="uint64"           comment="联系人GUID"/>
+        <item name="name"               type="string"           length="32" comment="好友名字"/>
+        <item name="role"               type="uint8"            comment="role"/>
+        <item name="job"                type="uint8"            comment="职业"/>
+        <item name="level"              type="uint32"           comment="等级"/>
+        <item name="sn"                 type="int32"            comment="用户序列号"/>
+        <item name="status"             type="uint32"           comment="是否在线：1在线，0离线"/>
+        <item name="vip"                type="uint32"           comment="vip等级"/>
+        <item name="reincarnation"      type="uint32"           comment="转生等级"/>
+        <item name="last_login_time"    type="uint32"           comment="上次登录时间"/>
+        <item name="last_logout_time"   type="uint32"           comment="上次登出时间"/>
+        <item name="total_fight_value"  type="uint64"           comment="总战力"/>
+    </data>
+
+    <data type="struct" name="MailHeadData" comment="邮件标题信息">
+        <item name="mail_guid"          type="uint64"       comment="邮件GUID"/>
+        <item name="mail_type"          type="uint8"        comment="邮件类型 0:玩家邮件；1:系统邮件；2:帮派邮件；3:脚本邮件"/>
+        <item name="title"              type="uint8"        array="uint8"     comment="标题"/>
+        <item name="send_guid"          type="uint64"       comment="发件人GUID"/>
+        <item name="send_name"          type="string"       length="32"     comment="发件人名字"/>
+        <item name="send_time"          type="uint32"       comment="发件时间"/>
+        <item name="status"             type="uint32"       comment="邮件状态"/>
+    </data>
+
+    <data type="struct" name="MailBodyData" comment="邮件正文信息">
+        <item name="content"            type="uint8"       array="uint16"    comment="邮件正文"/>
+        <item name="attrs"              type="AttrData"    array="uint16"    comment="属性列表"/>
+        <item name="items"              type="ItemData"    array="uint8"     comment="物品列表"/>
+        <item name="pets"               type="PetData"     array="uint8"     comment="宠物列表"/>
+    </data>
+
+    <data type="struct" name="MailData" comment="邮件数据">
+        <item name="head"               type="MailHeadData"     comment="邮件标题"/>
+        <item name="body"               type="MailBodyData"     comment="邮件内容"/>
+    </data>
+
+    <data type="struct" name="DBMailData" comment="邮件数据">
+        <item name="recv_guid"          type="uint64"           comment="收件人GUID"/>
+        <item name="guids"              type="uint64"           array="uint32" comment="邮件关联GUID列表"/>
+        <item name="head"               type="MailHeadData"     comment="邮件标题"/>
+        <item name="body"               type="MailBodyData"     comment="邮件内容"/>
+    </data>
+
+    <data type="struct" name="DBVarData" comment="DB自定义变量">
+        <item name="key"                 type="uint8"           array="uint8"  comment="key值"/>
+        <item name="value"               type="uint8"           array="uint16" comment="value"/>
+        <item name="value_type"          type="uint8"           comment="值类型"/>
+        <item name="merge_type"          type="uint8"           comment="合区类型"/>
+    </data>
+
+    <data type="struct" name="RanklistData" comment="排行榜数据">
+        <item name="name"               type="string"           length = "32" comment="上榜名称"/>
+        <item name="rank_info"          type="string"           comment="排名信息"/>
+        <item name="rank_data1"         type="int64"            comment="排名数据1"/>
+        <item name="rank_data2"         type="int64"            comment="排名数据2"/>
+        <item name="rank_data3"         type="int64"            comment="排名数据3"/>
+    </data>
+    
+    <data type="struct" name="DBRanklistData" comment="排行榜数据">
+        <item name="name"               type="string"           length = "32" comment="上榜名称"/>
+        <item name="rank_info"          type="string"           comment="排名信息"/>
+        <item name="rank_data1"         type="int64"            comment="排名数据1"/>
+        <item name="rank_data2"         type="int64"            comment="排名数据2"/>
+        <item name="rank_data3"         type="int64"            comment="排名数据3"/>
+        <item name="rank_guid"          type="int64"            comment="排名guid"/>
+        <item name="object_guid"        type="int64"            comment="排名对象guid"/>
+        <item name="rank_type"          type="int32"            comment="排行榜类型"/>
+    </data>
+
+    <data type="struct" name="TeamBriefData" comment="队伍简略信息">
+        <item name="team_guid"          type="uint64"       comment="队伍GUID"/>
+        <item name="target"             type="uint16"       comment="目标ID"/>
+        <item name="min_require_level"  type="uint16"        comment="最低要求等级"/>
+        <item name="max_require_level"  type="uint16"        comment="最高要求等级"/>
+        <item name="member_count"       type="uint16"       comment="成员数量"/>
+        <item name="leader_data"        type="MemberData"   comment="队长数据"/>
+        <item name="has_applicant"      type="uint8"        comment="是否存在申请"/>
+        <item name="min_require_reinc"  type="uint16"        comment="最低要求转生次数"/>
+        <item name="max_require_reinc"  type="uint16"        comment="最高要求转生次数"/>
+        <item type="CustomData"         name="customs"      comment="自定义" />
+    </data>
+
+    <data type="struct" name="TeamApplicantData" comment="队伍申请信息">
+        <item type="uint64"             name="guid"         comment="玩家GUID" />
+        <item type="string"             name="name"         comment="玩家名字"  length="32" />
+        <item type="AttrData"           name="attrs"        array="uint16"   comment="属性数据" />
+    </data>
+
+    <data type="struct" name="ExchangeData" comment="商会数据">
+        <item type="uint64"             name="day"          comment="交易日期" />
+        <item type="KeyValueU32"        name="records"      array="uint16"   comment="交易记录" />
+    </data>
+    
+    <data type="struct" name="ForbidData" comment="禁止数据">
+        <item name="sid"                type="uint8"        comment="sid" />
+        <item name="keyword"            type="uint8"        array="uint8"  comment="禁止关键字"/>
+        <item name="keytype"            type="uint8"        comment="1:角色名 2:帐号名 3:IP 4:硬件码"/>
+        <item name="fbdtype"            type="uint8"        comment="1:禁止登陆" />
+        <item name="begin"              type="int64"        comment="开始时间" />
+        <item name="end"                type="int64"        comment="结束时间" />
+        <item name="desc"               type="uint8"        array="uint8"  comment="描述"/>
+    </data>
+
+    <data type="struct" name="ForbidTalkData" comment="禁止聊天数据">
+        <item name="guid"               type="uint64"       comment="角色guid" />
+        <item name="begin"              type="int64"        comment="开始时间" />
+        <item name="end"                type="int64"        comment="结束时间" />
+        <item name="desc"               type="uint8"        array="uint8"  comment="描述"/>
+    </data>
+
+    <data type="struct" name="PasturePetData" comment="牧场宠物信息" > 
+        <item type="uint64"             name="owner_guid"           comment="拥有者GUID" />
+        <item type="PetData"            name="pet"                  comment="子区ID" />       
+        <item type="uint16"             name="map"                  comment="地图" />
+        <item type="uint16"             name="x"                    comment="x坐标" />
+        <item type="uint16"             name="y"                    comment="y坐标" />
+        <item type="uint32"             name="placed_time"          comment="放置时间" />
+        <item type="uint32"             name="placed_status"        comment="放置状态" />
+        <item type="uint32"             name="replaced_time"        comment="替换时间" />
+        <item type="uint64"             name="replaced_player_guid" comment="替换的玩家GUID" />
+        <item type="string"             name="replaced_player_name" comment="替换的玩家名字" length = "32" />
+        <item type="uint64"             name="replaced_pet_guid"    comment="替换的宠物GUID" />
+        <item type="string"             name="replaced_pet_name"    comment="替换的宠物名字" length = "32" />
+    </data>
+
+    <data type="struct" name="LadderData" comment="天梯数据" > 
+        <item type="uint64"             name="player_guid"          comment="玩家GUID" />
+        <item type="uint32"             name="rank"                 comment="排行" />
+        <item type="PlayerData"         name="player"               comment="玩家数据" />       
+    </data>
+
+    <data type="struct" name="LadderRecordData" comment="天梯记录数据" >
+        <item type="uint8"              name="action"               comment="动作" />
+        <item type="uint32"             name="time"                 comment="时间" />
+        <item type="uint64"             name="player_guid"          comment="玩家GUID" />
+        <item type="string"             name="player_name"          comment="玩家名字" length = "32" />
+        <item type="uint32"             name="player_rank"          comment="排行" />
+        <item type="uint64"             name="target_guid"          comment="玩家GUID" />
+        <item type="string"             name="target_name"          comment="玩家名字" length = "32" />
+        <item type="uint32"             name="target_rank"          comment="排行" />
+    </data>
+
+    <data type="struct" name="PlayerDetail" comment="玩家详细信息" > 
+        <item type="uint32"             name="uid"          comment="账号ID" />
+        <item type="uint8"              name="sid"          comment="子区ID" />       
+        <item type="uint64"             name="guid"         comment="玩家GUID" />
+        <item type="string"             name="unid"         comment="玩家UNID"  length="32" />
+        <item type="string"             name="name"         comment="玩家名字"  length="32" />
+        <item type="AttrData"           name="attrs"        comment="属性数据"      array="uint16" />
+        <item type="uint16"             name="map"          comment="地图ID" />
+        <item type="uint16"             name="x"            comment="x坐标" />
+        <item type="uint16"             name="y"            comment="y坐标" />
+        <item type="uint8"              name="state"        comment="玩家状态 0:彻底销毁 1:使用中 2:已删除" />
+        <item type="uint32"             name="createtime"   comment="创建时间" />
+        <item type="uint32"             name="lastlogin"    comment="最后一次登陆时间" />
+        <item type="uint32"             name="destroytime"  comment="销毁时间 state为0=销毁时间 state为2=删除时间" />        
+        <item type="CustomData"         name="customs"      comment="自定义" />
+        <item type="ItemContainerData"  name="equips"       comment="装备" />
+    </data>
+    
+    <data type="struct" name="Pt" comment="" > 
+        <item type="uint16"             name="x"        comment="x坐标" />
+        <item type="uint16"             name="y"        comment="y坐标" />
+    </data>
+    
+    <data type="struct" name="ViolateData" comment="违禁字数据" >
+        <item type="uint8"              name="type"     comment="违禁字类型" />
+        <item type="uint8"              name="violate"  array="uint8"  comment="违禁字"/>
+    </data>
+
+    <data type="struct" name="ChannelSwitchData" comment="频道开关数据" >
+        <item type="uint8"              name="type"     comment="频道类型" />
+        <item type="uint8"              name="sw"       comment="开关"/>
+    </data>
+    
+    <data type="struct" name="VerifyData" comment="验证附加数据" >
+        <item type="uint64"             name="fbd_time"         default="true"  comment="封禁时间"/>
+        <item type="int32"              name="accountstatus"    default="true"  comment="账号状态 0=正常 1=禁用 2=临时密码使用中 3=异常 4=待销户 5=已销户"/>
+    </data>
+    
+    <data type="struct" name="IPPort" comment="tcp连接信息" >
+        <item type="string"             name="ip"   comment="ip" length="32"/>
+        <item type="uint16"             name="port" comment="port"/>
+    </data>
+    
+    <data type="struct" name="CrossIPPort" comment="跨服IP端口" >
+        <item type="uint32"             name="gid"          comment="区id"/>
+        <item type="uint16"             name="gcp"          comment=""/>
+        <item type="uint16"             name="gsp"          comment=""/>
+        <item type="string"             name="innerip"      comment="内网ip" length="32"/>
+        <item type="string"             name="extip"        comment="外网ip" length="32"/>
+        <item type="string"             name="innerflag"    comment="内网标记" length="64"/>
+        <item type="string"             name="clientname"   comment="区显示名称" length="64"/>
+    </data>
+    
+    <data type="struct" name="TestJsonName" comment="Json测试" >
+        <item name="name"               type="uint8"        array="uint16"  comment="名称"/>
+    </data>
+</protocol_define>

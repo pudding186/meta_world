@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="FightData" moudleid="108" version="1" comment="战斗数据" >
+    <package name="StructDef"/>
+    <data type="protocol" name="ActionBegin"        comment="动作开始">
+        <item name="target"         type="uint16"   comment="目标id" />
+    </data>
+    <data type="protocol" name="ActionEnd"          comment="动作结束">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="state"          type="uint8"    comment="0:活着的 1:死亡的 2:离场的" />
+    </data>
+    <data type="protocol" name="AddBuff"            comment="添加buff">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="skill"          type="uint16"   comment="技能id" />
+        <item name="buff"           type="uint16"   comment="buffid" />
+        <item name="stack"          type="uint8"    comment="堆叠层数" />
+        <item name="remain"         type="uint16"    comment="剩余回合数" />
+    </data>
+    <data type="protocol" name="DelBuff"            comment="添加buff">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="buff"           type="uint16"   comment="buffid" />
+        <item name="stack"          type="uint8"    comment="堆叠层数" />
+        <item name="remain"         type="uint16"    comment="剩余回合数" />
+    </data>
+    <data type="protocol" name="DiedNtf"            comment="死亡通知">
+        <item name="target"         type="uint16"   comment="目标通知" />
+        <item name="leave"          type="uint8"    comment="死亡后是否出场" />
+        <item name="effect"         type="int64"    comment="死亡特效ID" />
+    </data>
+    <data type="protocol" name="ReviveNtf"          comment="复活通知">
+        <item name="target"         type="uint16"   comment="目标通知" />
+        <item name="hp"             type="int32"    comment="如果为友方则显示血量,敌方为0" />
+    </data>
+    <data type="protocol" name="PaoPaoNtf"          comment="聊天泡泡通知">
+        <item name="target"         type="uint16"   comment="消息目标" />
+        <item name="text"           type="string"   length="512"    comment="消息内容"/>
+    </data>
+    <data type="protocol" name="FightAttrNtf"       comment="显示属性变化通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="attr"           type="uint16"   comment="属性名" />
+        <item name="value"          type="int64"    comment="属性值 大于0为增加 小于0为减少" />
+    </data>
+    <data type="protocol" name="ShotSKillNtf"       comment="施放技能通知">
+        <item name="actor"		    type="uint16"	comment="施放者id" />
+        <item name="skillid"        type="uint32"   comment="施放技能id" />
+        <item name="targets"        type="uint16"   array="uint8"   comment="攻击目标"/>
+        <item name="mastery"        type="uint8"    comment="是否触发精通" />
+    </data>
+    <data type="protocol" name="SkillCooldownNtf"   comment="技能CD通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="skillid"        type="uint16"   comment="技能id" />
+        <item name="cd"             type="uint16"   comment="cd" />
+    </data>
+    <data type="protocol" name="ShowAttrChangeNtf"  comment="显示属性变化通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="attr"           type="uint16"   comment="属性名" />
+        <item name="value"          type="int64"    comment="属性值 大于0为增加 小于0为减少" />
+        <item name="type"           type="uint8"    comment="伤害/增益类型 0:普通 5:毒伤 6:震摄 7:风系 8:雷系 9:水系 10:火系 11:三尸 12:鬼火 13:物理" />
+        <item name="burst"          type="uint8"    comment="0:普通 1:爆击 2:致死" />
+        <item name="ignore_phydef"  type="uint8"    comment="0:普通 1:破物理攻击" />
+    </data>
+    <data type="protocol" name="MissNtf"            comment="闪避通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+    </data>
+    <data type="protocol" name="DefenseNtf"         comment="触发防御">
+        <item name="target"         type="uint16"   comment="目标id" />
+    </data>
+    <data type="protocol" name="EscapeNtf"          comment="逃跑通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="result"         type="uint8"    comment="0:失败 1:成功" />
+    </data>
+    <data type="protocol" name="ProtectNtf"         comment="保护通知">
+        <item name="actor"          type="uint16"   comment="发起者id" />
+        <item name="target"         type="uint16"   comment="目标id" />
+    </data>
+    <data type="protocol" name="HuaWuNtf"           comment="化无通知" >
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="skillid"        type="uint16"   comment="技能id" />
+    </data>
+    <data type="protocol" name="FailNtf"            comment="错误通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="errcode"        type="int32"    comment="错误码" />
+        <item name="errmsg"         type="string"   comment="错误描述" />
+    </data>   
+    <data type="protocol" name="SummonNtf"          comment="召唤通知">
+        <item name="actor"          type="uint16"   comment="召唤者id" />
+        <item name="action"         type="uint8"    comment="是否有召唤动作" />
+        <item name="target1"        type="uint16"   comment="召唤目标1id" />
+        <item name="target2"        type="uint16"   comment="召唤目标2id" />
+    </data>
+    <data type="protocol" name="ShowFighterNtf"     comment="显示战斗者">
+        <item name="target"         type="uint16"   comment="显示者id" />
+        <item name="replace"        type="uint16"   comment="替换者id" />
+    </data>
+    <data type="protocol" name="HideFighterNtf"     comment="隐藏战斗者">
+        <item name="target"         type="uint16"   comment="战斗者id" />
+        <item name="effect"         type="int64"    comment="隐藏特效ID" />
+    </data>
+    <data type="protocol" name="CatchNtf"           comment="捕捉通知">
+        <item name="actor"          type="uint16"   comment="捕捉者id" />
+        <item name="target"         type="uint16"   comment="捕捉目标1id" />
+        <item name="result"         type="uint8"    comment="0:失败 1:成功" />
+    </data>
+    <data type="protocol" name="ShowEffectNtf"      comment="显示特效通知">
+        <item name="type"           type="uint8"    comment="特效类型" />
+        <item name="actor"          type="uint16"   comment="发起者id" />
+        <item name="target"         type="uint16"   comment="目标1id" />
+        <item name="param1"         type="int64"    comment="自定义参数1" />
+        <item name="param2"         type="int64"    comment="自定义参数2" />
+    </data>
+    <data type="protocol" name="StealSkillNtf"      comment="动态添加(偷取)技能通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="skill"          type="uint16"   comment="技能id" />
+        <item name="performance"    type="uint32"   comment="技能熟练度" />
+    </data>
+    <data type="protocol" name="ForgetNtf"          comment="遗忘通知">
+        <item name="target"         type="uint16"   comment="目标id" />
+        <item name="skillid"        type="uint16"   comment="技能id" />
+        <item name="forget"         type="uint8"    comment="0:未遗忘 1:遗忘" />
+    </data>
+</protocol_define>

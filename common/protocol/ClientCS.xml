@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="ClientCS" moudleid="104" version="1" comment="客户端和chatserver之间的相关协议">
+    <package name="StructDef"/>
+    <data type="protocol" name="ChannelMsgReq"    comment="属性通知">
+        <item name="channel"        type="uint8"    comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item name="msg"            type="uint8"    array="uint16" comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="ChannelMsgNtf"    comment="属性通知">
+        <item name="channel"        type="uint8"        comment="1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界"/>
+        <item name="chat_msg"       type="ChatMsg"      comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="TipsMsgCSNtf" comment="客户端左上角消息通知">
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="NoticeMsgNtf" comment="Notice消息通知">
+        <item name="type"           type="uint8"       comment="类型由客户端自定义,对服务器无意义"/>
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+        <item name="scroll"         type="uint8"       comment="消息滚动次数" />
+    </data>
+
+    <data type="protocol" name="EmojiDataNtf"    comment="聊天表情通知">
+        <item name="emojis"         type="EmojiData"               comment="频道开关数组"/>
+    </data>
+</protocol_define>

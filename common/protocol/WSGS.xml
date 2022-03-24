@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="WSGS" moudleid="107" version="1" comment="WS与GS之间的通信协议" >
+<package name="StructDef" />
+<data type="protocol" name="CanLoginGSReq" comment="帐号能否进入GS请求" >
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID" />
+</data>
+<data type="protocol" name="CanLoginGSAck" comment="帐号能否进入GS回应" >
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID=0代表该帐号下所有角色都能进入 GUID!=0代表仅该GUID代表的角色能进入" />
+    <item name="errcode"                type="int32"        comment="错误码" />
+    <item name="errmsg"                 type="string"       comment="错误描述" />
+</data>
+<data type="protocol" name="LoginGSReq" comment="玩家进入GS请求" >
+    <item name="gate"                   type="uint32"       comment="网关索引" />
+    <item name="playerdata"             type="PlayerData"   comment="玩家数据" />
+    <item name="longitude"              type="string"       length="64"     comment="经度(不存档)" />
+    <item name="latitude"               type="string"       length="64"     comment="纬度(不存档)" />
+</data>
+<data type="protocol" name="LoginGSAck" comment="玩家进入GS回应" >
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID" />
+    <item name="arrayid"                type="uint32"       comment="错误码" />
+    <item name="errcode"                type="int32"        comment="错误码" />
+    <item name="errmsg"                 type="string"       comment="错误描述" />
+</data>
+<data type="protocol" name="ReloginGSNtf" comment="玩家进入GS请求" >
+    <item name="gate"                   type="uint32"       comment="网关索引" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID" />
+</data>
+<data type="protocol" name="LogoutGSReq" comment="玩家退出GS请求" >
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="type"                   type="uint8"        comment="1:回到选角界面 2:退出游戏 3:重复登陆踢回选角界面 4:断线踢出游戏" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID" />
+</data>
+<data type="protocol" name="LogoutGSAck" comment="玩家退出GS回应" >
+    <item name="playerdata"             type="PlayerData"   comment="玩家数据" />
+    <item name="type"                   type="uint8"        comment="1:回到选角界面 2:退出游戏 3:重复登陆踢回选角界面 4:断线踢出游戏" />
+    <item name="errcode"                type="int32"        comment="错误码" />
+    <item name="errmsg"                 type="string"       comment="错误描述" />
+</data>
+<data type="protocol" name="OfflineNtf" comment="玩家断线通知" >
+    <item name="guid"                   type="uint64"       comment="玩家guid" />
+</data>
+<data type="protocol" name="WrapperPkg" comment="通过WS转发给GT的包装协议" >
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="wrapper"                type="uint8"        comment="包装数据"      array="uint32" /> 
+</data>
+<data type="protocol" name="SavePlayerNtf" comment="保存玩家通知">
+    <item name="playerdata"             type="PlayerData"   comment="玩家详细" />
+</data>
+
+<data type="protocol" name="BillInGSNtf" comment="充值通知">
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+    <item name="guid"                   type="uint64"       comment="玩家GUID" />
+    <item name="bill_id"                type="uint32"   comment="订单ID"/>
+    <item name="billin_yb"              type="int64"        comment="用户充值元宝数"/>
+    <item name="desc"                   type="string"       comment="充值描述"/>
+</data>
+<data type="protocol" name="ForceKickNtf" comment="强制踢人通知">
+    <item name="uid"                    type="uint32"       comment="账号id" />
+    <item name="sid"                    type="uint8"        comment="子区id" />
+</data>
+
+<data type="protocol" name="GameInNtf" comment="玩家游戏内充值保存通知" >
+    <item type="uint32"             name="uid"          comment="账号ID" />
+    <item type="uint8"              name="sid"          comment="子区ID" />
+    <item type="int64"              name="gameinyb"     comment="累计游戏内产出元宝" />
+    <item type="int64"              name="gameoutyb"    comment="累计游戏内消耗元宝" />
+</data>
+
+<data type="protocol" name="ForbidNtf" comment="封禁通知" >
+    <item type="uint8"              name="forbid"       comment="0:解禁 1:禁" />
+    <item type="ForbidData"         name="data"         comment="封禁数据" />
+</data>
+
+<data type="protocol" name="SetCustomVarNtf" comment="自定义变量广播范围通知" >
+    <item type="uint16"             name="type"       comment="类型" />
+    <item type="uint16"             name="scope"      comment="广播范围" />
+    <item type="string"             name="key"        comment="key值"/>
+</data>
+
+<data type="protocol" name="NewContactInfoDataNtf" comment="新的联系人信息通知" >
+    <item type="ContactInfoData"    name="data"       comment="联系人信息" />    
+</data>
+
+</protocol_define>

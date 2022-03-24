@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="WSDB" moudleid="106" version="1" comment="WS与DB之间的通信协议" >
+    <package name="StructDef" />
+    <data type="protocol" name="LoadUserReq" comment="加载账号数据请求" >
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+    </data>
+    <data type="protocol" name="LoadUserAck" comment="加载账号数据回应" >
+        <item name="userdata"   type="UserData"     comment="账号数据" />
+        <item name="errcode"    type="int32"        comment="错误码" />
+        <item name="errmsg"     type="string"       comment="错误描述" />
+    </data>    
+    <data type="protocol" name="UpdateUserNtf" comment="更新账号数据通知" >
+        <item name="userdata"   type="UserData"     comment="账号数据" />
+    </data>
+    <data type="protocol" name="PlayerBriefsReq" comment="加载玩家简略请求" >
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+    </data>
+    <data type="protocol" name="PlayerBriefsAck" comment="加载玩家简略回应">
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+        <item name="briefs"     type="PlayerBrief"  array="uint8"   comment="玩家简略列表" />
+        <item name="errcode"    type="int32"        comment="错误码" />
+        <item name="errmsg"     type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="NewPlayerReq" comment="新建玩家请求">
+        <item name="playerbrief" type="PlayerBrief"   comment="玩家信息" />
+    </data>
+    <data type="protocol" name="NewPlayerAck" comment="新建玩家回应">
+        <item name="playerbrief" type="PlayerBrief"   comment="玩家信息" />
+        <item name="errcode"     type="int32"         comment="错误码" />
+        <item name="errmsg"      type="string"        comment="错误描述" />
+    </data>
+    <data type="protocol" name="UpdateBriefNtf" comment="更新玩家简介通知">
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+        <item name="brief"      type="PlayerBrief"  comment="玩家简介" />
+    </data>
+    <data type="protocol" name="UpdatePlayerNtf" comment="更新玩家通知">
+        <item name="playerdata" type="PlayerData"   comment="玩家详细" />
+    </data>
+    <data type="protocol" name="LoadPlayerReq" comment="加载玩家数据请求" >
+        <item name="guid"       type="uint64"       comment="玩家guid" />
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+    </data>
+    <data type="protocol" name="LoadPlayerAck" comment="加载玩家数据回应" >
+        <item name="playerdata" type="PlayerData"   comment="玩家数据" />
+        <item name="errcode"    type="int32"        comment="错误码" />
+        <item name="errmsg"     type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="BillInNtf" comment="充值通知">
+        <item name="uid"        type="uint32"       comment="账号id" />
+        <item name="sid"        type="uint8"        comment="子区id" />
+        <item name="bill_id"    type="uint32"       comment="订单ID"/>
+        <item name="billin_yb"  type="int64"        comment="用户充值元宝数"/>
+        <item name="desc"       type="string"       comment="充值描述"/>
+    </data>
+    <data type="protocol" name="LoadForbidReq" comment="加载禁止数据请求" >
+    </data>
+    <data type="protocol" name="LoadForbidAck" comment="加载禁止数据回应" >
+        <item name="forbids"    type="ForbidData"   array="uint32"   comment="禁止数据" />
+        <item name="errcode"    type="int32"        comment="错误码" />
+        <item name="errmsg"     type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="AddForbidNtf" comment="添加禁止数据通知" >
+        <item name="data"       type="ForbidData"   comment="禁止数据" />
+    </data>
+    <data type="protocol" name="DelForbidNtf" comment="删除禁止数据通知" >
+        <item name="data"       type="ForbidData"   comment="禁止数据" />
+    </data>
+    <data type="protocol" name="RefreshPlayerCacheNtf" comment="通知DB主动刷新玩家缓存" >
+        <item name="guid"       type="uint64"       comment="玩家的GUID" />
+    </data>
+    <data type="protocol" name="LoadForbidTalkReq" comment="加载禁止聊天数据请求" >
+    </data>
+    <data type="protocol" name="LoadForbidTalkAck" comment="加载禁止聊天数据回应" >
+        <item name="forbids"    type="ForbidTalkData"   array="uint32"   comment="禁止聊天数据" />
+        <item name="errcode"    type="int32"        comment="错误码" />
+        <item name="errmsg"     type="string"       comment="错误描述" />
+    </data>
+</protocol_define>

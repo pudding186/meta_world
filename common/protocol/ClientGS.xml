@@ -1,0 +1,1046 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="ClientGS" moudleid="102" version="1" comment="客户端和gameserver之间的相关协议">
+    <package name="StructDef"/>
+    <data type="protocol" name="KeepAliveReq" comment="心跳请求服务器主动发给客户端">
+        <item name="seq"            type="uint32"            comment="自增长序号" />
+    </data>
+    
+    <data type="protocol" name="KeepAliveAck" comment="心跳回应客户端回应服务器">
+        <item name="seq"            type="uint32"            comment="自增长序号" />
+        <item name="tick"           type="uint32"            comment="回应tick值" />
+    </data>
+    
+    <data type="protocol" name="AttrNtf"    comment="属性通知">
+        <item name="guid"           type="uint64"            comment="角色guid" />
+        <item name="attrs"          type="AttrData"          array="uint16"       comment="属性数据" />
+    </data>
+    
+    <data type="protocol" name="PlayerAppearNtf" comment="玩家出现通知">
+        <item name="guid"           type="uint64"           comment="玩家guid"/>
+        <item name="sn"             type="int32"            comment="用户序列号"/>
+        <item name="x"              type="uint16"           comment="x坐标"/>
+        <item name="y"              type="uint16"           comment="y坐标"/>
+        <item name="attrs"          type="AttrData"         array="uint16"           comment="属性数据" />
+        <item name="buffs"          type="BuffData"         array="uint8"           comment="buff数据"/>
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+        <item name="name"           type="string"           comment="玩家名字"/>
+    </data>
+    
+    <data type="protocol" name="NPCAppearNtf" comment="NPC出现通知">
+        <item name="guid"           type="uint64"           comment="NPC guid"/>
+        <item name="template_id"    type="uint16"           comment="模板id"/>
+        <item name="x"              type="uint16"           comment="x坐标"/>
+        <item name="y"              type="uint16"           comment="y坐标"/>
+        <item name="dir"            type="uint8"            comment="方向"/>
+        <item name="attrs"          type="AttrData"         array="uint16"           comment="属性数据" />
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+        <item name="name"           type="string"           comment="玩家名字"/>
+    </data>
+    
+    <data type="protocol" name="ItemAppearNtf" comment="道具出现通知">
+        <item name="guid"           type="uint64"           comment="道具 guid"/>
+        <item name="template_id"    type="uint16"           comment="模板id"/>
+        <item name="x"              type="uint16"           comment="x坐标"/>
+        <item name="y"              type="uint16"           comment="y坐标"/>
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+        <item name="name"           type="string"           comment="道具名字"/>
+        <item name="dyn_attrs"      type="DynAttrData"      array="uint16" comment="动态属性数据" />
+    </data>
+    
+    <data type="protocol" name="ObjDisAppearNtf" comment="对象消失通知">
+        <item name="guid"           type="uint64"           comment="对象 guid"/>
+    </data>
+    
+    <data type="protocol" name="ObjMoveNtf" comment="对象移动通知">
+        <item name="guid"           type="uint64"           comment="对象 guid"/>
+        <item name="dst_x"          type="uint16"           comment="目标点x坐标"/>
+        <item name="dst_y"          type="uint16"           comment="目标点y坐标"/>
+        <item name="type"           type="uint8"            comment="移动方式 1=正常 2=跳跃" />
+    </data>
+    
+    <data type="protocol" name="EnterMapNtf" comment="角色进入地图通知">
+        <item name="template_id"    type="uint16"           comment="模板id"/>
+        <item name="dst_x"          type="uint16"           comment="目标点x坐标"/>
+        <item name="dst_y"          type="uint16"           comment="目标点y坐标"/>
+    </data>
+    
+    <data type="protocol" name="MoveReq"  comment="移动请求">
+        <item name="dst_x"          type="uint16"           comment="目标点x"/>
+        <item name="dst_y"          type="uint16"           comment="目标点y"/>
+        <item name="cur_x"          type="uint16"           comment="当前点x"/>
+        <item name="cur_y"          type="uint16"           comment="当前点y"/>
+        <item name="idx"            type="uint32"           comment="客户端序列号"/>
+        <item name="tick"           type="uint32"           comment="gate收到此包的tick"/>
+    </data>
+    
+    <data type="protocol" name="MoveAck" comment="移动回应">
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="dst_x"          type="uint16"           comment="当前的坐标点x"/>
+        <item name="dst_y"          type="uint16"           comment="当前的坐标点y"/>
+        <item name="idx"            type="uint32"           comment="客户端序列号"/>
+    </data>
+    
+    <data type="protocol" name="JumpMapReq" comment="地图跳转请求">
+        <item name="idx"            type="uint32"           comment="跳转区索引 静态跳转区idx 小于 65535 动态跳转区 idx 大于 65535 "/>
+    </data>
+    
+    <data type="protocol" name="JumpMapAck" comment="地图跳转应答">
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+    </data>
+    
+    <data type="protocol" name="AddJumpMapRegionNtf" comment="添加地图跳转区域通知">
+        <item name="idx"            type="uint32"           comment="跳转区索引 静态跳转区idx 小于 65535 动态跳转区 idx 大于 65535 "/>
+        <item name="jump_region"    type="MapRegion"        comment="起跳区域" />
+    </data>
+    
+    <data type="protocol" name="DelJumpMapRegionNtf" comment="删除地图跳转区域通知">
+        <item name="idx"            type="uint32"           comment="跳转区索引"/>
+    </data>
+
+    <data type="protocol" name="ItemAddNtf" comment="新增物品通知">
+        <item name="guid"           type="uint64"           comment="容器属于谁(玩家、宠物)"/>
+        <item name="container_type" type="uint16"           comment="item容器类型"/>
+        <item name="items"          type="ItemData"         array="uint16" comment="物品列表"/>
+    </data>
+
+    <data type="protocol" name="ItemUpdateNtf" comment="物品更新通知">
+        <item name="guid"           type="uint64"           comment="容器属于谁(玩家、宠物)"/>
+        <item name="container_type" type="uint16"           comment="item容器类型"/>
+        <item name="attrs"          type="ItemAttrValueList"     array="uint16" comment="变更属性列表"/>
+    </data>
+
+    <data type="protocol" name="ItemDestroyNtf" comment="物品销毁通知">
+        <item name="guid"           type="uint64"           comment="容器属于谁(玩家、宠物)"/>
+        <item name="container_type" type="uint16"           comment="item容器类型"/>
+        <item name="item_guids"     type="uint64"           array="uint16" comment="物品GUID列表"/>
+    </data>
+
+    <data type="protocol" name="TipsMsgNtf" comment="客户端左上角消息通知">
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="TopMsgNtf" comment="客户端顶部消息通知（全服公告）">
+        <item name="foreground"     type="uint8"        comment="消息前景颜色ID"/>
+        <item name="background"     type="uint8"        comment="消息背景颜色ID"/>
+        <item name="count"          type="uint8"        comment="消息滚动次数"/>
+        <item name="msg"            type="uint8"        array="uint16"   comment="消息内容"/>
+    </data>
+    <data type="protocol" name="SysMsgNtf" comment="客户端底部消息通知（普通聊天窗口）">
+        <item name="foreground"     type="uint8"        comment="消息前景颜色ID"/>
+        <item name="background"     type="uint8"        comment="消息背景颜色ID"/>
+        <item name="msg"            type="uint8"        array="uint16"   comment="消息内容"/>
+    </data>
+    <data type="protocol" name="PopupMsgNtf" comment="客户端弹框消息">
+        <item name="type"           type="uint8"        comment="消息类型 0:通用 1:任务"/>
+        <item name="msg"            type="uint8"        array="uint16"   comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="ItemContainerNtf" comment="上线物品容器通知">
+        <item name="guid"           type="uint64"           comment="容器属于谁(玩家、宠物)"/>
+        <item name="container_type" type="uint16"           comment="item容器类型"/>
+        <item name="capacity"       type="uint16"           comment="item容器容量"/>
+        <item name="items"          type="ItemData"         array="uint16" comment="物品列表"/>
+    </data>
+
+    <data type="protocol" name="ItemContainerUpdateNtf" comment="物品容器更新通知">
+        <item name="guid"           type="uint64"           comment="容器属于谁(玩家、宠物)"/>
+        <item name="container_type" type="uint16"           comment="item容器类型"/>
+        <item name="capacity"       type="uint16"           comment="item容器容量"/>
+    </data>
+
+    <data type="protocol" name="SubmitForm" comment="请求执行表单">
+        <item name="form"           type="string"           comment="表单table"/>
+        <item name="func"           type="string"           comment="表单函数"/>
+        <item name="args"           type="ParamData"        array="uint8" comment="脚本命令参数"/>
+    </data>
+
+    <data type="protocol" name="ShowFormNtf" comment="表单通知">
+        <item name="form"           type="string"           comment="表单名称"/>
+        <item name="compressed"     type="uint8"            comment="是否压缩：1-压缩，0-未压缩"/>
+        <item name="context"        type="uint8"            array="uint16" comment="表单内容"/>
+    </data>
+
+    <data type="protocol" name="ExecuteGMReq" comment="请求执行GM命令">
+        <item name="cmd"            type="string"           comment="GM命令"/>
+        <item name="arg"            type="string"           comment="GM命令参数"/>
+    </data>
+
+    <data type="protocol" name="FightBeginNtf"      comment="战斗开始通知">
+        <item name="groups"         type="FightGroupData"   array="uint8" comment="战斗组信息" />
+        <item name="self_group"     type="uint8"            comment="自己所属的组" />
+        <item name="is_pvp"         type="uint8"            comment="是否pvp战斗" />
+    </data>
+
+    <data type="protocol" name="TurnRoundNtf"       comment="新回合通知">
+        <item name="round"      type="uint16"               comment="回合数" />        
+    </data>
+
+    <data type="protocol" name="FightOperateListNtf"    comment="战斗指令通知">
+        <item name="player_operates"    type="uint8"        array="uint8" comment="玩家允许操作的指令列表" />
+        <item name="pet_operates"       type="uint8"        array="uint8" comment="宠物允许操作的指令列表" />
+        <item name="count_down"         type="uint16"       comment="倒计时 单位:毫秒" />
+    </data>
+    
+    <data type="protocol" name="FightOperateReq"    comment="战斗指令请求">
+        <item name="operate"            type="FightOperateData" comment="操作数据" />
+    </data>
+    
+    <data type="protocol" name="FightOperateAck"    comment="战斗指令返回结果">
+        <item name="errcode"    type="int32"                comment="错误码" />
+        <item name="errmsg"     type="string"               comment="错误描述" />
+    </data>
+
+    <data type="protocol" name="FightOperateNtf"    comment="战斗指令完成通知">
+        <item name="fighter_id"     type="uint16"           comment="战斗者id" />
+    </data>
+    
+    <data type="protocol" name="FightDisplayNtf"    comment="战斗显示用数据">
+        <item name="data"       type="uint8"                array="uint32" comment="显示数据" />
+        <item name="crypto"     type="uint8"                array="uint8"  comment="加密串,显示完成时原样返回" />
+    </data>
+    
+    <data type="protocol" name="FightDisplayCompleteNtf" comment="战斗显示完成知通">
+        <item name="crypto"     type="uint8"                array="uint8"  comment="加密串" />
+    </data>
+
+    <data type="protocol" name="FightAutoReq"       comment="自动战斗请求">
+        <item name="is_auto"        type="uint8"            comment="0:关闭 1:开启" />
+    </data>
+
+    <data type="protocol" name="FightAutoAck"       comment="自动战斗回应">
+        <item name="is_auto"    type="uint8"                comment="0:关闭 1:开启" />
+        <item name="errcode"    type="int32"                comment="错误码" />
+        <item name="errmsg"     type="string"               comment="错误描述" />
+    </data>
+
+    <data type="protocol" name="FightAutoNtf"       comment="自动战斗通知">
+        <item name="fighter_id" type="uint16"               comment="战斗者id" />
+        <item name="is_auto"    type="uint8"                comment="0:关闭 1:开启" />
+    </data>
+
+    <data type="protocol" name="FightAutoSkillReq"  comment="自动战斗技能请求">
+        <item name="actor"      type="uint64"               comment="发起者guid 玩家自己:填0 宠物:填宠物guid" />
+        <item name="skillid"    type="uint16"               comment="技能id" />
+    </data>
+
+    <data type="protocol" name="FightAutoSkillAck"  comment="自动战斗技能回应">
+        <item name="actor"      type="uint64"               comment="发起者guid 玩家自己:填0 宠物:填宠物guid" />
+        <item name="skillid"    type="uint16"               comment="技能id" />
+        <item name="errcode"    type="int32"                comment="错误码" />
+        <item name="errmsg"     type="string"               comment="错误描述" />
+    </data>
+    
+    <data type="protocol" name="FightEndNtf"        comment="战斗结束通知">
+        <item name="result"     type="uint8"                comment="战斗结果" />
+    </data>
+
+    <data type="protocol" name="AddFighterNtf"      comment="战斗中添加战斗者">
+        <item name="data"           type="FighterData"      comment="战斗者信息" />
+        <item name="group"          type="uint8"            comment="自己所属的组" />
+    </data>
+
+    <data type="protocol" name="DelFighterNtf"      comment="战斗中实时删除战斗者(退出观战时用)">
+        <item name="fighter_id"     type="uint16"           comment="战斗者id" />
+    </data>
+
+    <data type="protocol" name="AddFightPetData"    comment="添加战斗宠物数据" >
+        <item name="pet"            type="FightPetData"     comment="战斗宠物数据" />
+    </data>
+
+    <data type="protocol" name="UpdateFightPetData" comment="修改战斗宠物数据" >
+        <item name="pet"            type="FightPetData"     comment="战斗宠物数据" />
+    </data>
+
+        <data type="protocol"  name="PlayerKillReq" comment="攻击玩家请求">
+        <item name="target"          type="uint64"     comment="玩家guid" />
+    </data>
+
+    <data type="protocol"  name="PlayerKillAck" comment="攻击玩家回应">
+        <item name="target"          type="uint64"     comment="玩家guid" />
+        <item name="errcode"         type="int32"      comment="错误码" />
+        <item name="errmsg"          type="string"     comment="错误描述" />
+    </data>
+
+    <data type="protocol"  name="EnterFightViewReq" comment="进入观战请求">
+        <item name="target"          type="uint64"     comment="观战目标guid" />
+    </data>
+
+    <data type="protocol"  name="EnterFightViewAck" comment="进入观战回应">
+        <item name="target"          type="uint64"     comment="观战目标guid" />
+        <item name="errcode"         type="int32"      comment="错误码" />
+        <item name="errmsg"          type="string"     comment="错误描述" />
+    </data>
+
+    <data type="protocol"  name="LeaveFightViewReq" comment="退出观战请求">
+    </data>
+
+    <data type="protocol"  name="LeaveFightViewAck" comment="退出观战回应">
+        <item name="errcode"         type="int32"      comment="错误码" />
+        <item name="errmsg"          type="string"     comment="错误描述" />
+    </data>
+
+    <data type="protocol"  name="TeamLeaderOprReq" comment="队长操作请求">
+        <item name="opr"            type="uint8"        comment="队长操作" />
+    </data>
+
+    <data type="protocol" name="TeamNtf" comment="队伍通知">
+        <item name="team_guid"          type="uint64"       comment="队伍GUID"/>
+        <item name="target"             type="uint16"       comment="目标ID"/>
+        <item name="permission"         type="uint16"       comment="1=开启队友招人权限 0=关闭"/>
+        <item name="min_require_level"  type="uint16"        comment="最低要求等级"/>
+        <item name="max_require_level"  type="uint16"        comment="最高要求等级"/>
+        <item name="leader_guid"        type="uint64"       comment="队长GUID"/>
+        <item name="leader_guards"      type="uint64"       array="uint8" comment="队长侍从GUID列表"/>
+        <item name="members"            type="MemberData"   array="uint8" comment="队伍成员"/>
+        <item name="min_require_reinc"  type="uint16"        comment="最低要求转生次数"/>
+        <item name="max_require_reinc"  type="uint16"        comment="最高要求转生次数"/>
+        <item name="customs"            type="CustomData"   comment="自定义" />
+    </data>
+
+    <data type="protocol" name="TeamLeaderNtf" comment="队伍队长信息通知">
+        <item name="leader_guid"        type="uint64"       comment="队长GUID"/>
+        <item name="leader_guards"      type="uint64"       array="uint8" comment="队长侍从GUID列表"/>
+    </data>
+
+    <data type="protocol" name="TeamDestroyNtf" comment="队伍解散通知">
+        <item name="team_guid"          type="uint64"       comment="队伍GUID"/>
+    </data>
+
+    <data type="protocol" name="TeamMemberNtf" comment="成员信息刷新通知">
+        <item name="member"            type="MemberData"   comment="队伍成员信息"/>
+    </data>
+
+    <data type="protocol" name="TeamMemberLeaveNtf" comment="成员离开通知">
+        <item name="action"            type="uint8"        comment="1=被踢，2=主动退出, 3=暂离, 4=归队"/>
+        <item name="player_guid"       type="uint64"       comment="成员guid"/>
+    </data>
+    
+    <data type="protocol" name="NpcSelectReq" comment="NPC功能选择请求">
+        <item name="npc_guid"    type="uint64"       comment="NPC guid"/>
+        <item name="select_id"   type="uint16"       comment="选择项id 0表示获取初始选项"/>
+    </data>
+    
+    <data type="protocol" name="NpcSelectAck" comment="NPC功能选择应答">
+        <item name="npc_guid"       type="uint64"       comment="NPC guid"/>
+        <item name="options"        type="OptionData"   array="uint16"  comment="NPC选项"/>
+        <item name="msg"            type="string"       length = "4096" comment="回应消息,没有就从npc表中读取" />
+    </data>
+    
+    <data type="protocol" name="NpcTalkReq" comment="NPC对话请求">
+        <item name="npc_guid"       type="uint64"       comment="NPC guid"/>
+        <item name="compressed"     type="uint8"        comment="是否压缩：1-压缩，0-未压缩"/>
+        <item name="talk"           type="uint8"        array="uint16" comment="对话内容"/>
+    </data>
+    
+    <data type="protocol" name="NpcTalkAck" comment="NPC对话应答">
+        <item name="npc_guid"       type="uint64"       comment="NPC guid"/>
+        <item name="compressed"     type="uint8"        comment="是否压缩：1-压缩，0-未压缩"/>
+        <item name="talk"           type="uint8"        array="uint16" comment="对话内容"/>
+    </data>
+
+    <data type="protocol" name="InviteMsgNtf" comment="邀请消息">
+        <item name="inviter_guid"   type="uint64"       comment="邀请人guid"/>
+        <item name="type"           type="uint64"       comment="邀请类型"/>
+        <item name="msg"            type="uint8"        array="uint16"   comment="邀请内容"/>
+        <item name="interval"       type="uint32"       comment="邀请有效时长：秒"/>
+    </data>
+
+    <data type="protocol" name="ReplyInvite" comment="回复邀请">
+        <item name="inviter_guid"   type="uint64"       comment="邀请人guid"/>
+        <item name="type"           type="uint32"       comment="邀请类型"/>
+        <item name="agreed"         type="uint8"        comment="1:表示同意邀请 0:表示不同意"/>
+    </data>
+
+    <data type="protocol" name="MoveItem" comment="移动物品">
+        <item name="item_guid"      type="uint64"       comment="物品guid"/>
+        <item name="container_type" type="uint16"       comment="item容器类型"/>
+    </data>
+
+    <data type="protocol" name="UseItem" comment="回复邀请">
+        <item name="item_guid"      type="uint64"       comment="物品guid"/>
+    </data>
+
+    <data type="protocol" name="RearrangeItem" comment="回复邀请">
+        <item name="container_type" type="uint16"       comment="item容器类型"/>
+    </data>
+
+    <data type="protocol" name="SkillContainerNtf" comment="上线技能容器通知">
+        <item name="guid"           type="uint64"           comment="技能容器属于谁(玩家、宠物)"/>
+        <item name="skills"         type="SkillData"        array="uint16" comment="技能列表"/>
+    </data>
+
+    <data type="protocol" name="AddSkillNtf" comment="添加技能通知">
+        <item name="guid"           type="uint64"           comment="技能属于谁(玩家、宠物)"/>
+        <item name="skill"          type="SkillData"        comment="技能数据"/>
+    </data>
+
+    <data type="protocol" name="UpdateSkillNtf" comment="添加技能通知">
+        <item name="guid"           type="uint64"           comment="技能属于谁(玩家、宠物)"/>
+        <item name="id"             type="uint16"           comment="技能id"/>
+        <item name="attr"           type="uint16"           comment="技能属性名 1:当前熟练度 2:最大熟练度 3:是否激活"/>
+        <item name="value"          type="uint32"           comment="技能属性值" />
+    </data>
+
+    <data type="protocol" name="DelSkillNtf" comment="删除技能通知">
+        <item name="guid"           type="uint64"           comment="技能属于谁(玩家、宠物)"/>
+        <item name="id"             type="uint16"           comment="技能id"/>
+    </data>
+
+    <data type="protocol" name="PetAppearNtf" comment="宠物出现通知">
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+        <item name="name"           type="string"           comment="宠物名字"/>
+        <item name="x"              type="uint16"           comment="x坐标"/>
+        <item name="y"              type="uint16"           comment="y坐标"/>
+        <item name="attrs"          type="AttrData"         array="uint16"           comment="属性数据" />
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+    </data>
+
+    <data type="protocol" name="PetContainerNtf" comment="上线宠物容器通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="capacity"       type="uint16"           comment="pet容器容量"/>
+        <item name="pets"           type="PetData"          array="uint16" comment="宠物列表"/>
+    </data>
+
+    <data type="protocol" name="PetContainerUpdateNtf" comment="宠物容器更新通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="capacity"       type="uint16"           comment="pet容器容量"/>
+    </data>
+
+    <data type="protocol" name="PetAddNtf" comment="新增宠物通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="pet"            type="PetData"          comment="物品列表"/>
+    </data>
+
+    <data type="protocol" name="PetDestroyNtf" comment="宠物销毁通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+    </data>
+
+    <data type="protocol" name="SetPetLineup" comment="设置宠物上阵请求">
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+        <item name="lineup"         type="uint8"            comment="上阵：0 下阵，1 上阵"/>
+    </data>
+
+    <data type="protocol" name="ShowPet" comment="设置宠物显示请求">
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+        <item name="show"           type="uint8"            comment="显示：0 隐藏，1 显示"/>
+    </data>
+
+    <data type="protocol" name="ReleasePet" comment="放生宠物请求">
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+    </data>
+
+    <data type="protocol" name="MovePet" comment="移动宠物">
+        <item name="guid"           type="uint64"           comment="宠物guid"/>
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+    </data>
+    
+    <data type="protocol" name="ShopOpenNtf" comment="商店打开通知">
+        <item name="shop_id"        type="uint16"           comment="商店id"/>
+        <item name="def_item_id"    type="uint16"           comment="默认选中商品id"/>
+        <item name="type"           type="uint8"            comment="商店类型0=宠物商店 1=道具商店 2=随身商店"/>
+        <item name="shop_item_list" type="ShopItemData"     array="uint16"  comment="商品列表"/>
+        <item name="buy_back_list"  type="ItemData"         array="uint16"  comment="回购列表" />
+    </data>
+    
+    <data type="protocol" name="ShopBuyNtf" comment="商店购买通知">
+        <item name="shop_id"        type="uint16"           comment="商店id"/>
+        <item name="shop_item_id"   type="uint16"           comment="商品id"/>
+        <item name="shop_item_num"  type="uint16"           comment="商品数量"/>
+    </data>
+    
+    <data type="protocol" name="SellNtf" comment="商店出售通知">
+        <item name="sell_items"      type="SellItemData"    array="uint16"  comment="出售物品列表"/>
+    </data>
+    
+    <data type="protocol" name="BuyBackNtf" comment="商店回购通知">
+        <item name="buy_guid"       type="uint64"           comment="出售物品guid"/>
+    </data>
+    
+    <data type="protocol" name="BuyBackListNtf" comment="商店回购通知">
+        <item name="buy_back_list"  type="ItemData"         array="uint16"  comment="回购列表" />
+    </data>
+
+    <data type="protocol" name="TeamAttrNtf"    comment="队伍成员属性通知">
+        <item name="guid"         type="uint64"            comment="角色guid" />
+        <item name="attrs"        type="AttrData"          array="uint16"       comment="属性数据" />
+    </data>
+
+    <data type="protocol" name="TipsMsgExNtf" comment="客户端飘字提示+左下角通知">
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="ItemNewAddNtf" comment="物品新增通知">
+        <item name="item_guid"      type="uint64"      comment="物品GUID"/>
+    </data>
+
+    <data type="protocol" name="QuestContainerNtf" comment="任务容器通知">
+        <item name="buffer"         type="uint8"        array="uint16"   comment="任务列表: QuestClientData[]"/>
+    </data>
+
+    <data type="protocol" name="QuestAddNtf" comment="新增任务通知">
+        <item name="buffer"           type="uint8"      array="uint16"   comment="任务列表: QuestClientData"/>
+    </data>
+
+    <data type="protocol" name="QuestStateNtf" comment="任务状态变更通知">
+        <item name="quest_id"        type="uint32"       comment="任务ID"/>
+        <item name="quest_state"     type="uint8"        comment="任务状态"/>
+        <item name="changed_time"    type="uint32"       comment="状态改变时间"/>
+    </data>
+
+    <data type="protocol" name="QuestNpcStateNtf"  comment="任务Npc状态通知">
+        <item name="npc_id"         type="uint32"        comment="npc id"/>
+        <item name="state"          type="uint8"         comment="任务状态"/>
+        <item name="logo"           type="uint64"        comment="任务logo"/>
+    </data>
+
+    <data type="protocol" name="QuestTrackCountNtf" comment="任务追踪目标数量通知">
+        <item name="quest_id"        type="uint32"        comment="任务ID"/>
+        <item name="track_id"        type="uint32"        comment="追踪目标ID"/>
+        <item name="track_count"     type="uint32"        comment="追踪数量"/>
+    </data>
+
+    <data type="protocol" name="QuestTalkSelectReq" comment="NPC功能选择应答">
+        <item name="npc_guid"       type="uint64"       comment="NPC guid"/>
+        <item name="quest_id"       type="uint32"       comment="任务ID"/>
+        <item name="option_id"      type="uint32"       comment="对话选项ID" />
+    </data>
+
+    <data type="protocol" name="QuestTalkSelectAck" comment="NPC功能选择应答">
+        <item name="npc_guid"       type="uint64"           comment="NPC guid"/>
+        <item name="quest_id"       type="uint32"           comment="任务ID"/>
+        <item name="talk"           type="uint8"            array="uint16"   comment="npc对话压缩: QuestTalkData[]"/>
+    </data>
+
+    <data type="protocol" name="ObjStrCustomNtf" comment="字符串自定义变量通知">
+        <item name="guid"         type="uint64"            comment="角色guid" />
+        <item name="custom"       type="CustomStrData"     comment="自定义变量" />
+    </data>
+
+    <data type="protocol" name="ObjIntCustomNtf" comment="整形自定义变量通知">
+        <item name="guid"         type="uint64"            comment="角色guid" />
+        <item name="custom"       type="CustomIntData"     comment="自定义变量" />
+    </data>
+
+    <data type="protocol" name="ObjDynAttrNtf" comment="动态属性通知">
+        <item name="guid"         type="uint64"            comment="角色guid" />
+        <item name="dyn_attr"     type="DynAttrData"       comment="动态属性" />
+    </data>
+
+    <data type="protocol" name="CommitQuestItemRsp"    comment="上交任务物品应答">
+        <item name="quest_id"        type="uint32"     comment="任务ID"/>
+        <item name="items"           type="GUIDCountData"   array="uint8"   comment="上交物品"/>
+    </data>
+
+    <data type="protocol"  name="CommitQuestItemNtf" comment="通知上交任务物品">
+        <item name="quest_id"        type="uint32"     comment="任务ID"/>
+        <item name="items"           type="IDCountData"     array="uint8"   comment="上交物品"/>
+    </data>
+
+    <data type="protocol" name="CommitQuestPetRsp"    comment="上交任务宠物应答">
+        <item name="quest_id"        type="uint32"     comment="任务ID"/>
+        <item name="pets"           type="GUIDCountData"   array="uint8"   comment="上交宠物"/>
+    </data>
+
+    <data type="protocol"  name="CommitQuestPetNtf" comment="通知上交任务宠物">
+        <item name="quest_id"        type="uint32"     comment="任务ID"/>
+        <item name="pets"           type="IDCountData"     array="uint8"   comment="上交宠物"/>
+    </data>
+
+    <data type="protocol"  name="AbandonQuest" comment="放弃任务">
+        <item name="quest_id"        type="uint32"     comment="任务ID"/>
+    </data>
+
+    <data type="protocol"  name="SkillTipsReq" comment="技能tips请求">
+        <item name="actor"           type="uint64"     comment="宠物guid,自己填0" />
+        <item name="skill_id"        type="uint16"     comment="技能ID"/>   
+    </data>
+
+    <data type="protocol"  name="SkillTipsAck" comment="技能tips回应">
+        <item name="skill_id"        type="uint16"     comment="技能ID"/>
+        <item name="tips"            type="SkillTipsData" array="uint8"    comment="tip属性"/>
+        <item name="errcode"         type="int32"       comment="错误码" />
+        <item name="errmsg"          type="string"      comment="错误描述" />
+    </data>
+
+    <data type="protocol"  name="TeamLeaderOprNtf" comment="队长操作通知">
+        <item name="opr"            type="uint8"        comment="队长操作" />
+    </data>
+    
+    <data type="protocol"  name="KeepAliveCtrlNtf" comment="心跳控制通知">
+        <item name="opt"            type="uint8"        comment="0=关闭心跳 1=开启心跳" />
+    </data>
+    
+    <data type="protocol" name="NetDelayReq" comment="网络延时探测请求">
+        <item name="gs_tick"    type="uint32"    comment="GS发送此请求tick"/>
+        <item name="gt_tick"    type="uint32"    comment="GT发送此请求tick"/>
+        <item name="sg_tick"    type="uint32"    comment="SG发送此请求tick"/>
+        <item name="ping"       type="uint8"     comment="是否ping 1=开始 0=结束"/>
+    </data>
+    
+    <data type="protocol" name="NetDelayAck" comment="网络延时探测请求">
+        <item name="gs_elpase"    type="int32"    comment="GS从发出NetDelayReq到收到NetDelayAck的耗时"/>
+        <item name="gt_elpase"    type="int32"    comment="GT从发出NetDelayReq到收到NetDelayAck的耗时"/>
+        <item name="sg_elpase"    type="int32"    comment="SG从发出NetDelayReq到收到NetDelayAck的耗时"/>
+        <item name="gt_cpu"       type="int32"    comment="GT收到NetDelayAck时的cpu利用率"/>
+        <item name="baidu_delay"  type="int32"    comment="百度的延时"/>
+        <item name="taobao_delay" type="int32"    comment="淘宝的延时"/>
+        <item name="sg_id"        type="string"   comment="云网关id"/>
+    </data>
+
+    <data type="protocol"  name="SystemSetupNtf" comment="系统设置通知">
+        <item name="attrs"        type="AttrData"          array="uint16"    comment="属性数据" />
+    </data>
+
+    <data type="protocol" name="BuffListNtf"      comment="buff列表通知">
+        <item name="guid"           type="uint64"           comment="玩家或宠物guid" />
+        <item name="buffs"          type="BuffData"         array="uint16"  comment="BUFF列表"/>
+    </data>
+
+    <data type="protocol" name="BuffAddNtf"      comment="新增buff通知">
+        <item name="guid"          type="uint64"            comment="玩家或宠物guid" />
+        <item name="buff"          type="BuffData"          comment="BUFF列表"/>
+    </data>
+
+    <data type="protocol" name="BuffDurationNtf" comment="Buff持续数值改变通知">
+        <item name="guid"           type="uint64"           comment="玩家或宠物guid" />
+        <item name="id"             type="uint16"           comment="buff的id"/>
+        <item name="duration"       type="uint32"           comment="持续数值"/>
+    </data>
+
+    <data type="protocol" name="BuffDynAttrNtf" comment="Buff动态属性改变通知">
+        <item name="guid"           type="uint64"           comment="玩家或宠物guid" />
+        <item name="id"             type="uint16"           comment="buff的id"/>    
+        <item type="DynAttrData"    name="dyn_attrs"        array="uint16"   comment="动态属性数据" />
+    </data>
+
+    <data type="protocol" name="StopBuff"    comment="客户通知服务器停用buff">
+        <item name="guid"           type="uint64"           comment="玩家或宠物guid,玩家的填0" />
+        <item name="id"             type="uint16"           comment="buff的id"/>
+    </data>
+
+    <data type="protocol" name="BuffDelNtf"    comment="删除buff通知">
+        <item name="guid"           type="uint64"           comment="玩家或宠物guid" />
+        <item name="id"             type="uint16"           comment="buff的id"/>
+    </data>
+
+    <data type="protocol" name="ActivityListReq"    comment="活动列表请求">
+    </data>
+
+    <data type="protocol" name="ActivityListAck"    comment="活动列表回应">
+        <item name="datas"           type="ActivityData"     array="uint16"  comment="活动数据" />
+        <item name="errcode"         type="int32"            comment="错误码" />
+        <item name="errmsg"          type="string"           comment="错误描述" />
+    </data>
+
+    <data type="protocol" name="ActivityJoinNtf"    comment="加入活动通知">
+        <item name="id"              type="uint16"           comment="活动的id"/>
+    </data>
+
+    <data type="protocol" name="GuildListNtf"    comment="帮派列表通知">
+        <item name="pos"             type="int32"           comment="帮派索引"/>
+        <item name="count"           type="uint16"          comment="帮派总数"/>
+        <item name="guilds"          type="GuildBriefData"   array="uint16" comment="帮派简略信息"/>
+    </data>
+
+    <data type="protocol" name="GuildNtf"    comment="帮派信息通知">
+        <item name="guild"           type="GuildData"        comment="帮派数据"/>
+        <item name="self"            type="GuildMemberData"  comment="帮派成员信息"/>
+    </data>
+
+    <data type="protocol" name="GuildBaseNtf"    comment="帮派基本信息，上线通知">
+        <item type="uint64"            name="guid"                  comment="帮派guid" />
+        <item type="string"            name="name"                  length="32"         comment="帮派名称" />
+    </data>
+
+    <data type="protocol" name="GuildNoticeNtf"    comment="帮派通知">
+        <item type="uint64"            name="guid"                  comment="帮派guid" />
+        <item type="string"            name="notice"                  length="1024"         comment="通知内容" />
+    </data>
+
+    <data type="protocol" name="GuildBriefNtf"    comment="帮派成员信息">
+        <item name="guild"           type="GuildBriefData"   comment="帮派简略信息"/>
+    </data>
+
+    <data type="protocol" name="GuildMemberListNtf"    comment="帮派列表通知">
+        <item name="guid"            type="uint64"          comment="帮派GUID"/>
+        <item name="pos"             type="int32"           comment="成员索引"/>
+        <item name="count"           type="uint16"          comment="帮派成员总数"/>
+        <item name="members"         type="GuildMemberBriefData"   array="uint16" comment="帮派成员数据"/>
+    </data>
+
+    <data type="protocol" name="GuildMemberNtf"    comment="帮派成员信息">
+        <item name="guid"            type="uint64"          comment="帮派GUID"/>
+        <item name="members"         type="GuildMemberData"     array="uint16" comment="帮派成员数据"/>
+    </data>
+
+    <data type="protocol" name="GuildApplicantListNtf"    comment="帮派列表通知">
+        <item name="guid"            type="uint64"               comment="帮派GUID"/>
+        <item name="applicants"      type="GuildApplicantData"   array="uint16" comment="帮派申请列表"/>
+    </data>
+
+    <data type="protocol" name="GuildOperationNtf"    comment="帮派操作通知">
+        <item name="type"            type="uint16"           comment="操作通知"/>
+        <item name="param1"          type="string"           comment="参数1"/>
+        <item name="param2"          type="string"           comment="参数2"/>
+        <item name="errcode"         type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"          type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="GetTimestampReq"    comment="服务器时间戳请求">
+    </data>
+
+    <data type="protocol" name="GetTimestampAck"    comment="服务器时间戳应答">
+        <item name="now"            type="uint32"            comment="当前时间"/>
+    </data>
+
+    <data type="protocol" name="ContactListNtf"    comment="联系人列表">
+        <item name="contact_type"   type="uint8"             comment="联系人类型：对应枚举contact_type的陌生人、好友、申请者" />
+        <item name="contacts"       type="ContactData"       array="uint16" comment="联系人列表"/>
+    </data>
+
+    <data type="protocol" name="AddContactNtf"    comment="新增联系人通知">
+        <item name="contact"       type="ContactData"       comment="联系人"/>
+    </data>
+
+    <data type="protocol" name="UpdateContactNtf"    comment="联系人刷新通知">
+        <item name="contact"       type="ContactData"       comment="联系人"/>
+    </data>  
+
+    <data type="protocol" name="DelContactNtf"    comment="删除联系人通知">
+        <item name="target_guid"    type="uint64"            comment="玩家GUID" />
+    </data>     
+    
+    <data type="protocol" name="AddContactMessageNtf"    comment="联系人消息通知">
+        <item name="messages"       type="MessageData"       comment="消息内容"/>
+    </data>
+
+    <data type="protocol" name="ItemQueryNtf"    comment="物品查询通知">
+        <item name="item"           type="ItemData"         comment="物品数据"/>
+    </data>
+
+    <data type="protocol" name="PetQueryNtf"    comment="宠物查询通知">
+        <item name="pet"            type="PetData"          comment="宠物数据"/>
+    </data>
+
+    <data type="protocol" name="ContactInfoNtf"    comment="联系人信息通知">
+        <item name="data"           type="ContactInfoData"  comment="联系人信息"/>
+    </data>
+
+    <data type="protocol" name="MailListNtf"    comment="邮件列表通知">
+        <item name="mails"          type="MailHeadData"     array="uint8"  comment="邮件标题列表"/>
+    </data>
+
+    <data type="protocol" name="AddMailNtf"    comment="邮件通知">
+        <item name="mail"           type="MailHeadData"     comment="邮件标题"/>
+    </data>
+
+    <data type="protocol" name="DelMailNtf"    comment="邮件通知">
+        <item name="mail_guid"      type="uint64"           comment="邮件GUID"/>
+    </data>
+
+    <data type="protocol" name="MailBodyNtf"    comment="邮件内容通知">
+        <item name="mail_guid"      type="uint64"           comment="邮件GUID"/>
+        <item name="mail"           type="MailBodyData"     comment="邮件内容"/>
+    </data>
+
+    <data type="protocol" name="UpdateMailBodyNtf"    comment="邮件内容变更通知">
+        <item name="mail_guid"      type="uint64"           comment="邮件GUID"/>
+        <item name="mail"           type="MailBodyData"     comment="邮件内容"/>
+    </data>
+
+    <data type="protocol" name="UpdateMailHeadNtf"   comment="邮件标题变更通知">
+        <item name="mail_guid"      type="uint64"           comment="邮件GUID"/>
+        <item name="mail"           type="MailHeadData"     comment="邮件标题"/>
+    </data>
+    
+    <data type="protocol" name="RanklistReq"   comment="获取排行榜请求">
+        <item name="type"           type="int32"       	comment="榜单类型 "/>
+        <item name="begin"          type="uint16"       comment="获取排行开始"/>
+        <item name="end"            type="uint16"       comment="获取排行结束"/>
+    </data>
+    
+    <data type="protocol" name="RanklistAck"   comment="获取排行榜应答">
+        <item name="type"           type="int32"        comment="榜单类型 1=等级总榜 2=等级人榜 3=等级魔榜 4=等级仙榜 5=等级鬼榜 6=等级龙榜 7=装备总榜 8=装备人榜 9=装备魔榜 10=装备仙榜 11=装备鬼榜 12=装备龙榜 13=帮派榜 14=宠物榜 15=水陆大会榜 16=竞技场榜 16以后是其他自定义榜"/>
+        <item name="total"          type="uint16"       comment="排行榜总数"/>
+        <item name="begin"          type="uint16"       comment="获取排行开始"/>
+        <item name="end"            type="uint16"       comment="获取排行结束"/>
+        <item name="data"           type="RanklistData"     array="uint16"       comment="排行榜内容"/>
+    </data>
+    
+    <data type="protocol" name="GetRankReq"   comment="获取排行排位">
+        <item name="type"           type="int32"       comment="榜单类型 "/>
+        <item name="guid"           type="uint64"       comment="玩家宠物或者其他榜单上对象的GUID"/>
+    </data>
+    
+    <data type="protocol" name="GetRankAck"   comment="获取排行排位">
+        <item name="type"           type="int32"           	comment="榜单类型 "/>
+        <item name="rank"           type="uint16"           comment="玩家宠物或者其他榜单上排名数, 0=未上榜"/>
+        <item name="data"           type="RanklistData"     comment="榜单数据"/>
+    </data>
+
+    <data type="protocol" name="TitleContainerNtf" comment="称号容器通知">
+        <item name="titles"         type="TitleData"        array="uint16" comment="称号列表"/>
+    </data>
+
+    <data type="protocol" name="TitleAddNtf" comment="新增称号通知">
+        <item name="title"          type="TitleData"       comment="称号数据"/>
+    </data>
+
+    <data type="protocol" name="TitleDelNtf" comment="宠物销毁通知">
+        <item name="title_id"       type="uint16"           comment="称号ID"/>
+    </data>
+
+    <!--代理充值-->
+    <data type="protocol" name="AgentKeyReq" comment="代理Key值请求">
+    </data>
+
+    <data type="protocol" name="AgentKeyAck" comment="代理Key值返回">
+        <item name="key"            type="uint8"           array="uint8" comment="代理Key值"/>
+    </data>
+
+    <data type="protocol" name="HeadMsgNtf" comment="头顶消息">
+        <item name="guid"           type="uint64"      comment="对象GUID"/>
+        <item name="msg"            type="uint8"       array="uint16"   comment="消息内容"/>
+    </data>
+    
+    <data type="protocol" name="AutoContainerNtf" comment="自动战斗信息通知" >
+        <item name="guid"           type="uint64"       comment="自己或自己的宠物" />
+        <item name="is_auto"        type="uint8"        comment="是否开启了自动(宠物跟随主人自动)" />
+        <item name="auto_skill"     type="uint16"       comment="自动战斗技能" />
+    </data>
+
+    <data type="protocol" name="PlayerQueryNtf"    comment="玩家查询通知">
+        <item name="brief"         type="PlayerBrief"  comment="玩家简略数据"/>
+    </data>
+
+    <data type="protocol" name="UseAllItem" comment="使用全部物品">
+        <item name="item_guid"      type="uint64"       comment="物品guid"/>
+        <item name="item_amount"    type="uint16"       comment="物品数量"/>
+    </data>
+
+    <!--侍从系统-->
+    <data type="protocol" name="GuardContainerNtf" comment="上线侍从容器通知">
+        <item name="guards"         type="GuardData"    array="uint16"  comment="侍从" />
+    </data>
+
+    <data type="protocol" name="GuardAddNtf" comment="新增侍从通知">
+        <item name="guard"          type="GuardData"        comment="侍从列表"/>
+    </data>
+
+    <data type="protocol" name="SetGuardLineup" comment="设置侍从上阵请求">
+        <item name="guid"           type="uint64"           comment="侍从guid"/>
+        <item name="lineup"         type="uint8"            comment="上阵：0 下阵，1 上阵"/>
+    </data>    
+
+    <data type="protocol" name="PetNewAddNtf" comment="宠物新增通知">
+        <item name="pet_guid"      type="uint64"            comment="宠物GUID"/>
+    </data>
+
+    <data type="protocol" name="TeamPlatformNtf" comment="组队平台通知">
+        <item name="teams"         type="TeamBriefData"     array="uint16"  comment="队伍列表"/>
+    </data>
+
+    <data type="protocol" name="TeamApplicantsNtf" comment="队伍申请列表">
+        <item name="team_guid"     type="uint64"            comment="队伍GUID"/>
+        <item name="applicants"    type="TeamApplicantData" array="uint16"  comment="申请人列表"/>
+    </data>
+
+    <data type="protocol" name="TeamOperationNtf"    comment="队伍操作通知">
+        <item name="type"            type="uint16"           comment="操作通知"/>
+        <item name="errcode"         type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"          type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+    
+    <data type="protocol" name="TeamTargetNtf" comment="队伍目标信息变更通知">
+        <item name="team_guid"          type="uint64"       comment="队伍GUID"/>
+        <item name="target"             type="uint16"       comment="目标ID"/>
+        <item name="permission"         type="uint16"       comment="1=开启队友招人权限 0=关闭"/>
+        <item name="min_require_level"  type="uint16"        comment="最低要求等级"/>
+        <item name="max_require_level"  type="uint16"        comment="最高要求等级"/>
+        <item name="leader_guid"        type="uint64"       comment="队长GUID"/>
+        <item name="min_require_reinc"  type="uint16"        comment="最低要求转生次数"/>
+        <item name="max_require_reinc"  type="uint16"        comment="最高要求转生次数"/>
+    </data>
+
+    <data type="protocol" name="ChangedNameNtf" comment="改名通知">
+        <item name="guid"           type="uint64"           comment="对象 guid"/>
+        <item name="name"           type="string"           comment="玩家名字"/>
+    </data>
+
+    <data type="protocol" name="CustomDataNtf" comment="自定义变量通知">
+        <item name="guid"           type="uint64"           comment="玩家guid"/>
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+    </data>
+    
+    <data type="protocol" name="SpeedCheckNtf" comment="游戏速度检查通知">
+        <item name="type"           type="uint8"            comment="1=加速 2=超时 3=异常"/>
+        <item name="pct"            type="uint8"            comment="加速百分比" />
+    </data>
+    
+    <data type="protocol" name="ConsoleMsgNtf" comment="控制台消息通知">
+        <item name="msg"            type="uint8"            array="uint16"           comment="控制台消息" />
+    </data>
+
+    <data type="protocol" name="PetSwapNtf" comment="宠物交换位置通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="pet_guid1"      type="uint64"           comment="宠物1guid"/>
+        <item name="pet_guid2"      type="uint64"           comment="宠物2guid"/>
+    </data>
+
+    <data type="protocol" name="GuardDestroyNtf" comment="侍从遣散通知">
+        <item name="guid"          type="uint64"        comment="侍从GUID"/>
+    </data>
+
+    <data type="protocol" name="ActivateGuard" comment="激活侍从">
+        <item name="guard_id"       type="uint32"        comment="侍从ID"/>
+    </data>
+
+    <data type="protocol" name="ReleaseGuard" comment="遣散侍从">
+        <item name="guard_guid"     type="uint64"        comment="侍从GUID"/>
+    </data>
+
+    <data type="protocol" name="TeamMemberSwapNtf" comment="队伍成员交换位置通知">
+        <item name="member_guid1"   type="uint64"   comment="队伍成员GUID1"/>
+        <item name="member_guid2"   type="uint64"   comment="队伍成员GUID2"/>
+    </data>
+
+    <data type="protocol" name="GuardSwapNtf" comment="侍从交换位置通知">
+        <item name="guard_guid1"      type="uint64"           comment="侍从1guid"/>
+        <item name="guard_guid2"      type="uint64"           comment="侍从2guid"/>
+    </data>
+
+    <data type="protocol" name="PetReplaceNtf" comment="宠物替换通知">
+        <item name="container_type" type="uint16"           comment="pet容器类型"/>
+        <item name="dst_pet_guid"   type="uint64"           comment="目标宠物GUID"/>
+        <item name="src_pet"        type="PetData"          comment="替换宠物"/>
+    </data>
+
+    <data type="protocol" name="GuardAppearNtf" comment="侍从出现通知">
+        <item name="guid"           type="uint64"           comment="侍从guid"/>
+        <item name="name"           type="string"           comment="侍从名字"/>
+        <item name="x"              type="uint16"           comment="x坐标"/>
+        <item name="y"              type="uint16"           comment="y坐标"/>
+        <item name="attrs"          type="AttrData"         array="uint16"           comment="属性数据" />
+        <item name="buffs"          type="BuffData"         array="uint8"            comment="buff数据"/>
+        <item name="custom"         type="CustomData"       comment="自定义数据" />
+    </data>
+
+    <data type="protocol" name="InstructionContainerNtf"    comment="指令容器通知">
+        <item name="datas"          type="InstructionData"  comment="指令数据"/>
+    </data>
+
+    <data type="protocol" name="InstructionAddReq"          comment="指令添加请求">
+        <item name="type"              type="uint8"         comment="指令类型" />
+        <item name="content"           type="string"        length="32"   comment="指令内容" />
+    </data>
+
+    <data type="protocol" name="InstructionAddAck"          comment="指令添加回应">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="content"        type="string"           length="32"   comment="指令内容" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionDeleteReq"       comment="指令删除请求">
+        <item name="type"              type="uint8"         comment="指令类型" />
+        <item name="index"             type="uint8"         comment="指令索引" />
+    </data>
+
+    <data type="protocol" name="InstructionDeleteAck"       comment="指令删除回应">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="index"          type="uint8"            comment="指令索引" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionModfityReq"      comment="指令修改请求">
+        <item name="type"              type="uint8"         comment="指令类型" />
+        <item name="index"             type="uint8"         comment="指令索引" />
+        <item name="content"           type="string"        length="32"   comment="指令内容" />
+    </data>
+
+    <data type="protocol" name="InstructionModifyAck"       comment="指令修改回应">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="index"          type="uint8"            comment="指令索引" />
+        <item name="content"        type="string"           length="32"   comment="指令内容" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionDefaultReq"      comment="指令恢复默认请求">
+        <item name="type"              type="uint8"         comment="指令类型" />
+    </data>
+
+    <data type="protocol" name="InstructionDefaultAck"      comment="指令恢复默认回应">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="datas"          type="InstructionBasic" array="uint8" comment="恢复后的指令" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionAttachReq"       comment="指令设置请求">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="index"          type="uint8"            comment="指令索引" />
+        <item name="target"         type="uint64"           comment="目标GUID" />
+    </data>
+
+    <data type="protocol" name="InstructionAttachAck"       comment="指令设置回应">
+        <item name="type"           type="uint8"            comment="指令类型" />
+        <item name="index"          type="uint8"            comment="指令索引" />
+        <item name="target"         type="uint64"           comment="目标GUID" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionAttachNtf"       comment="指令设置通知">
+        <item name="fighter_id"     type="uint32"           comment="战斗者id" />
+        <item name="content"        type="string"           comment="指令内容"   length="32" />
+    </data>
+
+    <data type="protocol" name="InstructionDetachReq"       comment="指令重置请求">
+        <item name="target"         type="uint64"           comment="目标GUID" />
+    </data>
+
+    <data type="protocol" name="InstructionDetachAck"       comment="指令重置回应">
+        <item name="target"         type="uint64"           comment="目标GUID" />
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="InstructionDetachNtf"       comment="指令重置通知">
+        <item name="fighter_id"     type="uint32"           comment="战斗者id" />
+    </data>
+
+    <data type="protocol" name="PlayerDetailNtf"            comment="玩家信息通知">
+        <item name="data"           type="PlayerDetail"     comment="玩家详细信息"/>
+    </data>
+    
+    <data type="protocol" name="MapDynBlockPtNtf"           comment="地图动态阻挡点通知">
+        <item name="map_id"         type="uint16"           comment="地图id"/>
+        <item name="block_pt_list"  type="Pt"               array="uint16"  comment="玩家详细信息"/>
+    </data>
+
+    <data type="protocol" name="GuardQueryNtf"    comment="侍从查询通知">
+        <item name="guard"            type="GuardData"          comment="侍从数据"/>
+    </data>
+    
+    <data type="protocol" name="BuyBackNtfEx" comment="商店回购通知">
+        <item name="buy_guid"       type="uint64"           comment="出售物品guid"/>
+        <item name="buy_amount"     type="uint16"           comment="出售物品数量"/>
+    </data>
+    
+    <data type="protocol" name="GuildCustomNtf" comment="帮派自定义信息通知">
+        <item name="player_guid"         type="uint64"            comment="角色guid" />
+        <item name="is_guild"            type="uint8"             comment="是否是帮派：0-帮派成员，1-帮派" />
+        <item name="customs"             type="CustomData"        comment="自定义变量" />
+    </data>
+
+    <data type="protocol" name="PreTurnRoundNtf"       comment="新回合前通知">
+        <item name="round"      type="uint16"               comment="回合数" />        
+    </data>
+
+    <data type="protocol" name="FighterSpecialPetNtf" comment="战斗主宠通知" >
+        <item name="special_pet"        type="uint64"           comment="指定主宠" />
+    </data>
+</protocol_define>

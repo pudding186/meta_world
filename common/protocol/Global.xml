@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="Global" moudleid="105" version="1" comment="所有服务器之间共通的相关协议" >
+    <package name="StructDef" />
+    <data type="protocol" name="NewGSNtf" comment="通知各服务器动态添加新GS" >
+        <item name="index"          type="uint32"           comment="新GS的索引id" />
+    </data>
+    <data type="protocol" name="TerminateNtf" comment="网络断开通知" >
+        <item name="session"        type="uint64"           comment="会话ID(由网关填写,用于多网关账号互顶区分)" />
+    </data>
+    <data type="protocol" name="ErrorNtf" comment="错误通知" >
+        <item name="errcode"        type="int32"            comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"         type="string"           comment="错误码不为0时表示 错误消息"/>
+    </data>
+    <data type="protocol" name="ServerStopNtf" comment="服务器停止通知" >
+    </data>
+    <data type="protocol" name="ServerConfigNtf" comment="服务器配置通知" >
+        <item name="svr_id"         type="uint64"           comment="服务器id"/>
+        <item name="limit"          type="uint32"           comment="服务器人数限制"/>
+        <item name="listen"         type="IPConfig"         array="uint8" comment="监听列表"/>
+        <item name="connect"        type="IPConfig"         array="uint8" comment="链接链表"/>
+    </data>
+    <data type="protocol" name="DBWrapperPkg" comment="GS通过WS转发给DB的包装协议" >
+        <item name="wrapper"                type="uint8"                comment="包装数据"      array="uint32" /> 
+    </data>
+    <data type="protocol" name="GSWrapperPkg" comment="DB通过WS转发给GS的包装协议" >
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="wrapper"                type="uint8"                comment="包装数据"      array="uint32" />
+    </data> 
+    <data type="protocol" name="LoadAuctionObjectDataReq" comment="加载拍卖行数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+    <data type="protocol" name="LoadAuctionObjectDataAck" comment="加载拍卖行数据回应">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="total_num"              type="uint32"               comment="总记录数" />
+        <item name="remain_num"             type="uint32"               comment="剩余记录数" />
+        <item name="datas"                  type="AuctionObjectData"    array="uint32"          comment="拍卖行道具列表" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+    <data type="protocol" name="AddAuctionObjectDataNtf" comment="拍卖行道具添加通知" >
+        <item name="data"                   type="AuctionObjectData"    comment="拍卖行道具" />
+    </data>
+    <data type="protocol" name="DelAuctionObjectDataNtf" comment="拍卖行道具删除通知" >
+        <item name="guid"                   type="uint64"               comment="拍卖行道具GUID" />
+    </data>
+    <data type="protocol" name="UpdateAuctionObjectDataNtf" comment="拍卖行道具更新通知" >
+        <item name="data"                   type="AuctionObjectData"    comment="拍卖行道具" />
+    </data>
+    <data type="protocol" name="LoadAuctionCookieDataReq" comment="加载拍卖行个人数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+    <data type="protocol" name="LoadAuctionCookieDataAck" comment="加载拍卖行个人数据回应">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="total_num"              type="uint32"               comment="总记录数" />
+        <item name="remain_num"             type="uint32"               comment="剩余记录数" />
+        <item name="datas"                  type="AuctionCookieData"    array="uint32"          comment="拍卖行个人数据列表" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+    <data type="protocol" name="DuplicateAuctionCookieDataNtf" comment="拍卖行个人数据更新(新建)通知" >
+        <item name="data"                   type="AuctionCookieData"    comment="拍卖行个人数据" />
+    </data>
+	
+    <data type="protocol" name="LoadGuildDataReq" comment="加载帮派数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+
+    <data type="protocol" name="LoadGuildDataAck" comment="帮派数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="DBGuildData"          array="uint16"          comment="帮派数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="LoadGuildMemberDataAck" comment="帮派成员数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="DBGuildMemberData"    array="uint32"          comment="帮派成员数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="LoadGuildApplicantDataAck" comment="帮派申请数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="DBGuildApplicantData" array="uint32"          comment="帮派申请数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="AddGuildDataNtf" comment="添加帮派通知" >
+        <item name="guild"                   type="DBGuildData"    comment="帮派数据" />
+    </data>
+
+    <data type="protocol" name="DelGuildDataNtf" comment="删除帮派通知" >
+        <item name="guid"                   type="uint64"               comment="帮派GUID" />
+    </data>
+
+    <data type="protocol" name="UpdateGuildDataNtf" comment="更新帮派通知" >
+        <item name="guild"                   type="DBGuildData"    comment="帮派数据" />
+    </data>
+
+    <data type="protocol" name="AddGuildMemberDataNtf" comment="添加帮派成员通知" >
+        <item name="member"                 type="DBGuildMemberData"    comment="帮派数据" />
+    </data>
+
+    <data type="protocol" name="DelGuildMemberDataNtf" comment="删除帮派成员通知" >
+        <item name="player_guid"             type="uint64"               comment="成员GUID" />
+    </data>
+
+    <data type="protocol" name="UpdateGuildMemberDataNtf" comment="更新帮派成员通知" >
+        <item name="member"                  type="DBGuildMemberData"    comment="帮派成员数据" />
+    </data>
+
+    <data type="protocol" name="AddGuildApplicantDataNtf" comment="添加帮派申请通知" >
+        <item name="applicant"               type="DBGuildApplicantData" comment="帮派申请数据" />
+    </data>
+
+    <data type="protocol" name="DelGuildApplicantDataNtf" comment="删除帮派申请通知" >
+        <item name="player_guid"             type="uint64"               comment="玩家GUID" />
+        <item name="guild_guid"              type="uint64"               comment="帮派GUID" />
+    </data>
+
+    <data type="protocol" name="UpdateGuildApplicantDataNtf" comment="更新帮派申请通知" >
+        <item name="applicant"               type="DBGuildApplicantData" comment="帮派申请数据" />
+    </data>
+	
+    <data type="protocol" name="LoadContactDataReq" comment="加载联系人数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+
+    <data type="protocol" name="LoadContactInfoDataAck" comment="联系人信息数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="ContactInfoData"      array="uint32"          comment="联系人信息数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="LoadContactDataAck" comment="加载联系人数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="DBContactData"        array="uint32"          comment="联系人数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="AddContactDataNtf" comment="添加联系人数据通知" >
+        <item name="data"                   type="DBContactData"       comment="联系人数据" />
+    </data>
+
+    <data type="protocol" name="DelContactDataNtf" comment="删除联系人数据通知" >
+        <item name="player_guid"            type="uint64"               comment="玩家GUID" />
+        <item name="target_guid"            type="uint64"               comment="联系人GUID" />
+    </data>
+
+    <data type="protocol" name="UpdateContactDataNtf" comment="更新联系人数据通知" >
+        <item name="data"                   type="DBContactData"    comment="联系人数据" />
+    </data>
+
+    <data type="protocol" name="LoadDBVarDataReq" comment="加载DB变量数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+
+    <data type="protocol" name="LoadDBVarDataAck" comment="加载DB变量数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="datas"                  type="DBVarData"            array="uint32"          comment="DB变量数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="AddDBVarDataNtf" comment="添加DB变量数据通知" >
+        <item name="data"                   type="DBVarData"            comment="DB变量数据" />
+    </data>
+
+    <data type="protocol" name="DelDBVarDataNtf" comment="删除联系人数据通知" >
+        <item name="key"                    type="uint8"                array="uint8"  comment="key值"/>
+        <item name="value_type"             type="uint8"                comment="值类型"/>
+    </data>
+
+    <data type="protocol" name="LoadMailDataReq" comment="加载邮件数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="recv_guid"              type="uint64"               comment="收件人GUID"/>
+    </data>
+
+    <data type="protocol" name="LoadMailDataAck" comment="加载邮件数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="recv_guid"              type="uint64"               comment="收件人GUID"/>
+        <item name="datas"                  type="DBMailData"           array="uint16"          comment="邮件数据" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+    </data>
+
+    <data type="protocol" name="AddMailDataNtf" comment="添加邮件数据通知" >
+        <item name="data"                   type="DBMailData"           comment="邮件数据" />
+    </data>
+
+    <data type="protocol" name="DelMailDataNtf" comment="删除邮件数据通知" >
+        <item name="mail_guid"              type="uint64"                comment="邮件GUID"/>
+        <item name="recv_guid"              type="uint64"               comment="收件人GUID"/>
+    </data>
+
+    <data type="protocol" name="UpdateMailDataNtf" comment="更新邮件数据通知" >
+        <item name="data"                   type="DBMailData"           comment="邮件数据" />
+    </data>
+    
+    <data type="protocol" name="LoadRanklistDataReq" comment="加载排行榜数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+    
+    <data type="protocol" name="LoadRanklistDataAck" comment="加载排行榜数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+        <item name="data"                   type="DBRanklistData"       array="uint32"      comment="排行榜数据" />
+    </data>
+    
+    <data type="protocol" name="AddRanklistDataNtf" comment="添加排行榜数据通知" >
+        <item name="data"                   type="DBRanklistData"           comment="排行榜数据" />
+    </data>
+
+    <data type="protocol" name="DelRanklistDataNtf" comment="删除排行榜数据通知" >
+        <item name="object_guid"            type="uint64"               comment="对象GUID"/>
+        <item name="rank_type"              type="int32"                comment="排行榜类型"/>
+    </data>
+
+    <data type="protocol" name="UpdateRanklistDataNtf" comment="更新排行数据通知" >
+        <item name="data"                   type="DBRanklistData"           comment="邮件数据" />
+    </data>
+
+    <data type="protocol" name="BillInMockReq" comment="模拟充值通知请求">
+        <item name="bill_id"        type="uint32"       comment="订单ID"/>
+        <item name="user_id"        type="uint32"       comment="用户ID"/>
+        <item name="added_yb"       type="int32"        comment="用户充值元宝数"/>
+        <item name="award_yb"       type="int32"        comment="用户奖励元宝数"/>
+        <item name="user"           type="string"       length="20"     comment="用户名"/>
+        <item name="desc"           type="string"       comment="充值描述"/>
+    </data>
+
+    <data type="protocol" name="AddPasturePetDataNtf" comment="添加牧场宠物通知" >
+        <item name="data"                   type="PasturePetData"           comment="牧场宠物数据" />
+    </data>
+
+    <data type="protocol" name="LoadPasturePetDataReq" comment="加载牧场宠物请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+    
+    <data type="protocol" name="LoadPasturePetDataAck" comment="加载牧场宠物应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+        <item name="data"                   type="PasturePetData"       array="uint32"      comment="牧场宠物" />
+    </data>
+    
+    <data type="protocol" name="FregmentPkg" comment="数据包分片协议">
+        <item name="frag_mark"      type="uint8"        comment="分片标志 0=开始 1=中间 2=结束"/>
+        <item name="frag_data"      type="uint8"        comment="包装数据"      array="uint32" />
+    </data>
+
+    <data type="protocol" name="DelPasturePetDataNtf" comment="删除牧场宠物通知" >
+        <item name="pet_guid"              type="uint64"                comment="宠物GUID"/>
+    </data>
+
+    <data type="protocol" name="UpdatePasturePetDataNtf" comment="更新牧场宠物通知" >
+        <item name="data"                   type="PasturePetData"           comment="牧场宠物数据" />
+    </data>
+
+    <data type="protocol" name="LoadContactInfoReq" comment="加载联系人信息请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+
+    <data type="protocol" name="LoadLadderDataReq" comment="加载天梯数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+    </data>
+    
+    <data type="protocol" name="LoadLadderDataAck" comment="加载天梯数据应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+        <item name="data"                   type="LadderData"           array="uint32"      comment="天梯数据" />
+    </data>
+    
+    <data type="protocol" name="AddLadderDataNtf" comment="添加天梯数据通知" >
+        <item name="data"                   type="LadderData"           comment="天梯数据" />
+    </data>
+
+    <data type="protocol" name="DelLadderDataNtf" comment="删除天梯数据通知" >
+        <item name="player_guid"            type="uint64"                comment="玩家GUID"/>
+    </data>
+
+    <data type="protocol" name="UpdateLadderDataNtf" comment="更新天梯数据通知" >
+        <item name="data"                   type="LadderData"           comment="天梯数据" />
+    </data>
+
+    <data type="protocol" name="UnloadMailDataReq" comment="卸载邮件数据请求">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="recv_guid"              type="uint64"               comment="收件人GUID"/>
+    </data>
+
+    <data type="protocol" name="LoadOfflinePlayerReq" comment="加载离线玩家">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="seq"                    type="uint32"               comment="序号" />
+        <item name="target_guid"            type="uint64"               comment="目标GUID"/>
+        <item name="object_type"            type="uint32"               comment="对象类型" />
+        <item name="object_guid"            type="uint64"               comment="对象GUID" />
+    </data>
+
+    <data type="protocol" name="LoadOfflinePlayerAck" comment="加载离线玩家应答">
+        <item name="index"                  type="uint32"               comment="gs索引" />
+        <item name="seq"                    type="uint32"               comment="序号" />
+        <item name="target_guid"            type="uint64"               comment="目标GUID"/>
+        <item name="object_type"            type="uint32"               comment="对象类型" />
+        <item name="object_guid"            type="uint64"               comment="对象GUID" />
+        <item name="errcode"                type="int32"                comment="0=成功, 其他表示错误码"/>
+        <item name="errmsg"                 type="string"               comment="错误码不为0时表示 错误消息"/>
+        <item name="offline_data"           type="PlayerData"           comment="离线角色数据" />
+    </data>
+
+    <data type="protocol" name="SyncViolateNtf" comment="同步违禁字通知">
+        <item name="violates"               type="ViolateData"          array="uint16"      comment="违禁字数据" />
+    </data>
+
+    <data type="protocol" name="SyncForbidTalkNtf" comment="同步禁言数据通知" >
+        <item name="forbids"    type="ForbidTalkData"   array="uint32"   comment="禁止聊天数据" />
+    </data>
+
+    <data type="protocol" name="AddForbidTalkNtf" comment="添加禁言数据通知" >
+        <item name="data"       type="ForbidTalkData"   comment="禁止聊天数据" />
+    </data>
+
+    <data type="protocol" name="DelForbidTalkNtf" comment="删除禁言数据通知" >
+        <item name="guid"       type="uint64"           comment="角色GUID" />
+    </data>
+
+    <data type="protocol" name="LogLevelNtf" comment="日志级别变更通知" >
+        <item name="level"          type="uint32"           comment="日志级别 0=LogSys 1=LogErr 2=LogWrn 3=LogInf 4=LogDbg"/>
+        <item name="enable"         type="uint32"           comment="0关闭 1开启"/>
+    </data>
+
+</protocol_define>

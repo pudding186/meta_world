@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<protocol_define name="ClientWS" moudleid="101" version="1" comment="客户端和worldserver之间的相关协议">
+    <package name="StructDef"/>
+    <data type="protocol" name="RandKeyNtf" comment="随机码">
+        <item name="code_content"           type="uint8"        array="uint8" comment="随机码"/>
+    </data>    
+    <data type="protocol" name="LoginReq" comment="客户端登陆请求">
+        <item name="sid"                    type="uint8"        comment="子区ID" />
+        <item name="username"               type="string"       comment="账号名" />
+        <item name="ip"                     type="uint32"       comment="登陆ip地址" />
+        <item name="pwd_content"            type="uint8"        array="uint8"   comment="密码密文" />
+        <item name="hwid"                   type="string"       length="256"    comment="硬件码" />
+        <item name="client_type"            type="uint8"        comment="客户端类型" />
+        <item name="client_version"         type="string"       length="256"    comment="客户端版本号" />
+        <item name="client_protocol_md5"    type="string"       length="256"    comment="客户端协议MD5" />
+        <item name="longitude"              type="string"       length="64"     comment="经度" />
+        <item name="latitude"               type="string"       length="64"     comment="纬度" />
+        <item name="session"                type="uint64"       comment="会话ID(由网关填写)" />
+        <item name="suid"                   type="uint64"       comment="会话ID(由网关填写)" />
+    </data>
+    <data type="protocol" name="LoginAck" comment="客户端登陆应答">
+        <item name="uid"                    type="uint32"       comment="账号ID" />
+        <item name="guid"                   type="uint64"       comment="正在GS中(战斗)的玩家GUID" />
+        <item name="suid"                   type="uint64"       comment="会话ID" />        
+        <item name="rid"                    type="uint64"       comment="运行时ID(服务器重启后变化)" />        
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="ReloginReq" comment="客户端重连请求">
+        <item name="sid"                    type="uint8"        comment="子区ID" />
+        <item name="uid"                    type="uint32"       comment="账号ID" />
+        <item name="ip"                     type="uint32"       comment="登陆ip地址" />
+        <item name="hwid"                   type="string"       length="128"    comment="硬件码" />
+        <item name="client_type"            type="uint8"        comment="客户端类型" />
+        <item name="client_version"         type="string"       length="256"    comment="客户端版本号" />
+        <item name="client_protocol_md5"    type="string"       length="256"    comment="客户端协议MD5" />
+        <item name="longitude"              type="string"       length="64"     comment="经度" />
+        <item name="latitude"               type="string"       length="64"     comment="纬度" />
+        <item name="session"                type="uint64"       comment="会话ID(由网关填写)" />
+        <item name="suid"                   type="uint64"       comment="会话ID" />
+    </data>
+     <data type="protocol" name="ReloginAck" comment="客户端重连应答">
+        <item name="guid"                   type="uint64"       comment="在线玩家GUID" />
+        <item name="rid"                    type="uint64"       comment="运行时ID(服务器重启后变化)" />
+        <item name="gsindex"                type="uint32"       comment="GS索引" />
+        <item name="arrayid"                type="uint32"       comment="GS上玩家对象数组下标" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="LogoutReq" comment="客户端退出请求">
+        <item name="type"                   type="uint8"        comment="1:回到选角界面 2:退出游戏" />
+    </data>
+    <data type="protocol" name="LogoutAck" comment="客户端退出应答">
+        <item name="type"                   type="uint8"        comment="1:回到选角界面 2:退出游戏" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="KickNtf" comment="通知客户端踢人">
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="PlayerListReq" comment="玩家简略列表请求">
+    </data>
+    <data type="protocol" name="PlayerListAck" comment="玩家简略列表回应">
+        <item name="lastplayer"             type="uint64"       comment="最后一次登陆玩家" />
+        <item name="briefs"                 type="PlayerBrief"  array="uint8"       comment="玩家简略列表" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="CreatePlayerReq" comment="创建玩家请求">
+        <item name="playerbrief"            type="PlayerBrief"  comment="玩家信息" />
+    </data>
+    <data type="protocol" name="CreatePlayerAck" comment="创建玩家回应">
+        <item name="playerbrief"            type="PlayerBrief"  comment="玩家信息" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="DestroyPlayerReq" comment="销毁玩家请求">
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+    </data>
+    <data type="protocol" name="DestroyPlayerAck" comment="销毁玩家回应">
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="RestorePlayerReq" comment="销毁玩家请求">
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+    </data>
+    <data type="protocol" name="RestorePlayerAck" comment="销毁玩家回应">
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    <data type="protocol" name="EnterGSReq" comment="玩家进入GS请求" >
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+    </data>
+    <data type="protocol" name="EnterGSAck" comment="玩家进入GS回应" >
+        <item name="guid"                   type="uint64"       comment="玩家GUID" />
+        <item name="gsindex"                type="uint32"       comment="GS索引" />
+        <item name="arrayid"                type="uint32"       comment="GS上玩家对象数组下标" />
+        <item name="errcode"                type="int32"        comment="错误码" />
+        <item name="errmsg"                 type="string"       comment="错误描述" />
+    </data>
+    
+    <data type="protocol" name="TrdLoginReq" comment="玩家密码验证请求">
+        <item name="sid"                    type="uint8"        comment="子区ID" />
+        <item name="username"               type="string"       comment="账号名" />
+        <item name="platform"               type="string"       comment="平台名称"/>
+        <item name="token"                  type="uint8"        array="uint16"   comment="token" />
+        <item name="hwid"                   type="string"       length="256"    comment="硬件码" />
+        <item name="ip"                     type="uint32"       comment="登陆ip地址" />
+        <item name="client_type"            type="uint8"        comment="客户端类型" />
+        <item name="client_version"         type="string"       length="256"    comment="客户端版本号" />
+        <item name="client_protocol_md5"    type="string"       length="256"    comment="客户端协议MD5" />
+        <item name="longitude"              type="string"       length="64"     comment="经度" />
+        <item name="latitude"               type="string"       length="64"     comment="纬度" />
+        <item name="session"                type="uint64"       comment="会话ID(由网关填写)" />
+        <item name="suid"                   type="uint64"       comment="会话ID(由网关填写)" />
+    </data>
+
+    <data type="protocol" name="GetWSTimestampReq"    comment="服务器时间戳请求">
+    </data>
+
+    <data type="protocol" name="GetWSTimestampAck"    comment="服务器时间戳应答">
+        <item name="now"            type="uint32"            comment="当前服务器本地时间"/>
+        <item name="zone"           type="int32"             comment="当前服务器本地时间减去标准UTC时间的差值" />
+    </data>
+
+    <data type="protocol" name="RealnameInfoNtf" comment="实名认证信息通知">
+        <item name="realname_status"    type="uint32"                   comment="实名认证状态" />
+        <item name="auth"               type="string"   length="64"     comment="授权信息" />
+        <item name="realname_token"     type="string"   length="64"     comment="token"/>
+    </data>
+
+</protocol_define>
