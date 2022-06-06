@@ -100,7 +100,7 @@ extern unsigned int (net_tcp_get_recv_max_size)(HSESSION session);
 
 extern void (net_tcp_set_send_control)(HSESSION session, unsigned int pkg_size, unsigned int delay_time);
 
-
+extern unsigned int (net_tcp_unsend_size)(HSESSION session);
 #ifdef  __cplusplus
 }
 #endif

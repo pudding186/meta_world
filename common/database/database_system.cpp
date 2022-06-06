@@ -51,16 +51,47 @@ bool DatabaseSystem::Initialize(size_t max_db_event_num)
     );
 }
 
-bool DatabaseSystem::Connect(const DB_CONFIG& db_config)
+//bool DatabaseSystem::Connect(const DB_CONFIG& db_config)
+//{
+//    FUNC_PERFORMANCE_CHECK();
+//
+//    if (!_CreateAndUseDataBase(db_config))
+//    {
+//        return false;
+//    }
+//
+//    if (!_CreateWorkConnections(db_config))
+//    {
+//        return false;
+//    }
+//
+//    return true;
+//}
+
+bool DatabaseSystem::Connect(uint16_t port, const std::string& host, const std::string& user, const std::string& pwd, const std::string& database, const std::string& charset/*="utf8mb4" */)
 {
     FUNC_PERFORMANCE_CHECK();
 
-    if (!_CreateAndUseDataBase(db_config))
+    if (!_CreateAndUseDataBase(
+        port,
+        host,
+        user,
+        pwd,
+        database,
+        charset
+    ))
     {
         return false;
     }
 
-    if (!_CreateWorkConnections(db_config))
+    if (!_CreateWorkConnections(
+        port,
+        host,
+        user,
+        pwd,
+        database,
+        charset
+    ))
     {
         return false;
     }
@@ -92,12 +123,21 @@ bool DatabaseSystem::OnUpdate(CFuncPerformanceInfo** info)
 
 void DatabaseSystem::OnError(const std::string& err_msg)
 {
-    LogErr(u8"{}", err_msg);
+    LogERR(u8"{}", err_msg);
 }
 
 void DatabaseSystem::OnWarn(const std::string& err_msg)
 {
-    LogWrn(u8"{}", err_msg);
+    LogWRN(u8"{}", err_msg);
+}
+
+bool DatabaseSystem::TryStop(void)
+{
+    FUNC_PERFORMANCE_CHECK();
+    db_manager_stop();
+
+
+    return db_manager_complete_run();
 }
 
 HMYSQLCONNECTION DatabaseSystem::GetMysqlAsyncConnection(DBConnectionFlag flag)
@@ -127,66 +167,114 @@ HMYSQLCONNECTION DatabaseSystem::GetMysqlSyncConnection(void)
 //    return nullptr;
 //}
 
-bool DatabaseSystem::_CreateAndUseDataBase(const DB_CONFIG& db_config)
+//bool DatabaseSystem::_CreateAndUseDataBase(const DB_CONFIG& db_config)
+//{
+//    FUNC_PERFORMANCE_CHECK();
+//
+//    //const DB_CONFIG& config = sConfigSystem.GetDatabaseConfig();
+//    char err_msg[512];
+//
+//    HCLIENTMYSQL connection = create_client_mysql(
+//        db_config.Host.c_str(),
+//        db_config.Port,
+//        db_config.User.c_str(),
+//        db_config.PWD.c_str(),
+//        "",
+//        db_config.Charset.c_str(),
+//        err_msg,
+//        sizeof(err_msg)
+//    );
+//
+//    if (!connection)
+//    {
+//        LogERR("Create Mysql Connection Fail!: {}", err_msg);
+//        return false;
+//    }
+//
+//    std::string sql = fmt::format(u8"CREATE DATABASE IF NOT EXISTS `{}` DEFAULT CHARSET {};", db_config.Database, db_config.Charset);
+//
+//    CLIENTMYSQLRESULT res = client_mysql_query(
+//        connection, sql.c_str(), static_cast<unsigned long>(sql.length()));
+//
+//    bool ret = client_mysql_result_success(&res);
+//    if (!ret)
+//    {
+//        LogERR("Create DataBase {} Fail!: {}", db_config.Database, client_mysql_err(connection));
+//    }
+//    
+//    client_mysql_free_result(&res);
+//    destroy_client_mysql(connection);
+//
+//    return ret;
+//}
+
+bool DatabaseSystem::_CreateAndUseDataBase(uint16_t port, const std::string& host, const std::string& user, const std::string& pwd, const std::string& database, const std::string& charset /*= "utf8mb4" */)
 {
-    FUNC_PERFORMANCE_CHECK();
-
-    //const DB_CONFIG& config = sConfigSystem.GetDatabaseConfig();
-    char err_msg[512];
-
-    HCLIENTMYSQL connection = create_client_mysql(
-        db_config.Host.c_str(),
-        db_config.Port,
-        db_config.User.c_str(),
-        db_config.PWD.c_str(),
-        "",
-        db_config.Charset.c_str(),
-        err_msg,
-        sizeof(err_msg)
-    );
-
-    if (!connection)
-    {
-        LogErr("Create Mysql Connection Fail!: {}", err_msg);
-        return false;
-    }
-
-    std::string sql = fmt::format(u8"CREATE DATABASE IF NOT EXISTS `{}` DEFAULT CHARSET {};", db_config.Database, db_config.Charset);
-
-    CLIENTMYSQLRES res = client_mysql_query(
-        connection, sql.c_str(), static_cast<unsigned long>(sql.length()));
-
-    bool ret = client_mysql_result_success(&res);
-    if (!ret)
-    {
-        LogErr("Create DataBase {} Fail!: {}", db_config.Database, client_mysql_err(connection));
-    }
-    
-    client_mysql_free_result(&res);
-    destroy_client_mysql(connection);
-
-    return ret;
-}
-
-bool DatabaseSystem::_CreateWorkConnections(const DB_CONFIG& db_config)
-{
-    //const DB_CONFIG& config = sConfigSystem.GetDatabaseConfig();
-    char err_msg[512];
     for (uint32_t i = static_cast<uint32_t>(DBConnectionFlag::SYNC); i < static_cast<uint32_t>(DBConnectionFlag::MAX); i++)
     {
         m_connection[i] = create_mysql_connection(
             i,
-            db_config.Host.c_str(),
-            db_config.Port,
-            db_config.User.c_str(),
-            db_config.PWD.c_str(),
-            db_config.Database.c_str(),
-            db_config.Charset.c_str()
+            host.c_str(),
+            port,
+            user.c_str(),
+            pwd.c_str(),
+            database.c_str(),
+            charset.c_str()
         );
 
         if (!m_connection[i])
         {
-            LogErr("Create Mysql Connection Fail!: {}", err_msg);
+            _DestroyWorkConnections();
+            return false;
+        }
+    }
+
+    return true;
+}
+
+//bool DatabaseSystem::_CreateWorkConnections(const DB_CONFIG& db_config)
+//{
+//    //const DB_CONFIG& config = sConfigSystem.GetDatabaseConfig();
+//    char err_msg[512];
+//    for (uint32_t i = static_cast<uint32_t>(DBConnectionFlag::SYNC); i < static_cast<uint32_t>(DBConnectionFlag::MAX); i++)
+//    {
+//        m_connection[i] = create_mysql_connection(
+//            i,
+//            db_config.Host.c_str(),
+//            db_config.Port,
+//            db_config.User.c_str(),
+//            db_config.PWD.c_str(),
+//            db_config.Database.c_str(),
+//            db_config.Charset.c_str()
+//        );
+//
+//        if (!m_connection[i])
+//        {
+//            LogERR("Create Mysql Connection Fail!: {}", err_msg);
+//            _DestroyWorkConnections();
+//            return false;
+//        }
+//    }
+//
+//    return true;
+//}
+
+bool DatabaseSystem::_CreateWorkConnections(uint16_t port, const std::string& host, const std::string& user, const std::string& pwd, const std::string& database, const std::string& charset /*= "utf8mb4" */)
+{
+    for (uint32_t i = static_cast<uint32_t>(DBConnectionFlag::SYNC); i < static_cast<uint32_t>(DBConnectionFlag::MAX); i++)
+    {
+        m_connection[i] = create_mysql_connection(
+            i,
+            host.c_str(),
+            port,
+            user.c_str(),
+            pwd.c_str(),
+            database.c_str(),
+            charset.c_str()
+        );
+
+        if (!m_connection[i])
+        {
             _DestroyWorkConnections();
             return false;
         }

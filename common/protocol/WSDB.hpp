@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct LoadUserReq:Protocol<LoadUserReq>
+struct LoadUserReq:TProtocol<LoadUserReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 1;
+
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
 	bool EnCode(NetEnCode& net_data)
@@ -260,8 +263,11 @@ struct LoadUserReq:Protocol<LoadUserReq>
     }
 };
 
-struct LoadUserAck:Protocol<LoadUserAck>
+struct LoadUserAck:TProtocol<LoadUserAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 2;
+
 	UserData                  userdata; //账号数据
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -577,8 +583,11 @@ struct LoadUserAck:Protocol<LoadUserAck>
     }
 };
 
-struct UpdateUserNtf:Protocol<UpdateUserNtf>
+struct UpdateUserNtf:TProtocol<UpdateUserNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 3;
+
 	UserData                  userdata; //账号数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -819,8 +828,11 @@ struct UpdateUserNtf:Protocol<UpdateUserNtf>
     }
 };
 
-struct PlayerBriefsReq:Protocol<PlayerBriefsReq>
+struct PlayerBriefsReq:TProtocol<PlayerBriefsReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
 	bool EnCode(NetEnCode& net_data)
@@ -1071,8 +1083,11 @@ struct PlayerBriefsReq:Protocol<PlayerBriefsReq>
     }
 };
 
-struct PlayerBriefsAck:Protocol<PlayerBriefsAck>
+struct PlayerBriefsAck:TProtocol<PlayerBriefsAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 5;
+
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
 	DataArray<PlayerBrief, unsigned char> briefs; //玩家简略列表
@@ -1444,8 +1459,11 @@ struct PlayerBriefsAck:Protocol<PlayerBriefsAck>
     }
 };
 
-struct NewPlayerReq:Protocol<NewPlayerReq>
+struct NewPlayerReq:TProtocol<NewPlayerReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 6;
+
 	PlayerBrief               playerbrief; //玩家信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -1686,8 +1704,11 @@ struct NewPlayerReq:Protocol<NewPlayerReq>
     }
 };
 
-struct NewPlayerAck:Protocol<NewPlayerAck>
+struct NewPlayerAck:TProtocol<NewPlayerAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 7;
+
 	PlayerBrief               playerbrief; //玩家信息
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -2003,8 +2024,11 @@ struct NewPlayerAck:Protocol<NewPlayerAck>
     }
 };
 
-struct UpdateBriefNtf:Protocol<UpdateBriefNtf>
+struct UpdateBriefNtf:TProtocol<UpdateBriefNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 8;
+
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
 	PlayerBrief               brief; //玩家简介
@@ -2308,8 +2332,11 @@ struct UpdateBriefNtf:Protocol<UpdateBriefNtf>
     }
 };
 
-struct UpdatePlayerNtf:Protocol<UpdatePlayerNtf>
+struct UpdatePlayerNtf:TProtocol<UpdatePlayerNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 9;
+
 	PlayerData                playerdata; //玩家详细
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -2550,8 +2577,11 @@ struct UpdatePlayerNtf:Protocol<UpdatePlayerNtf>
     }
 };
 
-struct LoadPlayerReq:Protocol<LoadPlayerReq>
+struct LoadPlayerReq:TProtocol<LoadPlayerReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 10;
+
 	unsigned long long        guid; //玩家guid
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
@@ -2830,8 +2860,11 @@ struct LoadPlayerReq:Protocol<LoadPlayerReq>
     }
 };
 
-struct LoadPlayerAck:Protocol<LoadPlayerAck>
+struct LoadPlayerAck:TProtocol<LoadPlayerAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 11;
+
 	PlayerData                playerdata; //玩家数据
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -3147,8 +3180,11 @@ struct LoadPlayerAck:Protocol<LoadPlayerAck>
     }
 };
 
-struct BillInNtf:Protocol<BillInNtf>
+struct BillInNtf:TProtocol<BillInNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 12;
+
 	unsigned int              uid; //账号id
 	unsigned char             sid; //子区id
 	unsigned int              bill_id; //订单ID
@@ -3495,8 +3531,11 @@ struct BillInNtf:Protocol<BillInNtf>
     }
 };
 
-struct LoadForbidReq:Protocol<LoadForbidReq>
+struct LoadForbidReq:TProtocol<LoadForbidReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 13;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -3642,8 +3681,11 @@ struct LoadForbidReq:Protocol<LoadForbidReq>
     }
 };
 
-struct LoadForbidAck:Protocol<LoadForbidAck>
+struct LoadForbidAck:TProtocol<LoadForbidAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 14;
+
 	DataArray<ForbidData, unsigned int> forbids; //禁止数据
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -3959,8 +4001,11 @@ struct LoadForbidAck:Protocol<LoadForbidAck>
     }
 };
 
-struct AddForbidNtf:Protocol<AddForbidNtf>
+struct AddForbidNtf:TProtocol<AddForbidNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 15;
+
 	ForbidData                data; //禁止数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4201,8 +4246,11 @@ struct AddForbidNtf:Protocol<AddForbidNtf>
     }
 };
 
-struct DelForbidNtf:Protocol<DelForbidNtf>
+struct DelForbidNtf:TProtocol<DelForbidNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 16;
+
 	ForbidData                data; //禁止数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4443,8 +4491,11 @@ struct DelForbidNtf:Protocol<DelForbidNtf>
     }
 };
 
-struct RefreshPlayerCacheNtf:Protocol<RefreshPlayerCacheNtf>
+struct RefreshPlayerCacheNtf:TProtocol<RefreshPlayerCacheNtf>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 17;
+
 	unsigned long long        guid; //玩家的GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4667,8 +4718,11 @@ struct RefreshPlayerCacheNtf:Protocol<RefreshPlayerCacheNtf>
     }
 };
 
-struct LoadForbidTalkReq:Protocol<LoadForbidTalkReq>
+struct LoadForbidTalkReq:TProtocol<LoadForbidTalkReq>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 18;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -4814,8 +4868,11 @@ struct LoadForbidTalkReq:Protocol<LoadForbidTalkReq>
     }
 };
 
-struct LoadForbidTalkAck:Protocol<LoadForbidTalkAck>
+struct LoadForbidTalkAck:TProtocol<LoadForbidTalkAck>
 {
+	static constexpr unsigned short module_id = 106;
+	static constexpr unsigned short protocol_id = 19;
+
 	DataArray<ForbidTalkData, unsigned int> forbids; //禁止聊天数据
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -5133,7 +5190,7 @@ struct LoadForbidTalkAck:Protocol<LoadForbidTalkAck>
 
 //===============数据定义结束===============
 template<typename D>
-class CWSDB
+class CWSDB: public ProtocolModule
 {
 public:
 	CWSDB()
@@ -5208,128 +5265,105 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 106)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 106)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case LoadUserReq::protocol_id:
 		{
-			return LoadUserReq::SName();
+			return LoadUserReq::Name();
 		}
 		break;
-		case 2:
+		case LoadUserAck::protocol_id:
 		{
-			return LoadUserAck::SName();
+			return LoadUserAck::Name();
 		}
 		break;
-		case 3:
+		case UpdateUserNtf::protocol_id:
 		{
-			return UpdateUserNtf::SName();
+			return UpdateUserNtf::Name();
 		}
 		break;
-		case 4:
+		case PlayerBriefsReq::protocol_id:
 		{
-			return PlayerBriefsReq::SName();
+			return PlayerBriefsReq::Name();
 		}
 		break;
-		case 5:
+		case PlayerBriefsAck::protocol_id:
 		{
-			return PlayerBriefsAck::SName();
+			return PlayerBriefsAck::Name();
 		}
 		break;
-		case 6:
+		case NewPlayerReq::protocol_id:
 		{
-			return NewPlayerReq::SName();
+			return NewPlayerReq::Name();
 		}
 		break;
-		case 7:
+		case NewPlayerAck::protocol_id:
 		{
-			return NewPlayerAck::SName();
+			return NewPlayerAck::Name();
 		}
 		break;
-		case 8:
+		case UpdateBriefNtf::protocol_id:
 		{
-			return UpdateBriefNtf::SName();
+			return UpdateBriefNtf::Name();
 		}
 		break;
-		case 9:
+		case UpdatePlayerNtf::protocol_id:
 		{
-			return UpdatePlayerNtf::SName();
+			return UpdatePlayerNtf::Name();
 		}
 		break;
-		case 10:
+		case LoadPlayerReq::protocol_id:
 		{
-			return LoadPlayerReq::SName();
+			return LoadPlayerReq::Name();
 		}
 		break;
-		case 11:
+		case LoadPlayerAck::protocol_id:
 		{
-			return LoadPlayerAck::SName();
+			return LoadPlayerAck::Name();
 		}
 		break;
-		case 12:
+		case BillInNtf::protocol_id:
 		{
-			return BillInNtf::SName();
+			return BillInNtf::Name();
 		}
 		break;
-		case 13:
+		case LoadForbidReq::protocol_id:
 		{
-			return LoadForbidReq::SName();
+			return LoadForbidReq::Name();
 		}
 		break;
-		case 14:
+		case LoadForbidAck::protocol_id:
 		{
-			return LoadForbidAck::SName();
+			return LoadForbidAck::Name();
 		}
 		break;
-		case 15:
+		case AddForbidNtf::protocol_id:
 		{
-			return AddForbidNtf::SName();
+			return AddForbidNtf::Name();
 		}
 		break;
-		case 16:
+		case DelForbidNtf::protocol_id:
 		{
-			return DelForbidNtf::SName();
+			return DelForbidNtf::Name();
 		}
 		break;
-		case 17:
+		case RefreshPlayerCacheNtf::protocol_id:
 		{
-			return RefreshPlayerCacheNtf::SName();
+			return RefreshPlayerCacheNtf::Name();
 		}
 		break;
-		case 18:
+		case LoadForbidTalkReq::protocol_id:
 		{
-			return LoadForbidTalkReq::SName();
+			return LoadForbidTalkReq::Name();
 		}
 		break;
-		case 19:
+		case LoadForbidTalkAck::protocol_id:
 		{
-			return LoadForbidTalkAck::SName();
+			return LoadForbidTalkAck::Name();
 		}
 		break;
 		default:
@@ -5360,7 +5394,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case LoadUserReq::protocol_id:
 		{
 			LoadUserReq* proto = new(m_protocol_buffer) LoadUserReq();
 			if (proto->DeCode(net_data))
@@ -5377,7 +5411,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case LoadUserAck::protocol_id:
 		{
 			LoadUserAck* proto = new(m_protocol_buffer) LoadUserAck();
 			if (proto->DeCode(net_data))
@@ -5394,7 +5428,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case UpdateUserNtf::protocol_id:
 		{
 			UpdateUserNtf* proto = new(m_protocol_buffer) UpdateUserNtf();
 			if (proto->DeCode(net_data))
@@ -5411,7 +5445,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case PlayerBriefsReq::protocol_id:
 		{
 			PlayerBriefsReq* proto = new(m_protocol_buffer) PlayerBriefsReq();
 			if (proto->DeCode(net_data))
@@ -5428,7 +5462,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case PlayerBriefsAck::protocol_id:
 		{
 			PlayerBriefsAck* proto = new(m_protocol_buffer) PlayerBriefsAck();
 			if (proto->DeCode(net_data))
@@ -5445,7 +5479,7 @@ public:
 			}
 		}
 		break;
-		case 6:
+		case NewPlayerReq::protocol_id:
 		{
 			NewPlayerReq* proto = new(m_protocol_buffer) NewPlayerReq();
 			if (proto->DeCode(net_data))
@@ -5462,7 +5496,7 @@ public:
 			}
 		}
 		break;
-		case 7:
+		case NewPlayerAck::protocol_id:
 		{
 			NewPlayerAck* proto = new(m_protocol_buffer) NewPlayerAck();
 			if (proto->DeCode(net_data))
@@ -5479,7 +5513,7 @@ public:
 			}
 		}
 		break;
-		case 8:
+		case UpdateBriefNtf::protocol_id:
 		{
 			UpdateBriefNtf* proto = new(m_protocol_buffer) UpdateBriefNtf();
 			if (proto->DeCode(net_data))
@@ -5496,7 +5530,7 @@ public:
 			}
 		}
 		break;
-		case 9:
+		case UpdatePlayerNtf::protocol_id:
 		{
 			UpdatePlayerNtf* proto = new(m_protocol_buffer) UpdatePlayerNtf();
 			if (proto->DeCode(net_data))
@@ -5513,7 +5547,7 @@ public:
 			}
 		}
 		break;
-		case 10:
+		case LoadPlayerReq::protocol_id:
 		{
 			LoadPlayerReq* proto = new(m_protocol_buffer) LoadPlayerReq();
 			if (proto->DeCode(net_data))
@@ -5530,7 +5564,7 @@ public:
 			}
 		}
 		break;
-		case 11:
+		case LoadPlayerAck::protocol_id:
 		{
 			LoadPlayerAck* proto = new(m_protocol_buffer) LoadPlayerAck();
 			if (proto->DeCode(net_data))
@@ -5547,7 +5581,7 @@ public:
 			}
 		}
 		break;
-		case 12:
+		case BillInNtf::protocol_id:
 		{
 			BillInNtf* proto = new(m_protocol_buffer) BillInNtf();
 			if (proto->DeCode(net_data))
@@ -5564,7 +5598,7 @@ public:
 			}
 		}
 		break;
-		case 13:
+		case LoadForbidReq::protocol_id:
 		{
 			LoadForbidReq* proto = new(m_protocol_buffer) LoadForbidReq();
 			if (proto->DeCode(net_data))
@@ -5581,7 +5615,7 @@ public:
 			}
 		}
 		break;
-		case 14:
+		case LoadForbidAck::protocol_id:
 		{
 			LoadForbidAck* proto = new(m_protocol_buffer) LoadForbidAck();
 			if (proto->DeCode(net_data))
@@ -5598,7 +5632,7 @@ public:
 			}
 		}
 		break;
-		case 15:
+		case AddForbidNtf::protocol_id:
 		{
 			AddForbidNtf* proto = new(m_protocol_buffer) AddForbidNtf();
 			if (proto->DeCode(net_data))
@@ -5615,7 +5649,7 @@ public:
 			}
 		}
 		break;
-		case 16:
+		case DelForbidNtf::protocol_id:
 		{
 			DelForbidNtf* proto = new(m_protocol_buffer) DelForbidNtf();
 			if (proto->DeCode(net_data))
@@ -5632,7 +5666,7 @@ public:
 			}
 		}
 		break;
-		case 17:
+		case RefreshPlayerCacheNtf::protocol_id:
 		{
 			RefreshPlayerCacheNtf* proto = new(m_protocol_buffer) RefreshPlayerCacheNtf();
 			if (proto->DeCode(net_data))
@@ -5649,7 +5683,7 @@ public:
 			}
 		}
 		break;
-		case 18:
+		case LoadForbidTalkReq::protocol_id:
 		{
 			LoadForbidTalkReq* proto = new(m_protocol_buffer) LoadForbidTalkReq();
 			if (proto->DeCode(net_data))
@@ -5666,7 +5700,7 @@ public:
 			}
 		}
 		break;
-		case 19:
+		case LoadForbidTalkAck::protocol_id:
 		{
 			LoadForbidTalkAck* proto = new(m_protocol_buffer) LoadForbidTalkAck();
 			if (proto->DeCode(net_data))
@@ -5697,6 +5731,9 @@ public:
 
 	static const unsigned short protocol_num = 19;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_LoadUserReq(LoadUserReq& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_LoadUserAck(LoadUserAck& rstProtocol){ (void)(rstProtocol); };

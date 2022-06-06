@@ -558,3 +558,13 @@ time_t year_begin_time(time_t year)
     t.tm_year = (int)year + 70;
     return mktime(&t);
 }
+
+extern time_t local_to_utc(time_t local)
+{
+    return local + g_time_zone;
+}
+
+extern time_t utc_to_local(time_t utc)
+{
+    return utc - g_time_zone;
+}

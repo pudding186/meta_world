@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_ladder">
+  <field name="player_guid"	type="uint64" />
+  <field name="rank"       	type="uint32" />
+  <field name="player_data"	type="longtext" />
+  <key type="primary"       fields="player_guid" />
+</table>

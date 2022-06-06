@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_ranklist">
+  <field name="type"        type="int32" />
+  <field name="rank_guid"   type="uint64" />
+  <field name="object_guid" type="uint64" />
+  <field name="rank_data1"  type="int64" />
+  <field name="rank_data2"  type="int64" />
+  <field name="rank_data3"  type="int64" />
+  <field name="name"        type="varchar"  length="32" />
+  <field name="info"        type="longtext" />
+  <key type="primary"       fields="object_guid, type" />
+</table>

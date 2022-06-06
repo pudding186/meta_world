@@ -2,6 +2,7 @@
 #define OS_UTIL_H
 
 #ifdef _MSC_VER
+#include <conio.h>
 
 typedef unsigned int PID;
 

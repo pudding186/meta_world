@@ -9,9 +9,8 @@
 #include "timer_system.hpp"
 #include "log_system.hpp"
 #include "net_system.hpp"
-#include "database_system.hpp"
 #include "dump_system.hpp"
-#include "config_system.hpp"
+#include "common/util/app_util.hpp"
 
 enum class SvrAppState :int32_t {
     NONE = 0,
@@ -39,6 +38,38 @@ enum class AsyncRet :int32_t {
 template<typename T>
 class SvrApp
 {
+public:
+    // override by Implement
+    static inline std::string GetName() { return "Unknow Server"; }
+    static inline std::string GetVersion() { return "Unknow version"; }
+    static inline uint32_t GetZoneId() { return 0; }
+
+    inline size_t MaxLogThreadNum() { return 1; }
+    inline size_t MaxLogEventNum() { return 4096; }
+    inline size_t MaxPrintCacheSize() { return 65536; }
+
+    inline uint32_t MaxSocketNum() { return 8; }
+    inline uint32_t MaxIOThreadNum() { return 2; }
+    inline uint32_t MaxAcceptExNum() { return 4; }
+    inline uint32_t MaxEventNum() { return 64 * 1024; }
+
+    inline size_t MaxDBEventNum() { return 256 * 1024; }
+
+
+    std::string OnInitialize(void) { return u8""; }
+
+    bool OnUpdate(CFuncPerformanceInfo** info) 
+    {
+        FUNC_PERFORMANCE_CHECK();
+        *info = &s_func_perf_info;
+
+        return false; 
+    }
+    void OnUninitialized(void) {}
+
+    AsyncRet OnAsyncInit(void) { return AsyncRet::ASYNC_SUCCESS; }
+    AsyncRet OnAsyncUninit(void) { return AsyncRet::ASYNC_SUCCESS; }
+
 public:
     SvrApp()
     {
@@ -121,12 +152,12 @@ public:
             break;
             default:
             {
-                stop_msg = fmt::format(u8"{} Stop Unknow Type:{}!", T::GetName(), type);
+                stop_msg = fmt::format(u8"{} Stop Unknow Type:{}!", T::GetName(), static_cast<int32_t>(type));
             }
             }
             if (sLogSystem.GetDefaultLogger())
             {
-                LogSys(u8"{}", stop_msg);
+                LogWRN(u8"{}", stop_msg);
             }
             else
             {
@@ -159,17 +190,10 @@ public:
                 return u8"Create Default Logger fail !";
             }
 
-            LogSys(u8"Time System Init Success!");
-            LogSys(u8"Logger System Init Success!");
+            LogSYS(u8"{:*^30}", fmt::format(u8"{}[ver:{}] Starting...", T::GetName(), T::GetVersion()));
+            LogSYS(u8"Time System Init Success!");
+            LogSYS(u8"Logger System Init Success!");
         }
-
-        if (!sDatabaseSystem.Initialize(static_cast<T*>(this)->MaxDBEventNum()))
-        {
-            return u8"DataBase System Init Fail!";
-        }
-
-        LogSys(u8"DataBase System Init Success!");
-
 
         if (!sNetSystem.Initialize(
             static_cast<T*>(this)->MaxSocketNum(),
@@ -181,7 +205,7 @@ public:
             return u8"Net System Init Fail!";
         }
 
-        LogSys(u8"Net System Init Success!");
+        LogSYS(u8"Net System Init Success!");
 
         return static_cast<T*>(this)->OnInitialize();
     }
@@ -192,9 +216,7 @@ public:
 
         sNetSystem.Uninitialized();
 
-        sDatabaseSystem.Uninitialized();
-
-        LogSys(u8"{} Uninit Success!", T::GetName());
+        LogSYS(u8"{}[ver:{}] Close Success!", T::GetName(), T::GetVersion());
 
         sLogSystem.Uninitialized();
 
@@ -220,12 +242,6 @@ public:
                 proc_cycles += fpfi->once_cycles;
 
                 if (sNetSystem.OnUpdate(&fpfi))
-                {
-                    busy = true;
-                }
-                proc_cycles += fpfi->once_cycles;
-
-                if (sDatabaseSystem.OnUpdate(&fpfi))
                 {
                     busy = true;
                 }
@@ -263,11 +279,11 @@ public:
         {
             if (sLogSystem.GetDefaultLogger())
             {
-                LogErr(u8"{}", init_ret);
+                LogERR(u8"{} Init Fail:{}", T::GetName(), init_ret);
             }
             else
             {
-                LogPrinf(u8"{}", init_ret);
+                LogPrinf(u8"{} Init Fail:{}", T::GetName(), init_ret);
             }
 
             Stop(SvrAppStopType::INIT_FAIL);
@@ -296,16 +312,11 @@ public:
 
             if (m_async_caller)
             {
-                sTimerSystem.DelDelayCaller(m_async_caller);
-            }
-
-            if (!m_async_caller)
-            {
-                m_async_caller = sTimerSystem.AddDelayCaller(100, -1, this, &SvrApp<T>::OnState);
+                sTimerSystem.ModifyTimer(m_async_caller, 100, -1);
             }
             else
             {
-                sTimerSystem.ModDelayCaller(m_async_caller, 100, -1);
+                m_async_caller = sTimerSystem.CreateTimeCaller(100, -1, std::bind(&SvrApp<T>::OnState, this));
             }
 
             m_svr_state = SvrAppState::INIT;
@@ -320,13 +331,13 @@ public:
                 return;
             }
 
-            if (!m_async_caller)
+            if (m_async_caller)
             {
-                m_async_caller = sTimerSystem.AddDelayCaller(1000, -1, this, &SvrApp<T>::OnState);
+                sTimerSystem.ModifyTimer(m_async_caller, 1000, -1);
             }
             else
             {
-                sTimerSystem.ModDelayCaller(m_async_caller, 1000, -1);
+                m_async_caller = sTimerSystem.CreateTimeCaller(1000, -1, std::bind(&SvrApp<T>::OnState, this));
             }
 
             m_svr_state = SvrAppState::UNINIT;
@@ -342,7 +353,7 @@ public:
 
             if (m_async_caller)
             {
-                sTimerSystem.DelDelayCaller(m_async_caller);
+                sTimerSystem.DestroyCaller(m_async_caller);
                 m_async_caller = nullptr;
             }
 
@@ -375,8 +386,11 @@ public:
             switch (static_cast<T*>(this)->OnAsyncInit())
             {
             case AsyncRet::ASYNC_SUCCESS:
+            {
                 SetState(SvrAppState::RUN);
-            	break;
+                LogSYS(u8"{:*^30}", fmt::format(u8"{}[ver:{}] Working...", T::GetName(), T::GetVersion()));
+            }
+            break;
             case AsyncRet::ASYNC_FAIL:
             {
                 Stop(SvrAppStopType::INIT_FAIL);
@@ -405,28 +419,6 @@ public:
             return;
         }
     }
-
-    static inline std::string GetName() { return "Base Server"; }
-    static inline std::string GetVersion() { return "MT0"; }
-
-    inline size_t MaxLogThreadNum() { return 1; }
-    inline size_t MaxLogEventNum() { return 4096; }
-    inline size_t MaxPrintCacheSize() { return 65536; }
-
-    inline uint32_t MaxSocketNum() { return 8; }
-    inline uint32_t MaxIOThreadNum() { return 2; }
-    inline uint32_t MaxAcceptExNum() { return 4; }
-    inline uint32_t MaxEventNum() { return 64 * 1024; }
-
-    inline size_t MaxDBEventNum() { return 256 * 1024; }
-
-
-    std::string OnInitialize(void) { return u8""; }
-    bool OnUpdate(CFuncPerformanceInfo** info) { (void)info; return false; }
-    void OnUninitialized(void){}
-
-    AsyncRet OnAsyncInit(void) { return AsyncRet::ASYNC_SUCCESS; }
-    AsyncRet OnAsyncUninit() { return AsyncRet::ASYNC_SUCCESS; }
 private:
 
 #ifdef _MSC_VER
@@ -455,12 +447,6 @@ private:
     {
         (void)code;
 
-        //TCHAR time_buf[32] = { 0 };
-        //time_t times = get_time();
-        //struct tm stm;
-        //localtime_s(&stm, &times);
-        //_tcsftime(time_buf, sizeof(time_buf) - 1, _T("%Y-%m-%d_%H_%M_%S"), &stm);
-
         char stack_file_path[MAX_PATH] = { 0 };
 
         snprintf(stack_file_path, sizeof(stack_file_path), "stack_%s_%s.log", T::GetName().c_str(), T::GetVersion().c_str());
@@ -481,7 +467,7 @@ private:
         fclose(stack_file);
 
         std::string msg = "Version: " + T::GetVersion() + "\r\n";
-        msg += fmt::format("Zone: {}\r\n", sConfigSystem.GetZoneId());
+        msg += fmt::format("Zone: {}\r\n", T::GetZoneId());
         msg += T::GetName() + " crush:\r\n ";
         msg += buf;
 
@@ -524,7 +510,7 @@ private:
     std::thread m_svr_thread;
     std::atomic<SvrAppState> m_svr_state;
     std::atomic<SvrAppStopType> m_stop_type;
-    DelayCaller* m_async_caller;
+    ITimer* m_async_caller;
 
     uint64_t m_last_proc_cycles;
     uint64_t m_last_elapse_cycles;

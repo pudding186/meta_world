@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_guild_member">
+  <field name="player_guid"         type="uint64" />
+  <field name="guild_guid"          type="uint64" />
+  <field name="player_name"         type="varchar" length="32" />
+  <field name="level"               type="uint32" />
+  <field name="role"                type="uint32" />
+  <field name="guild_job"           type="uint32" />
+  <field name="total_contrb"        type="uint32" />
+  <field name="surplus_contrb"      type="uint32" />
+  <field name="last_week_contrb"    type="uint32" />
+  <field name="this_week_contrb"    type="uint32" />
+  <field name="permission"          type="uint32" />
+  <field name="join_time"           type="uint32" />
+  <field name="donate_bind_gold"    type="uint32" />
+  <field name="last_donate_time"    type="uint32" />
+  <field name="last_dividend_time"  type="uint32" />
+  <field name="last_login_time"     type="uint32" />
+  <field name="last_logout_time"    type="uint32" />
+  <field name="forbid_end_time"     type="uint32" />
+  <field name="status"              type="uint32" />
+  <field name="vip"                 type="int32" />
+  <field name="reincarnation"       type="int32" />
+  <field name="total_fight_value"   type="int64" />
+  <field name="job"                 type="int8" />
+  <field name="customs"             type="longtext" />
+  <key type="primary"               fields="player_guid" />
+</table>

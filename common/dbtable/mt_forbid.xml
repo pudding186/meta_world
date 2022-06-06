@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_forbid">
+  <field name="sid"     type="uint8"    comment="子区id"/>
+  <field name="keyword" type="varchar"  length="60"    comment="关键字"/>
+  <field name="keytype" type="uint8"    comment="关键字类型"/>
+  <field name="fbdtype" type="uint8"    comment="禁止类型"/>
+  <field name="begin"   type="int64"   comment="起始时间"/>
+  <field name="end"     type="int64"    comment="结束时间"/>
+  <field name="desc"    type="varchar"  length="60"    comment="描述"/>
+  <key type="primary"   fields="sid,keyword,keytype,fbdtype" />
+</table>

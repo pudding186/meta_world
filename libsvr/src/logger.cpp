@@ -44,7 +44,8 @@ typedef std::chrono::time_point<std::chrono::system_clock, std::chrono::millisec
 
 typedef struct st_print_cmd
 {
-    file_logger_level   lv;
+    //file_logger_level   lv;
+    print_color         color;
     size_t              data_len;
 }print_cmd;
 
@@ -109,7 +110,9 @@ typedef struct st_log_cmd
 {
     log_option          option;
     file_logger*        logger;
-    file_logger_level   lv;
+    //file_logger_level   lv;
+    print_color         color;
+    const char*         prefix;
     SFormatArgs<>*      fmt_args;
     TPMS                tpms;
 }log_cmd;
@@ -170,7 +173,7 @@ public:
 protected:
 private:
     std::thread         m_print_thread;
-    file_logger_level   m_last_level;
+    print_color         m_last_color;
     HLOOPCACHE          m_print_cache;
 };
 
@@ -404,8 +407,9 @@ bool log_thread::_check_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
             char sz_file_full_path[MAX_LOG_FILE_PATH];
             int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
             sz_file_full_path[len] = 0;
-            fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-            err_msg = sys_error.what();
+            //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+            //err_msg = sys_error.what();
+            err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
             err_msg.append("\n");
 
             return false;
@@ -475,8 +479,8 @@ bool log_thread::_check_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
                 char sz_file_full_path[MAX_LOG_FILE_PATH];
                 int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
                 sz_file_full_path[len] = 0;
-                fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-                err_msg = sys_error.what();
+                //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+                err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
                 err_msg.append("\n");
                 return false;
             }
@@ -518,8 +522,8 @@ bool log_thread::_check_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
             char sz_file_full_path[MAX_LOG_FILE_PATH];
             int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
             sz_file_full_path[len] = 0;
-            fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-            err_msg = sys_error.what();
+            //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+            err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: open file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
             err_msg.append("\n");
             return false;
         }
@@ -570,8 +574,8 @@ bool log_thread::_reset_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
             char sz_file_full_path[MAX_LOG_FILE_PATH];
             int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
             sz_file_full_path[len] = 0;
-            fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-            err_msg = sys_error.what();
+            //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+            err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
             err_msg.append("\n");
 
             return false;
@@ -641,8 +645,8 @@ bool log_thread::_reset_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
                 char sz_file_full_path[MAX_LOG_FILE_PATH];
                 int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
                 sz_file_full_path[len] = 0;
-                fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-                err_msg = sys_error.what();
+                //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+                err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
                 err_msg.append("\n");
                 return false;
             }
@@ -684,8 +688,8 @@ bool log_thread::_reset_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
             char sz_file_full_path[MAX_LOG_FILE_PATH];
             int len = wc_to_mb(CP_UTF8, file_full_path, file_full_path_len, sz_file_full_path, MAX_LOG_FILE_PATH);
             sz_file_full_path[len] = 0;
-            fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
-            err_msg = sys_error.what();
+            //fmt::system_error sys_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno);
+            err_msg = fmt::system_error(errno, "{}.{:<4}<{:<5}> {}: reset file {} fail-{}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, "[ERR]", sz_file_full_path, errno).what();
             err_msg.append("\n");
             return false;
         }
@@ -1049,32 +1053,32 @@ bool log_thread::_reset_log(log_cmd* cmd, log_proc* proc, std::string& err_msg)
 #error "unknown compiler"
 #endif
 
-const char* log_lv_to_str(file_logger_level lv)
-{
-    switch (lv)
-    {
-    case log_nul:
-        return "";
-        break;
-    case log_dbg:
-        return "[DBG]";
-        break;
-    case log_inf:
-        return "[INF]";
-        break;
-    case log_wrn:
-        return "[WRN]";
-        break;
-    case log_cri:
-        return "[CRI]";
-        break;
-    case log_sys:
-        return "[SYS]";
-        break;
-    default:
-        return "[OMG]";
-    }
-}
+//const char* log_lv_to_str(file_logger_level lv)
+//{
+//    switch (lv)
+//    {
+//    case log_nul:
+//        return "";
+//        break;
+//    case log_dbg:
+//        return "[DBG]";
+//        break;
+//    case log_inf:
+//        return "[INF]";
+//        break;
+//    case log_wrn:
+//        return "[WRN]";
+//        break;
+//    case log_cri:
+//        return "[CRI]";
+//        break;
+//    case log_sys:
+//        return "[SYS]";
+//        break;
+//    default:
+//        return "[OMG]";
+//    }
+//}
 
 
 
@@ -1091,7 +1095,7 @@ void log_thread::_do_cmd(log_cmd* cmd, log_proc* proc)
 
         bool check_ret = _check_log(cmd, proc, err_msg);
 
-        fmt::format_to(out_prefix, "{}.{:<4}<{:<5}> {}: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, log_lv_to_str(cmd->lv));
+        fmt::format_to(std::back_inserter(out_prefix), "{}.{:<4}<{:<5}> [{}]: ", proc->time_str, cmd->tpms.time_since_epoch().count() % 1000, proc->t_id, cmd->prefix/*log_lv_to_str(cmd->lv)*/);
         if (opt_write_c == cmd->option)
         {
             cmd->fmt_args->format_c_to_buffer(out_data);
@@ -1114,7 +1118,8 @@ void log_thread::_do_cmd(log_cmd* cmd, log_proc* proc)
         {
             print_cmd err_pt_cmd;
             err_pt_cmd.data_len = err_msg.length();
-            err_pt_cmd.lv = log_cri;
+            err_pt_cmd.color = print_color::red;
+            //err_pt_cmd.lv = log_cri;
 
             if (loop_cache_free_size(m_print_data_cache) >= sizeof(print_cmd) + err_pt_cmd.data_len)
             {
@@ -1125,26 +1130,23 @@ void log_thread::_do_cmd(log_cmd* cmd, log_proc* proc)
 
         cmd->logger->log_ack++;
 
-        if (cmd->lv != log_nul)
-        {
-            print_cmd pt_cmd;
-            pt_cmd.data_len = out_prefix.size() + out_data.size();
-            pt_cmd.lv = cmd->lv;
+        print_cmd pt_cmd;
+        pt_cmd.data_len = out_prefix.size() + out_data.size();
+        pt_cmd.color = cmd->color;
 
-            if (loop_cache_free_size(m_print_data_cache) > sizeof(print_cmd) + pt_cmd.data_len)
+        if (loop_cache_free_size(m_print_data_cache) > sizeof(print_cmd) + pt_cmd.data_len)
+        {
+            if (!loop_cache_push_data(m_print_data_cache, &pt_cmd, sizeof(print_cmd)))
             {
-                if (!loop_cache_push_data(m_print_data_cache, &pt_cmd, sizeof(print_cmd)))
-                {
-                    CRUSH_CODE();
-                }
-                if (!loop_cache_push_data(m_print_data_cache, out_prefix.data(), out_prefix.size()))
-                {
-                    CRUSH_CODE();
-                }
-                if (!loop_cache_push_data(m_print_data_cache, out_data.data(), out_data.size()))
-                {
-                    CRUSH_CODE();
-                }
+                CRUSH_CODE();
+            }
+            if (!loop_cache_push_data(m_print_data_cache, out_prefix.data(), out_prefix.size()))
+            {
+                CRUSH_CODE();
+            }
+            if (!loop_cache_push_data(m_print_data_cache, out_data.data(), out_data.size()))
+            {
+                CRUSH_CODE();
             }
         }
     }
@@ -1176,7 +1178,7 @@ void log_thread::_do_cmd(log_cmd* cmd, log_proc* proc)
         {
             print_cmd err_pt_cmd;
             err_pt_cmd.data_len = err_msg.length();
-            err_pt_cmd.lv = log_cri;
+            err_pt_cmd.color = print_color::red;
 
             if (loop_cache_free_size(m_print_data_cache) >= sizeof(print_cmd) + err_pt_cmd.data_len)
             {
@@ -1381,7 +1383,8 @@ print_thread::print_thread()
     m_print_cache = create_loop_cache(0, g_logger_manager->print_cache_size * g_logger_manager->log_thread_num);
 
     m_print_thread = std::thread(&print_thread::_print_func, this);
-    m_last_level = log_nul;
+    //m_last_level = log_nul;
+    m_last_color = print_color::null;
     
 }
 
@@ -1394,28 +1397,34 @@ print_thread::~print_thread()
 #ifdef _MSC_VER
 void print_thread::_check_print(print_cmd* cmd)
 {
-    if (cmd->lv != m_last_level)
+    if (cmd->color != m_last_color)
     {
-        m_last_level = cmd->lv;
+        m_last_color = cmd->color;
 
-        switch (m_last_level)
+        switch (m_last_color)
         {
-        case log_sys:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+        case print_color::null:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
             break;
-        case log_cri:
+        case print_color::red:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED);
             break;
-        case log_wrn:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
+        case print_color::green:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN);
             break;
-        case log_inf:
+        case print_color::blue:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_BLUE);
             break;
-        case log_dbg:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        case print_color::yellow:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_RED);
             break;
-        case log_nul:
+        case print_color::pink:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE);
+            break;
+        case print_color::cyan:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE);
+            break;
+        case print_color::white:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             break;
         default:
@@ -1426,29 +1435,35 @@ void print_thread::_check_print(print_cmd* cmd)
 #elif __GNUC__
 void print_thread::_check_print(print_cmd* cmd)
 {
-    if (cmd->lv != m_last_level)
+    if (cmd->color != m_last_color)
     {
-        m_last_level = cmd->lv;
+        m_last_color = cmd->color;
 
-        switch (m_last_level)
+        switch (m_last_color)
         {
-        case log_sys:
-            printf("\033[1;32m");
+        case print_color::null:
+            printf("\033[0m");
             break;
-        case log_cri:
-            printf("\033[1;31m");
+        case print_color::red:
+            printf("\033[0;31m");
             break;
-        case log_wrn:
+        case print_color::green:
+            printf("\033[0;32m");
+            break;
+        case print_color::blue:
+            printf("\033[0;34m");
+            break;
+        case print_color::yellow:
             printf("\033[1;33m");
             break;
-        case log_inf:
-            printf("\033[1;34m");
+        case print_color::pink:
+            printf("\033[0;35m");
             break;
-        case log_dbg:
+        case print_color::cyan:
+            printf("\033[0;36m");
+            break;
+        case print_color::white:
             printf("\033[1;37m");
-            break;
-        case log_nul:
-            printf("\033[0m");
             break;
         default:
             break;
@@ -1526,7 +1541,7 @@ void print_thread::_proc_print_end()
 
     print_cmd end_print_cmd;
     end_print_cmd.data_len = 0;
-    end_print_cmd.lv = log_nul;
+    end_print_cmd.color = print_color::null;
     _check_print(&end_print_cmd);
 }
 
@@ -1695,7 +1710,7 @@ log_cmd* _get_log_cmd(log_proc* proc)
     return cmd;
 }
 
-bool file_logger_async_log(file_logger* logger, bool is_c_format, file_logger_level lv, SFormatArgs<>* fmt_args, bool is_block)
+bool file_logger_async_log(file_logger* logger, print_color color, const char* prefix, SFormatArgs<>* fmt_args, bool is_block)
 {
     log_proc* proc = _get_log_proc();
 
@@ -1703,14 +1718,16 @@ bool file_logger_async_log(file_logger* logger, bool is_c_format, file_logger_le
 
     cmd->option = opt_write;
 
-    if (is_c_format)
-    {
-        cmd->option = opt_write_c;
-    }
+    //if (is_c_format)
+    //{
+    //    cmd->option = opt_write_c;
+    //}
 
     cmd->fmt_args = fmt_args;
     cmd->logger = logger;
-    cmd->lv = lv;
+    cmd->prefix = prefix;
+    cmd->color = color;
+    //cmd->lv = lv;
 
     cmd->tpms = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
     if (loop_cache_push_data(proc->queue[logger->log_thread_idx].cmd_queue, &cmd, sizeof(log_cmd*)))

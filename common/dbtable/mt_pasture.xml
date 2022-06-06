@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_pasture">
+  <field name="pet_guid"         		type="uint64" comment="宠物GUID"/>
+  <field name="owner_guid"         		type="uint64" comment="拥有者GUID"/>
+  <field name="map"       				type="uint32" comment="地图"/>
+  <field name="x"    					type="uint32" comment="x坐标"/>
+  <field name="y"   					type="uint32" comment="y坐标"/>
+  <field name="placed_time"    			type="uint32" comment="放置时间"/>
+  <field name="placed_status"   		type="uint32" comment="放置状态"/>
+  <field name="replaced_time"  			type="uint32" comment="替换时间"/>
+  <field name="replaced_player_guid"    type="uint64" comment="替换的玩家GUID"/>
+  <field name="replaced_player_name"	type="varchar"  length="255" comment="替换的玩家名字"/>
+  <field name="replaced_pet_guid"   	type="uint64" comment="替换的宠物GUID"/>
+  <field name="replaced_pet_name"   	type="varchar"  length="255" comment="替换的宠物名字"/>
+  <field name="pet_data"   				type="longtext" comment="宠物数据"/>
+
+  <key type="primary"       fields="pet_guid" />
+</table>

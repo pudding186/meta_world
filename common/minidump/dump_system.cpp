@@ -83,11 +83,11 @@ DumpSystem::DumpSystem(const TCHAR* pre /*= 0*/)
 
     if (pre)
     {
-        _sntprintf(m_dump_pre, sizeof(m_dump_pre), _T("%s_%s"), module_name, pre);
+        _sntprintf_s(m_dump_pre, sizeof(m_dump_pre), _TRUNCATE, _T("%s_%s"), module_name, pre);
     }
     else
     {
-        _sntprintf(m_dump_pre, sizeof(m_dump_pre), _T("%s"), module_name);
+        _sntprintf_s(m_dump_pre, sizeof(m_dump_pre), _TRUNCATE, _T("%s"), module_name);
     }
 
     DisableSetUnhandledExceptionFilter();
@@ -118,9 +118,9 @@ bool DumpSystem::GenMiniDump(PEXCEPTION_POINTERS ei)
     _tcsftime(time_buf, sizeof(time_buf) - 1, _T("%Y-%m-%d_%H_%M_%S"), &stm);
 
 #ifdef PRODUCTVER
-    _sntprintf(name_buf, sizeof(name_buf), _T("%s_%d-%s.dmp"), g_DumpSystem.m_dump_pre, PRODUCTVER, time_buf);
+    _sntprintf_s(name_buf, sizeof(name_buf), _TRUNCATE, _T("%s_%s-%s.dmp"), g_DumpSystem.m_dump_pre, STRPRODUCTVER, time_buf);
 #else
-    _sntprintf(name_buf, sizeof(name_buf), _T("%s_%s.dmp"), g_DumpSystem.m_dump_pre, time_buf);
+    _sntprintf_s(name_buf, sizeof(name_buf), _TRUNCATE, _T("%s_%s.dmp"), g_DumpSystem.m_dump_pre, time_buf);
 #endif
 
     HANDLE handle = CreateFile

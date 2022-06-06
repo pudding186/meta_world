@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_guild">
+  <field name="guid"              type="uint64" />
+  <field name="id"                type="uint32"  extra="NOT NULL AUTO_INCREMENT" />
+  <field name="name"              type="varchar" length="32" />
+  <field name="declaration"       type="varchar" length="1024" />
+  <field name="leader_guid"       type="uint64" />
+  <field name="leader_name"       type="varchar" length="32" />
+  <field name="level"             type="uint32" />
+  <field name="base_level"        type="uint32" />
+  <field name="wing_room_level"   type="uint32" />
+  <field name="vault_level"       type="uint32" />
+  <field name="academy_level"     type="uint32" />
+  <field name="pharmacy_level"    type="uint32" />
+  <field name="upgrade_cooldown"  type="uint32" />
+  <field name="fund"              type="uint32" />
+  <field name="liveness"          type="uint32" />
+  <field name="build_degree"      type="uint32" />
+  <field name="prestige"          type="uint32" />
+  <field name="fight_score"       type="uint32" />
+  <field name="config"            type="uint32" />
+  <field name="create_time"       type="uint32" />
+  <field name="dismissed_time"    type="uint32" />
+  <field name="impeach_time"      type="uint32" />
+  <field name="impeach_guid"      type="uint64" />
+  <field name="notice_time"       type="uint32" />
+  <field name="notice"            type="varchar" length="1024" />
+  <field name="events"            type="longtext" />
+  <field name="items"             type="longtext" />
+  <field name="customs"           type="longtext" />
+  <key type="primary"             fields="guid" />
+  <key type="unique"              fields="id" />
+</table>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_zone">
+  <field name="zone_id"   type="uint32" comment="区id"/>
+  <field name="zone_type" type="uint32" comment="区类型 1=大话 2=梦幻"/>
+  <field name="zone_name" type="varchar" length="64" comment="区名"/>
+  <field name="zone_time" type="int64" comment="上次区关闭时间"/>
+  <key type="primary"     fields="zone_id" />
+</table>

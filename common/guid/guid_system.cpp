@@ -1,6 +1,5 @@
 ﻿#include "utility.hpp"
 #include "timer.h"
-#include "config_system.hpp"
 #include "guid_system.hpp"
 #include "app_util.hpp"
 
@@ -52,6 +51,17 @@ bool Guid::operator!=(const Guid& guid) const
     return !(*this == guid);
 }
 
+Guid& Guid::operator=(const Guid& guid)
+{
+    if (this != &guid)
+    {
+        unid = guid.unid;
+        zid = guid.zid;
+    }
+
+    return *this;
+}
+
 bool Guid::Marshal(const Guid& guid, std::string& out)
 {
     char sz_guid[32];
@@ -84,11 +94,10 @@ bool Guid::UnMarshal(Guid& guid, const std::string& in)
     return false;
 }
 
-bool GuidSystem::Initialize(void)
+bool GuidSystem::Initialize(uint32_t zone_id)
 {
     FUNC_PERFORMANCE_CHECK();
 
-    uint32_t zone_id = sConfigSystem.GetZoneId();
     uint32_t time = static_cast<uint32_t>(get_time());
 
     for (uint16_t i = 0; i < static_cast<uint16_t>(GuidType::GUID_MAX); i++)

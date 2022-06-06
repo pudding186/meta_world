@@ -44,7 +44,7 @@ extern "C" {
 
 typedef struct st_mem_block
 {
-    struct st_mem_block*    next; //指向下一个内存块的
+    struct st_mem_block*    next;
     void*                   end;
 }mem_block;
 
@@ -56,14 +56,13 @@ typedef struct st_mem_unit
 
     void*                   unit_create_thread;
     
-    struct st_mem_block*    mem_block_head; //内存块链表头
-    void*                   unit_free_head; //可分配内存单元链表头
+    struct st_mem_block*    mem_block_head;
+    void*                   unit_free_head;
 
-    size_t                  unit_size;      //内存单元的大小
-    size_t                  grow_count;     //内存池每次增长个数
+    size_t                  unit_size;
+    size_t                  grow_count;
 
     size_t                  alloc_count;
-    //size_t                  total_count;
 
     size_t                  blocks_size;
     size_t                  mt_blocks_size;
@@ -71,13 +70,13 @@ typedef struct st_mem_unit
 
 typedef struct st_mem_pool
 {
-    struct st_mem_unit**    units;          //内存池数组
-    size_t                  unit_size;      //内存池数组长度
-    size_t                  shift;          //位移偏移量
-    size_t                  align;          //内存池对齐字节数，必须是4的倍数
-    size_t                  grow;           //每次扩展内存大小
-    size_t                  min_mem_size;   //内存池管理的最小内存大小，小于此大小按最小分配
-    size_t                  max_mem_size;   //内存池管理的最大内存大小，大于此大小的内存由系统托管
+    struct st_mem_unit**    units;
+    size_t                  unit_size;
+    size_t                  shift;
+    size_t                  align;
+    size_t                  grow;
+    size_t                  min_mem_size;
+    size_t                  max_mem_size;
     size_t                  system_alloc_size;
     size_t                  system_free_size;
     size_t                  mt_system_alloc_size;

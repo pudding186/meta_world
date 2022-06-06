@@ -6,6 +6,19 @@
 namespace SMemory
 {
     //////////////////////////////////////////////////////////////////////////
+    bool IsValidClassPtr(void* ptr)
+    {
+        if (ptr)
+        {
+            IClassMemory* class_memory = *(IClassMemory**)((unsigned char*)ptr - sizeof(IClassMemory**));
+            if (class_memory != (IClassMemory*)REP_DEL_SIG)
+            {
+                return class_memory->IsValid(ptr) != 0;
+            }
+        }
+
+        return false;
+    }
 
     void Delete(void* ptr)
     {

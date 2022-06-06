@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_auction_object">
+  <field name="guid"          type="uint64" />
+  <field name="id"            type="uint32" />
+  <field name="type"          type="uint8" />
+  <field name="custom1"       type="uint16" />
+  <field name="custom2"       type="uint16" />
+  <field name="custom3"       type="uint16" />
+  <field name="level"         type="uint16" />
+  <field name="fight_value"   type="uint16" />
+  <field name="coin_type"     type="uint16" />
+  <field name="coin_value"    type="int64" />
+  <field name="amount"        type="uint16" />
+  <field name="state"         type="uint8" />
+  <field name="puton_times"   type="uint32" />
+  <field name="pulloff_times" type="uint32" />
+  <field name="seller_guid"   type="uint64" />
+  <field name="seller_name"   type="varchar" length="32" />
+  <field name="data"          type="longtext" />
+  <key type="primary"         fields="guid" />
+</table>

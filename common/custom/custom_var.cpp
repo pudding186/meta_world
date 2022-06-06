@@ -45,7 +45,7 @@ void CustomVar::SetStr(const std::string& key, const std::string& value)
     }
 }
 
-const std::string& CustomVar::GetStr(const std::string& key)
+const std::string& CustomVar::GetStr(const std::string& key) const
 {
     FUNC_PERFORMANCE_CHECK();
 

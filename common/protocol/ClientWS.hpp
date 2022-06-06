@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct RandKeyNtf:Protocol<RandKeyNtf>
+struct RandKeyNtf:TProtocol<RandKeyNtf>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 1;
+
 	DataArray<unsigned char, unsigned char> code_content; //随机码
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -235,8 +238,11 @@ struct RandKeyNtf:Protocol<RandKeyNtf>
     }
 };
 
-struct LoginReq:Protocol<LoginReq>
+struct LoginReq:TProtocol<LoginReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 2;
+
 	unsigned char             sid; //子区ID
 	char                      username[256]; //账号名
 	unsigned int              ip; //登陆ip地址
@@ -801,8 +807,11 @@ struct LoginReq:Protocol<LoginReq>
     }
 };
 
-struct LoginAck:Protocol<LoginAck>
+struct LoginAck:TProtocol<LoginAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 3;
+
 	unsigned int              uid; //账号ID
 	unsigned long long        guid; //正在GS中(战斗)的玩家GUID
 	unsigned long long        suid; //会话ID
@@ -1177,8 +1186,11 @@ struct LoginAck:Protocol<LoginAck>
     }
 };
 
-struct ReloginReq:Protocol<ReloginReq>
+struct ReloginReq:TProtocol<ReloginReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned char             sid; //子区ID
 	unsigned int              uid; //账号ID
 	unsigned int              ip; //登陆ip地址
@@ -1709,8 +1721,11 @@ struct ReloginReq:Protocol<ReloginReq>
     }
 };
 
-struct ReloginAck:Protocol<ReloginAck>
+struct ReloginAck:TProtocol<ReloginAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 5;
+
 	unsigned long long        guid; //在线玩家GUID
 	unsigned long long        rid; //运行时ID(服务器重启后变化)
 	unsigned int              gsindex; //GS索引
@@ -2085,8 +2100,11 @@ struct ReloginAck:Protocol<ReloginAck>
     }
 };
 
-struct LogoutReq:Protocol<LogoutReq>
+struct LogoutReq:TProtocol<LogoutReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 6;
+
 	unsigned char             type; //1:回到选角界面 2:退出游戏
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -2309,8 +2327,11 @@ struct LogoutReq:Protocol<LogoutReq>
     }
 };
 
-struct LogoutAck:Protocol<LogoutAck>
+struct LogoutAck:TProtocol<LogoutAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 7;
+
 	unsigned char             type; //1:回到选角界面 2:退出游戏
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -2601,8 +2622,11 @@ struct LogoutAck:Protocol<LogoutAck>
     }
 };
 
-struct KickNtf:Protocol<KickNtf>
+struct KickNtf:TProtocol<KickNtf>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 8;
+
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
 	bool EnCode(NetEnCode& net_data)
@@ -2865,8 +2889,11 @@ struct KickNtf:Protocol<KickNtf>
     }
 };
 
-struct PlayerListReq:Protocol<PlayerListReq>
+struct PlayerListReq:TProtocol<PlayerListReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 9;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -3012,8 +3039,11 @@ struct PlayerListReq:Protocol<PlayerListReq>
     }
 };
 
-struct PlayerListAck:Protocol<PlayerListAck>
+struct PlayerListAck:TProtocol<PlayerListAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 10;
+
 	unsigned long long        lastplayer; //最后一次登陆玩家
 	DataArray<PlayerBrief, unsigned char> briefs; //玩家简略列表
 	int                       errcode; //错误码
@@ -3357,8 +3387,11 @@ struct PlayerListAck:Protocol<PlayerListAck>
     }
 };
 
-struct CreatePlayerReq:Protocol<CreatePlayerReq>
+struct CreatePlayerReq:TProtocol<CreatePlayerReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 11;
+
 	PlayerBrief               playerbrief; //玩家信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -3599,8 +3632,11 @@ struct CreatePlayerReq:Protocol<CreatePlayerReq>
     }
 };
 
-struct CreatePlayerAck:Protocol<CreatePlayerAck>
+struct CreatePlayerAck:TProtocol<CreatePlayerAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 12;
+
 	PlayerBrief               playerbrief; //玩家信息
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -3916,8 +3952,11 @@ struct CreatePlayerAck:Protocol<CreatePlayerAck>
     }
 };
 
-struct DestroyPlayerReq:Protocol<DestroyPlayerReq>
+struct DestroyPlayerReq:TProtocol<DestroyPlayerReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 13;
+
 	unsigned long long        guid; //玩家GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4140,8 +4179,11 @@ struct DestroyPlayerReq:Protocol<DestroyPlayerReq>
     }
 };
 
-struct DestroyPlayerAck:Protocol<DestroyPlayerAck>
+struct DestroyPlayerAck:TProtocol<DestroyPlayerAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 14;
+
 	unsigned long long        guid; //玩家GUID
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -4432,8 +4474,11 @@ struct DestroyPlayerAck:Protocol<DestroyPlayerAck>
     }
 };
 
-struct RestorePlayerReq:Protocol<RestorePlayerReq>
+struct RestorePlayerReq:TProtocol<RestorePlayerReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 15;
+
 	unsigned long long        guid; //玩家GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4656,8 +4701,11 @@ struct RestorePlayerReq:Protocol<RestorePlayerReq>
     }
 };
 
-struct RestorePlayerAck:Protocol<RestorePlayerAck>
+struct RestorePlayerAck:TProtocol<RestorePlayerAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 16;
+
 	unsigned long long        guid; //玩家GUID
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -4948,8 +4996,11 @@ struct RestorePlayerAck:Protocol<RestorePlayerAck>
     }
 };
 
-struct EnterGSReq:Protocol<EnterGSReq>
+struct EnterGSReq:TProtocol<EnterGSReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 17;
+
 	unsigned long long        guid; //玩家GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -5172,8 +5223,11 @@ struct EnterGSReq:Protocol<EnterGSReq>
     }
 };
 
-struct EnterGSAck:Protocol<EnterGSAck>
+struct EnterGSAck:TProtocol<EnterGSAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 18;
+
 	unsigned long long        guid; //玩家GUID
 	unsigned int              gsindex; //GS索引
 	unsigned int              arrayid; //GS上玩家对象数组下标
@@ -5520,8 +5574,11 @@ struct EnterGSAck:Protocol<EnterGSAck>
     }
 };
 
-struct TrdLoginReq:Protocol<TrdLoginReq>
+struct TrdLoginReq:TProtocol<TrdLoginReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 19;
+
 	unsigned char             sid; //子区ID
 	char                      username[256]; //账号名
 	char                      platform[256]; //平台名称
@@ -6118,8 +6175,11 @@ struct TrdLoginReq:Protocol<TrdLoginReq>
     }
 };
 
-struct GetWSTimestampReq:Protocol<GetWSTimestampReq>
+struct GetWSTimestampReq:TProtocol<GetWSTimestampReq>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 20;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -6265,8 +6325,11 @@ struct GetWSTimestampReq:Protocol<GetWSTimestampReq>
     }
 };
 
-struct GetWSTimestampAck:Protocol<GetWSTimestampAck>
+struct GetWSTimestampAck:TProtocol<GetWSTimestampAck>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 21;
+
 	unsigned int              now; //当前服务器本地时间
 	int                       zone; //当前服务器本地时间减去标准UTC时间的差值
 	bool EnCode(NetEnCode& net_data)
@@ -6517,8 +6580,11 @@ struct GetWSTimestampAck:Protocol<GetWSTimestampAck>
     }
 };
 
-struct RealnameInfoNtf:Protocol<RealnameInfoNtf>
+struct RealnameInfoNtf:TProtocol<RealnameInfoNtf>
 {
+	static constexpr unsigned short module_id = 101;
+	static constexpr unsigned short protocol_id = 22;
+
 	unsigned int              realname_status; //实名认证状态
 	char                      auth[64]; //授权信息
 	char                      realname_token[64]; //token
@@ -6815,7 +6881,7 @@ struct RealnameInfoNtf:Protocol<RealnameInfoNtf>
 
 //===============数据定义结束===============
 template<typename D>
-class CClientWS
+class CClientWS: public ProtocolModule
 {
 public:
 	CClientWS()
@@ -6899,143 +6965,120 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 101)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 101)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case RandKeyNtf::protocol_id:
 		{
-			return RandKeyNtf::SName();
+			return RandKeyNtf::Name();
 		}
 		break;
-		case 2:
+		case LoginReq::protocol_id:
 		{
-			return LoginReq::SName();
+			return LoginReq::Name();
 		}
 		break;
-		case 3:
+		case LoginAck::protocol_id:
 		{
-			return LoginAck::SName();
+			return LoginAck::Name();
 		}
 		break;
-		case 4:
+		case ReloginReq::protocol_id:
 		{
-			return ReloginReq::SName();
+			return ReloginReq::Name();
 		}
 		break;
-		case 5:
+		case ReloginAck::protocol_id:
 		{
-			return ReloginAck::SName();
+			return ReloginAck::Name();
 		}
 		break;
-		case 6:
+		case LogoutReq::protocol_id:
 		{
-			return LogoutReq::SName();
+			return LogoutReq::Name();
 		}
 		break;
-		case 7:
+		case LogoutAck::protocol_id:
 		{
-			return LogoutAck::SName();
+			return LogoutAck::Name();
 		}
 		break;
-		case 8:
+		case KickNtf::protocol_id:
 		{
-			return KickNtf::SName();
+			return KickNtf::Name();
 		}
 		break;
-		case 9:
+		case PlayerListReq::protocol_id:
 		{
-			return PlayerListReq::SName();
+			return PlayerListReq::Name();
 		}
 		break;
-		case 10:
+		case PlayerListAck::protocol_id:
 		{
-			return PlayerListAck::SName();
+			return PlayerListAck::Name();
 		}
 		break;
-		case 11:
+		case CreatePlayerReq::protocol_id:
 		{
-			return CreatePlayerReq::SName();
+			return CreatePlayerReq::Name();
 		}
 		break;
-		case 12:
+		case CreatePlayerAck::protocol_id:
 		{
-			return CreatePlayerAck::SName();
+			return CreatePlayerAck::Name();
 		}
 		break;
-		case 13:
+		case DestroyPlayerReq::protocol_id:
 		{
-			return DestroyPlayerReq::SName();
+			return DestroyPlayerReq::Name();
 		}
 		break;
-		case 14:
+		case DestroyPlayerAck::protocol_id:
 		{
-			return DestroyPlayerAck::SName();
+			return DestroyPlayerAck::Name();
 		}
 		break;
-		case 15:
+		case RestorePlayerReq::protocol_id:
 		{
-			return RestorePlayerReq::SName();
+			return RestorePlayerReq::Name();
 		}
 		break;
-		case 16:
+		case RestorePlayerAck::protocol_id:
 		{
-			return RestorePlayerAck::SName();
+			return RestorePlayerAck::Name();
 		}
 		break;
-		case 17:
+		case EnterGSReq::protocol_id:
 		{
-			return EnterGSReq::SName();
+			return EnterGSReq::Name();
 		}
 		break;
-		case 18:
+		case EnterGSAck::protocol_id:
 		{
-			return EnterGSAck::SName();
+			return EnterGSAck::Name();
 		}
 		break;
-		case 19:
+		case TrdLoginReq::protocol_id:
 		{
-			return TrdLoginReq::SName();
+			return TrdLoginReq::Name();
 		}
 		break;
-		case 20:
+		case GetWSTimestampReq::protocol_id:
 		{
-			return GetWSTimestampReq::SName();
+			return GetWSTimestampReq::Name();
 		}
 		break;
-		case 21:
+		case GetWSTimestampAck::protocol_id:
 		{
-			return GetWSTimestampAck::SName();
+			return GetWSTimestampAck::Name();
 		}
 		break;
-		case 22:
+		case RealnameInfoNtf::protocol_id:
 		{
-			return RealnameInfoNtf::SName();
+			return RealnameInfoNtf::Name();
 		}
 		break;
 		default:
@@ -7066,7 +7109,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case RandKeyNtf::protocol_id:
 		{
 			RandKeyNtf* proto = new(m_protocol_buffer) RandKeyNtf();
 			if (proto->DeCode(net_data))
@@ -7083,7 +7126,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case LoginReq::protocol_id:
 		{
 			LoginReq* proto = new(m_protocol_buffer) LoginReq();
 			if (proto->DeCode(net_data))
@@ -7100,7 +7143,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case LoginAck::protocol_id:
 		{
 			LoginAck* proto = new(m_protocol_buffer) LoginAck();
 			if (proto->DeCode(net_data))
@@ -7117,7 +7160,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case ReloginReq::protocol_id:
 		{
 			ReloginReq* proto = new(m_protocol_buffer) ReloginReq();
 			if (proto->DeCode(net_data))
@@ -7134,7 +7177,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case ReloginAck::protocol_id:
 		{
 			ReloginAck* proto = new(m_protocol_buffer) ReloginAck();
 			if (proto->DeCode(net_data))
@@ -7151,7 +7194,7 @@ public:
 			}
 		}
 		break;
-		case 6:
+		case LogoutReq::protocol_id:
 		{
 			LogoutReq* proto = new(m_protocol_buffer) LogoutReq();
 			if (proto->DeCode(net_data))
@@ -7168,7 +7211,7 @@ public:
 			}
 		}
 		break;
-		case 7:
+		case LogoutAck::protocol_id:
 		{
 			LogoutAck* proto = new(m_protocol_buffer) LogoutAck();
 			if (proto->DeCode(net_data))
@@ -7185,7 +7228,7 @@ public:
 			}
 		}
 		break;
-		case 8:
+		case KickNtf::protocol_id:
 		{
 			KickNtf* proto = new(m_protocol_buffer) KickNtf();
 			if (proto->DeCode(net_data))
@@ -7202,7 +7245,7 @@ public:
 			}
 		}
 		break;
-		case 9:
+		case PlayerListReq::protocol_id:
 		{
 			PlayerListReq* proto = new(m_protocol_buffer) PlayerListReq();
 			if (proto->DeCode(net_data))
@@ -7219,7 +7262,7 @@ public:
 			}
 		}
 		break;
-		case 10:
+		case PlayerListAck::protocol_id:
 		{
 			PlayerListAck* proto = new(m_protocol_buffer) PlayerListAck();
 			if (proto->DeCode(net_data))
@@ -7236,7 +7279,7 @@ public:
 			}
 		}
 		break;
-		case 11:
+		case CreatePlayerReq::protocol_id:
 		{
 			CreatePlayerReq* proto = new(m_protocol_buffer) CreatePlayerReq();
 			if (proto->DeCode(net_data))
@@ -7253,7 +7296,7 @@ public:
 			}
 		}
 		break;
-		case 12:
+		case CreatePlayerAck::protocol_id:
 		{
 			CreatePlayerAck* proto = new(m_protocol_buffer) CreatePlayerAck();
 			if (proto->DeCode(net_data))
@@ -7270,7 +7313,7 @@ public:
 			}
 		}
 		break;
-		case 13:
+		case DestroyPlayerReq::protocol_id:
 		{
 			DestroyPlayerReq* proto = new(m_protocol_buffer) DestroyPlayerReq();
 			if (proto->DeCode(net_data))
@@ -7287,7 +7330,7 @@ public:
 			}
 		}
 		break;
-		case 14:
+		case DestroyPlayerAck::protocol_id:
 		{
 			DestroyPlayerAck* proto = new(m_protocol_buffer) DestroyPlayerAck();
 			if (proto->DeCode(net_data))
@@ -7304,7 +7347,7 @@ public:
 			}
 		}
 		break;
-		case 15:
+		case RestorePlayerReq::protocol_id:
 		{
 			RestorePlayerReq* proto = new(m_protocol_buffer) RestorePlayerReq();
 			if (proto->DeCode(net_data))
@@ -7321,7 +7364,7 @@ public:
 			}
 		}
 		break;
-		case 16:
+		case RestorePlayerAck::protocol_id:
 		{
 			RestorePlayerAck* proto = new(m_protocol_buffer) RestorePlayerAck();
 			if (proto->DeCode(net_data))
@@ -7338,7 +7381,7 @@ public:
 			}
 		}
 		break;
-		case 17:
+		case EnterGSReq::protocol_id:
 		{
 			EnterGSReq* proto = new(m_protocol_buffer) EnterGSReq();
 			if (proto->DeCode(net_data))
@@ -7355,7 +7398,7 @@ public:
 			}
 		}
 		break;
-		case 18:
+		case EnterGSAck::protocol_id:
 		{
 			EnterGSAck* proto = new(m_protocol_buffer) EnterGSAck();
 			if (proto->DeCode(net_data))
@@ -7372,7 +7415,7 @@ public:
 			}
 		}
 		break;
-		case 19:
+		case TrdLoginReq::protocol_id:
 		{
 			TrdLoginReq* proto = new(m_protocol_buffer) TrdLoginReq();
 			if (proto->DeCode(net_data))
@@ -7389,7 +7432,7 @@ public:
 			}
 		}
 		break;
-		case 20:
+		case GetWSTimestampReq::protocol_id:
 		{
 			GetWSTimestampReq* proto = new(m_protocol_buffer) GetWSTimestampReq();
 			if (proto->DeCode(net_data))
@@ -7406,7 +7449,7 @@ public:
 			}
 		}
 		break;
-		case 21:
+		case GetWSTimestampAck::protocol_id:
 		{
 			GetWSTimestampAck* proto = new(m_protocol_buffer) GetWSTimestampAck();
 			if (proto->DeCode(net_data))
@@ -7423,7 +7466,7 @@ public:
 			}
 		}
 		break;
-		case 22:
+		case RealnameInfoNtf::protocol_id:
 		{
 			RealnameInfoNtf* proto = new(m_protocol_buffer) RealnameInfoNtf();
 			if (proto->DeCode(net_data))
@@ -7454,6 +7497,9 @@ public:
 
 	static const unsigned short protocol_num = 22;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_RandKeyNtf(RandKeyNtf& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_LoginReq(LoginReq& rstProtocol){ (void)(rstProtocol); };

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_billlog2">
+  <field name="bill_id"   type="uint64" />
+  <field name="user_id"   type="uint32" />
+  <field name="sid"       type="uint32" />
+  <field name="added_yb"  type="uint64" />
+  <field name="award_yb"  type="uint64" />
+  <field name="time"      type="uint32" />
+  <field name="user_name" type="varchar" length="32" />
+  <field name="bill_desc" type="varchar" length="1024" />
+  <key type="primary"     fields="bill_id" />
+</table>

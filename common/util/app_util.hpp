@@ -71,15 +71,29 @@ public:
     template <
         typename FN
     >
-    static void StrSplit(const std::string &str, 
-        const std::string &split, const FN &fn)
+        static void StrSplit(const std::string& str,
+            const std::string& split, const FN& fn)
     {
         std::string s = str;
-        const char *p = strtok((char *)s.c_str(), split.c_str());
+        char* ptr = nullptr;
+
+#ifdef _MSC_VER
+        const char* p = strtok_s((char*)s.c_str(), split.c_str(), &ptr);
+#elif __GNUC__
+        const char* p = strtok_r((char*)s.c_str(), split.c_str(), &ptr);
+#else
+#error u8"unknown compiler"
+#endif
         while (p)
         {
             fn(p);
-            p = strtok(0, split.c_str());
+#ifdef _MSC_VER
+            p = strtok_s(nullptr, split.c_str(), &ptr);
+#elif __GNUC__
+            p = strtok_r(nullptr, split.c_str(), &ptr);
+#else
+#error u8"unknown compiler"
+#endif
         }
     }
 
@@ -140,6 +154,9 @@ public:
             results.push_back(p);
             });
     }
+
+    static void StrSplitEx2(const std::string& str,
+        const std::string& split, std::vector<std::string>& results);
 
     //static char *UI642A64(uint64_t value, char *buf, int32_t count);
 

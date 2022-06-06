@@ -1,2 +1,2 @@
 # meta_world
-game server framework
+game server framework.

@@ -1,4 +1,5 @@
 @echo off
+%~dp0protocol_maker.exe %~dp0DataDefine.xml %~dp0
 %~dp0protocol_maker.exe %~dp0StructDef.xml %~dp0
 %~dp0protocol_maker.exe %~dp0ClientWS.xml %~dp0
 %~dp0protocol_maker.exe %~dp0ClientGS.xml %~dp0
@@ -8,4 +9,7 @@
 %~dp0protocol_maker.exe %~dp0WSGS.xml %~dp0
 %~dp0protocol_maker.exe %~dp0GSCS.xml %~dp0
 %~dp0protocol_maker.exe %~dp0FightData.xml %~dp0
+%~dp0protocol_maker.exe %~dp0STClientGS.xml %~dp0
+%~dp0protocol_maker.exe %~dp0STDataInfo.xml %~dp0
+%~dp0protocol_maker.exe %~dp0STGTSG.xml %~dp0
 @pause

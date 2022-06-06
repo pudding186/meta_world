@@ -1,33 +1,6 @@
 ﻿#include "utility.hpp"
 #include "timer_system.hpp"
 
-
-//class UpdateTimeTimer
-//    :
-//    public ITimer
-//{
-//public:
-//    UpdateTimeTimer()
-//    {
-//        SetInterval(1000);
-//        SetCount(-1);
-//    }
-//
-//    ~UpdateTimeTimer()
-//    {
-//
-//    }
-//
-//public:
-//    void OnTimer(void) override
-//    {
-//        sTimeSystem.OnUpdate();
-//    }
-//};
-//
-//UpdateTimeTimer* g_update_timer = 0;
-
-//INSTANCE_SINGLETON(TimerSystem);
 TimerSystem::TimerSystem()
     :
     m_timer_manager(nullptr)
@@ -89,11 +62,6 @@ bool TimerSystem::AddTimer(ITimer* timer, uint32_t elapse, int32_t count)
         }
     }
 
-    if (count > 0)
-    {
-        count++;
-    }
-
     HTIMERINFO h = timer_add(
         m_timer_manager,
         elapse,
@@ -118,11 +86,6 @@ bool TimerSystem::ModifyTimer(ITimer* timer, uint32_t elapse, int32_t count)
     if (!timer)
     {
         return false;
-    }
-
-    if (count > 0)
-    {
-        count++;
     }
 
     if (timer->GetTimerInfo() &&
@@ -150,7 +113,21 @@ void TimerSystem::DelTimer(ITimer *timer)
 
     if (timer == timer_get_data(timer->GetTimerInfo()))
     {
-        timer_mod(timer->GetTimerInfo(), 1, 1, timer);
+        timer_del(timer->GetTimerInfo());
+    }
+
+    timer->SetTimerInfo(nullptr);
+}
+
+void TimerSystem::OnTimer(HTIMERINFO timer)
+{
+    FUNC_PERFORMANCE_CHECK();
+
+    ITimer* t = static_cast<ITimer*>(timer_get_data(timer));
+
+    if (t == timer_get_data(t->GetTimerInfo()))
+    {
+        t->OnTimer();
     }
 }
 
@@ -172,33 +149,37 @@ int32_t TimerSystem::GetRemainCount(ITimer *timer)
     return 0;
 }
 
-bool TimerSystem::ModDelayCaller(DelayCaller* caller, uint32_t elapse, int32_t count)
+std::string TimerSystem::IsValidCronExpr(const std::string& cron_expr)
 {
     FUNC_PERFORMANCE_CHECK();
 
-    return ModifyTimer(caller, elapse, count);
+    try
+    {
+        auto cron = cron::make_cron(cron_expr);
+    }
+    catch (cron::bad_cronexpr const& ex)
+    {
+        return ex.what();
+    }
+
+    return "";
 }
 
-void TimerSystem::DelDelayCaller(DelayCaller* caller)
+void TimerSystem::DestroyCaller(ITimer* caller)
 {
     FUNC_PERFORMANCE_CHECK();
-
-    if (!caller)
-    {
-        return;
-    }
 
     DelTimer(caller);
+
+    S_DELETE(caller);
 }
 
-void TimerSystem::OnTimer(HTIMERINFO timer)
+bool CronCaller::Refresh(void)
 {
-    FUNC_PERFORMANCE_CHECK();
+    std::time_t now = std::time(0);
 
-    ITimer *t = static_cast<ITimer*>(timer_get_data(timer));
-
-    if (t == timer_get_data(t->GetTimerInfo()))
-    {
-        t->OnTimer();
-    }
+    return sTimerSystem.ModifyTimer(
+        this,
+        static_cast<uint32_t>((cron::cron_next(m_cronexpr, now) - now) * 1000),
+        1);
 }

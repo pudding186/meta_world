@@ -45,7 +45,7 @@ public:
     int64_t GetInt(const std::string& key) const;
 
     void SetStr(const std::string& key, const std::string& value);
-    const std::string& GetStr(const std::string& key);
+    const std::string& GetStr(const std::string& key) const;
 
     CustomVar& operator=(const CustomVar& custom_var);
 

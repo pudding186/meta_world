@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_forbidtalk">
+  <field name="guid"     type="uint64"  comment="角色GUID"/>
+  <field name="begin"   type="int64"    comment="起始时间"/>
+  <field name="end"      type="int64"    comment="结束时间"/>
+  <field name="desc"     type="varchar"  length="255"    comment="描述"/>
+  <key type="primary"   fields="guid" />
+</table>

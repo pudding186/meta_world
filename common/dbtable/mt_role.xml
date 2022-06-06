@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_role" extra="auto_increment=14">
+    <field name="sn"              type="uint32" extra="NOT NULL AUTO_INCREMENT" comment="角色序列号自增"/>
+    <field name="uid"             type="uint32" comment="用户ID"/>
+    <field name="sid"             type="uint8"  comment="小区ID"/>
+    <field name="guid"            type="uint64" comment="角色全局唯一ID"/>
+    <field name="unid"            type="varchar"    length="32" comment="角色唯一ID合区不改变"/>
+    <field name="name"            type="varchar"    length="32" comment=""/>
+    <field name="cur_map"         type="uint64" comment="当前地图GUID"/>
+    <field name="cur_x"           type="uint16" comment="当前地图x坐标"/>
+    <field name="cur_y"           type="uint16" comment="当前地图y坐标"/>
+    <field name="last_common_map" type="uint64" comment="最后固定地图GUID"/>
+    <field name="last_common_x"   type="uint16" comment="最后固定地图x坐标"/>
+    <field name="last_common_y"   type="uint16" comment="最后固定地图y坐标"/>
+    <field name="state"           type="uint8" />
+    <field name="createtime"      type="uint32" />
+    <field name="destroytime"     type="uint32" />
+    <field name="lastlogin"       type="uint32" />
+    <field name="lastloginip"     type="uint32" />
+    <field name="lastlogout"      type="uint32" />
+    <field name="onlines"         type="uint32" />
+    <field name="roleid"          type="int32" />
+    <field name="race"            type="int32" />
+    <field name="gender"          type="int8" />
+    <field name="level"           type="int32" />
+    <field name="job1"            type="int8" />
+    <field name="job2"            type="int8" />
+    <field name="job3"            type="int8" />
+    <field name="vitpoint"        type="uint32" />
+    <field name="intpoint"        type="uint32" />
+    <field name="strpoint"        type="uint32" />
+    <field name="agipoint"        type="uint32" />
+    <field name="endpoint"        type="uint32" />
+    <field name="remainpoint"     type="uint32" />
+    <field name="hp"              type="int32" />
+    <field name="mp"              type="int32" />
+    <field name="sp"              type="int32" />
+    <field name="vp"              type="int32" />
+    <field name="hppool"          type="int32" />
+    <field name="mppool"          type="int32" />
+    <field name="vip"             type="int32" />
+    <field name="fight"           type="int32" />
+    <field name="activation"      type="int32" />
+    <field name="talent1"         type="int32" />
+    <field name="talent2"         type="int32" />
+    <field name="talent3"         type="int32" />
+    <field name="talent4"         type="int32" />
+    <field name="talent5"         type="int32" />
+    <field name="talent6"         type="int32" />
+    <field name="talent7"         type="int32" />
+    <field name="talent8"         type="int32" />
+    <field name="talent9"         type="int32" />
+    <field name="talent10"        type="int32" />
+    <field name="exp"             type="int64" />
+    <field name="bindingot"       type="int64" />
+    <field name="integral"        type="int64" />
+    <field name="gold"            type="int64" />
+    <field name="bindgold"        type="int64" />
+    <field name="warehousegold"   type="int64" />
+    <field name="weapon"          type="int32" />
+    <field name="amulet"          type="int32" />
+    <field name="mount"           type="int32" />
+    <field name="color1"          type="int32" />
+    <field name="color2"          type="int32" />
+    <field name="shape"           type="int32" />
+    <field name="effect1"         type="int32" />
+    <field name="effect2"         type="int32" />
+    <field name="effect3"         type="int32" />
+    <field name="effect4"         type="int32" />
+    <field name="effect5"         type="int32" />
+    <field name="reincarnation"   type="int32" />
+    <field name="items"           type="longtext" />
+    <field name="skills"          type="longtext" />
+    <field name="buffs"           type="longtext" />
+    <field name="quests"          type="longtext" />
+    <field name="pets"            type="longtext" />
+    <field name="guards"          type="longtext" />
+    <field name="customs"         type="longtext" />
+    <key type="primary"           fields="guid" />
+    <key type="unique"            fields="sn" />
+    <key type="unique"            fields="name" />
+    <key type="unique"            fields="unid" />
+    <key type="index"             fields="uid, sid" />
+    <key type="index"             fields="state" />
+</table>

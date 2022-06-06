@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_mail">
+  <field name="mail_guid" type="uint64" />
+  <field name="mail_type" type="uint32" />
+  <field name="title"     type="varchar" length="1024" />
+  <field name="recv_guid" type="uint64" />
+  <field name="send_guid" type="uint64" />
+  <field name="send_name" type="varchar" length="32" />
+  <field name="send_time" type="uint32" />
+  <field name="status"    type="uint32" />
+  <field name="content"   type="longtext" />
+  <field name="attrs"     type="longtext" />
+  <field name="items"     type="longtext" />
+  <field name="pets"      type="longtext" />
+  <field name="guids"     type="longtext" />
+  <key type="primary"     fields="mail_guid" />
+  <key type="index"       fields="recv_guid" />
+</table>

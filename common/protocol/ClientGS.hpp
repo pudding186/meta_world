@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct KeepAliveReq:Protocol<KeepAliveReq>
+struct KeepAliveReq:TProtocol<KeepAliveReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 1;
+
 	unsigned int              seq; //自增长序号
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -232,8 +235,11 @@ struct KeepAliveReq:Protocol<KeepAliveReq>
     }
 };
 
-struct KeepAliveAck:Protocol<KeepAliveAck>
+struct KeepAliveAck:TProtocol<KeepAliveAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 2;
+
 	unsigned int              seq; //自增长序号
 	unsigned int              tick; //回应tick值
 	bool EnCode(NetEnCode& net_data)
@@ -484,8 +490,11 @@ struct KeepAliveAck:Protocol<KeepAliveAck>
     }
 };
 
-struct AttrNtf:Protocol<AttrNtf>
+struct AttrNtf:TProtocol<AttrNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 3;
+
 	unsigned long long        guid; //角色guid
 	DataArray<AttrData, unsigned short> attrs; //属性数据
 	bool EnCode(NetEnCode& net_data)
@@ -761,8 +770,11 @@ struct AttrNtf:Protocol<AttrNtf>
     }
 };
 
-struct PlayerAppearNtf:Protocol<PlayerAppearNtf>
+struct PlayerAppearNtf:TProtocol<PlayerAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned long long        guid; //玩家guid
 	int                       sn; //用户序列号
 	unsigned short            x; //x坐标
@@ -1252,8 +1264,11 @@ struct PlayerAppearNtf:Protocol<PlayerAppearNtf>
     }
 };
 
-struct NPCAppearNtf:Protocol<NPCAppearNtf>
+struct NPCAppearNtf:TProtocol<NPCAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 5;
+
 	unsigned long long        guid; //NPC guid
 	unsigned short            template_id; //模板id
 	unsigned short            x; //x坐标
@@ -1734,8 +1749,11 @@ struct NPCAppearNtf:Protocol<NPCAppearNtf>
     }
 };
 
-struct ItemAppearNtf:Protocol<ItemAppearNtf>
+struct ItemAppearNtf:TProtocol<ItemAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 6;
+
 	unsigned long long        guid; //道具 guid
 	unsigned short            template_id; //模板id
 	unsigned short            x; //x坐标
@@ -2188,8 +2206,11 @@ struct ItemAppearNtf:Protocol<ItemAppearNtf>
     }
 };
 
-struct ObjDisAppearNtf:Protocol<ObjDisAppearNtf>
+struct ObjDisAppearNtf:TProtocol<ObjDisAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 7;
+
 	unsigned long long        guid; //对象 guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -2412,8 +2433,11 @@ struct ObjDisAppearNtf:Protocol<ObjDisAppearNtf>
     }
 };
 
-struct ObjMoveNtf:Protocol<ObjMoveNtf>
+struct ObjMoveNtf:TProtocol<ObjMoveNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 8;
+
 	unsigned long long        guid; //对象 guid
 	unsigned short            dst_x; //目标点x坐标
 	unsigned short            dst_y; //目标点y坐标
@@ -2720,8 +2744,11 @@ struct ObjMoveNtf:Protocol<ObjMoveNtf>
     }
 };
 
-struct EnterMapNtf:Protocol<EnterMapNtf>
+struct EnterMapNtf:TProtocol<EnterMapNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 9;
+
 	unsigned short            template_id; //模板id
 	unsigned short            dst_x; //目标点x坐标
 	unsigned short            dst_y; //目标点y坐标
@@ -3000,8 +3027,11 @@ struct EnterMapNtf:Protocol<EnterMapNtf>
     }
 };
 
-struct MoveReq:Protocol<MoveReq>
+struct MoveReq:TProtocol<MoveReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 10;
+
 	unsigned short            dst_x; //目标点x
 	unsigned short            dst_y; //目标点y
 	unsigned short            cur_x; //当前点x
@@ -3364,8 +3394,11 @@ struct MoveReq:Protocol<MoveReq>
     }
 };
 
-struct MoveAck:Protocol<MoveAck>
+struct MoveAck:TProtocol<MoveAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 11;
+
 	int                       errcode; //0=成功, 其他表示错误码
 	unsigned short            dst_x; //当前的坐标点x
 	unsigned short            dst_y; //当前的坐标点y
@@ -3672,8 +3705,11 @@ struct MoveAck:Protocol<MoveAck>
     }
 };
 
-struct JumpMapReq:Protocol<JumpMapReq>
+struct JumpMapReq:TProtocol<JumpMapReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 12;
+
 	unsigned int              idx; //跳转区索引 静态跳转区idx 小于 65535 动态跳转区 idx 大于 65535 
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -3896,8 +3932,11 @@ struct JumpMapReq:Protocol<JumpMapReq>
     }
 };
 
-struct JumpMapAck:Protocol<JumpMapAck>
+struct JumpMapAck:TProtocol<JumpMapAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 13;
+
 	int                       errcode; //0=成功, 其他表示错误码
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4120,8 +4159,11 @@ struct JumpMapAck:Protocol<JumpMapAck>
     }
 };
 
-struct AddJumpMapRegionNtf:Protocol<AddJumpMapRegionNtf>
+struct AddJumpMapRegionNtf:TProtocol<AddJumpMapRegionNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 14;
+
 	unsigned int              idx; //跳转区索引 静态跳转区idx 小于 65535 动态跳转区 idx 大于 65535 
 	MapRegion                 jump_region; //起跳区域
 	bool EnCode(NetEnCode& net_data)
@@ -4397,8 +4439,11 @@ struct AddJumpMapRegionNtf:Protocol<AddJumpMapRegionNtf>
     }
 };
 
-struct DelJumpMapRegionNtf:Protocol<DelJumpMapRegionNtf>
+struct DelJumpMapRegionNtf:TProtocol<DelJumpMapRegionNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 15;
+
 	unsigned int              idx; //跳转区索引
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -4621,8 +4666,11 @@ struct DelJumpMapRegionNtf:Protocol<DelJumpMapRegionNtf>
     }
 };
 
-struct ItemAddNtf:Protocol<ItemAddNtf>
+struct ItemAddNtf:TProtocol<ItemAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 16;
+
 	unsigned long long        guid; //容器属于谁(玩家、宠物)
 	unsigned short            container_type; //item容器类型
 	DataArray<ItemData, unsigned short> items; //物品列表
@@ -4926,8 +4974,11 @@ struct ItemAddNtf:Protocol<ItemAddNtf>
     }
 };
 
-struct ItemUpdateNtf:Protocol<ItemUpdateNtf>
+struct ItemUpdateNtf:TProtocol<ItemUpdateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 17;
+
 	unsigned long long        guid; //容器属于谁(玩家、宠物)
 	unsigned short            container_type; //item容器类型
 	DataArray<ItemAttrValueList, unsigned short> attrs; //变更属性列表
@@ -5231,8 +5282,11 @@ struct ItemUpdateNtf:Protocol<ItemUpdateNtf>
     }
 };
 
-struct ItemDestroyNtf:Protocol<ItemDestroyNtf>
+struct ItemDestroyNtf:TProtocol<ItemDestroyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 18;
+
 	unsigned long long        guid; //容器属于谁(玩家、宠物)
 	unsigned short            container_type; //item容器类型
 	DataArray<unsigned long long, unsigned short> item_guids; //物品GUID列表
@@ -5535,8 +5589,11 @@ struct ItemDestroyNtf:Protocol<ItemDestroyNtf>
     }
 };
 
-struct TipsMsgNtf:Protocol<TipsMsgNtf>
+struct TipsMsgNtf:TProtocol<TipsMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 19;
+
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -5762,8 +5819,11 @@ struct TipsMsgNtf:Protocol<TipsMsgNtf>
     }
 };
 
-struct TopMsgNtf:Protocol<TopMsgNtf>
+struct TopMsgNtf:TProtocol<TopMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 20;
+
 	unsigned char             foreground; //消息前景颜色ID
 	unsigned char             background; //消息背景颜色ID
 	unsigned char             count; //消息滚动次数
@@ -6080,8 +6140,11 @@ struct TopMsgNtf:Protocol<TopMsgNtf>
     }
 };
 
-struct SysMsgNtf:Protocol<SysMsgNtf>
+struct SysMsgNtf:TProtocol<SysMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 21;
+
 	unsigned char             foreground; //消息前景颜色ID
 	unsigned char             background; //消息背景颜色ID
 	DataArray<unsigned char, unsigned short> msg; //消息内容
@@ -6370,8 +6433,11 @@ struct SysMsgNtf:Protocol<SysMsgNtf>
     }
 };
 
-struct PopupMsgNtf:Protocol<PopupMsgNtf>
+struct PopupMsgNtf:TProtocol<PopupMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 22;
+
 	unsigned char             type; //消息类型 0:通用 1:任务
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -6632,8 +6698,11 @@ struct PopupMsgNtf:Protocol<PopupMsgNtf>
     }
 };
 
-struct ItemContainerNtf:Protocol<ItemContainerNtf>
+struct ItemContainerNtf:TProtocol<ItemContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 23;
+
 	unsigned long long        guid; //容器属于谁(玩家、宠物)
 	unsigned short            container_type; //item容器类型
 	unsigned short            capacity; //item容器容量
@@ -6965,8 +7034,11 @@ struct ItemContainerNtf:Protocol<ItemContainerNtf>
     }
 };
 
-struct ItemContainerUpdateNtf:Protocol<ItemContainerUpdateNtf>
+struct ItemContainerUpdateNtf:TProtocol<ItemContainerUpdateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 24;
+
 	unsigned long long        guid; //容器属于谁(玩家、宠物)
 	unsigned short            container_type; //item容器类型
 	unsigned short            capacity; //item容器容量
@@ -7245,8 +7317,11 @@ struct ItemContainerUpdateNtf:Protocol<ItemContainerUpdateNtf>
     }
 };
 
-struct SubmitForm:Protocol<SubmitForm>
+struct SubmitForm:TProtocol<SubmitForm>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 25;
+
 	char                      form[256]; //表单table
 	char                      func[256]; //表单函数
 	DataArray<ParamData, unsigned char> args; //脚本命令参数
@@ -7559,8 +7634,11 @@ struct SubmitForm:Protocol<SubmitForm>
     }
 };
 
-struct ShowFormNtf:Protocol<ShowFormNtf>
+struct ShowFormNtf:TProtocol<ShowFormNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 26;
+
 	char                      form[256]; //表单名称
 	unsigned char             compressed; //是否压缩：1-压缩，0-未压缩
 	DataArray<unsigned char, unsigned short> context; //表单内容
@@ -7853,8 +7931,11 @@ struct ShowFormNtf:Protocol<ShowFormNtf>
     }
 };
 
-struct ExecuteGMReq:Protocol<ExecuteGMReq>
+struct ExecuteGMReq:TProtocol<ExecuteGMReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 27;
+
 	char                      cmd[256]; //GM命令
 	char                      arg[256]; //GM命令参数
 	bool EnCode(NetEnCode& net_data)
@@ -8114,8 +8195,11 @@ struct ExecuteGMReq:Protocol<ExecuteGMReq>
     }
 };
 
-struct FightBeginNtf:Protocol<FightBeginNtf>
+struct FightBeginNtf:TProtocol<FightBeginNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 28;
+
 	DataArray<FightGroupData, unsigned char> groups; //战斗组信息
 	unsigned char             self_group; //自己所属的组
 	unsigned char             is_pvp; //是否pvp战斗
@@ -8419,8 +8503,11 @@ struct FightBeginNtf:Protocol<FightBeginNtf>
     }
 };
 
-struct TurnRoundNtf:Protocol<TurnRoundNtf>
+struct TurnRoundNtf:TProtocol<TurnRoundNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 29;
+
 	unsigned short            round; //回合数
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -8643,8 +8730,11 @@ struct TurnRoundNtf:Protocol<TurnRoundNtf>
     }
 };
 
-struct FightOperateListNtf:Protocol<FightOperateListNtf>
+struct FightOperateListNtf:TProtocol<FightOperateListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 30;
+
 	DataArray<unsigned char, unsigned char> player_operates; //玩家允许操作的指令列表
 	DataArray<unsigned char, unsigned char> pet_operates; //宠物允许操作的指令列表
 	unsigned short            count_down; //倒计时 单位:毫秒
@@ -8935,8 +9025,11 @@ struct FightOperateListNtf:Protocol<FightOperateListNtf>
     }
 };
 
-struct FightOperateReq:Protocol<FightOperateReq>
+struct FightOperateReq:TProtocol<FightOperateReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 31;
+
 	FightOperateData          operate; //操作数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -9177,8 +9270,11 @@ struct FightOperateReq:Protocol<FightOperateReq>
     }
 };
 
-struct FightOperateAck:Protocol<FightOperateAck>
+struct FightOperateAck:TProtocol<FightOperateAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 32;
+
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
 	bool EnCode(NetEnCode& net_data)
@@ -9441,8 +9537,11 @@ struct FightOperateAck:Protocol<FightOperateAck>
     }
 };
 
-struct FightOperateNtf:Protocol<FightOperateNtf>
+struct FightOperateNtf:TProtocol<FightOperateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 33;
+
 	unsigned short            fighter_id; //战斗者id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -9665,8 +9764,11 @@ struct FightOperateNtf:Protocol<FightOperateNtf>
     }
 };
 
-struct FightDisplayNtf:Protocol<FightDisplayNtf>
+struct FightDisplayNtf:TProtocol<FightDisplayNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 34;
+
 	DataArray<unsigned char, unsigned int> data; //显示数据
 	DataArray<unsigned char, unsigned char> crypto; //加密串,显示完成时原样返回
 	bool EnCode(NetEnCode& net_data)
@@ -9922,8 +10024,11 @@ struct FightDisplayNtf:Protocol<FightDisplayNtf>
     }
 };
 
-struct FightDisplayCompleteNtf:Protocol<FightDisplayCompleteNtf>
+struct FightDisplayCompleteNtf:TProtocol<FightDisplayCompleteNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 35;
+
 	DataArray<unsigned char, unsigned char> crypto; //加密串
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -10149,8 +10254,11 @@ struct FightDisplayCompleteNtf:Protocol<FightDisplayCompleteNtf>
     }
 };
 
-struct FightAutoReq:Protocol<FightAutoReq>
+struct FightAutoReq:TProtocol<FightAutoReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 36;
+
 	unsigned char             is_auto; //0:关闭 1:开启
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -10373,8 +10481,11 @@ struct FightAutoReq:Protocol<FightAutoReq>
     }
 };
 
-struct FightAutoAck:Protocol<FightAutoAck>
+struct FightAutoAck:TProtocol<FightAutoAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 37;
+
 	unsigned char             is_auto; //0:关闭 1:开启
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -10665,8 +10776,11 @@ struct FightAutoAck:Protocol<FightAutoAck>
     }
 };
 
-struct FightAutoNtf:Protocol<FightAutoNtf>
+struct FightAutoNtf:TProtocol<FightAutoNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 38;
+
 	unsigned short            fighter_id; //战斗者id
 	unsigned char             is_auto; //0:关闭 1:开启
 	bool EnCode(NetEnCode& net_data)
@@ -10917,8 +11031,11 @@ struct FightAutoNtf:Protocol<FightAutoNtf>
     }
 };
 
-struct FightAutoSkillReq:Protocol<FightAutoSkillReq>
+struct FightAutoSkillReq:TProtocol<FightAutoSkillReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 39;
+
 	unsigned long long        actor; //发起者guid 玩家自己:填0 宠物:填宠物guid
 	unsigned short            skillid; //技能id
 	bool EnCode(NetEnCode& net_data)
@@ -11169,8 +11286,11 @@ struct FightAutoSkillReq:Protocol<FightAutoSkillReq>
     }
 };
 
-struct FightAutoSkillAck:Protocol<FightAutoSkillAck>
+struct FightAutoSkillAck:TProtocol<FightAutoSkillAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 40;
+
 	unsigned long long        actor; //发起者guid 玩家自己:填0 宠物:填宠物guid
 	unsigned short            skillid; //技能id
 	int                       errcode; //错误码
@@ -11489,8 +11609,11 @@ struct FightAutoSkillAck:Protocol<FightAutoSkillAck>
     }
 };
 
-struct FightEndNtf:Protocol<FightEndNtf>
+struct FightEndNtf:TProtocol<FightEndNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 41;
+
 	unsigned char             result; //战斗结果
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -11713,8 +11836,11 @@ struct FightEndNtf:Protocol<FightEndNtf>
     }
 };
 
-struct AddFighterNtf:Protocol<AddFighterNtf>
+struct AddFighterNtf:TProtocol<AddFighterNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 42;
+
 	FighterData               data; //战斗者信息
 	unsigned char             group; //自己所属的组
 	bool EnCode(NetEnCode& net_data)
@@ -11990,8 +12116,11 @@ struct AddFighterNtf:Protocol<AddFighterNtf>
     }
 };
 
-struct DelFighterNtf:Protocol<DelFighterNtf>
+struct DelFighterNtf:TProtocol<DelFighterNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 43;
+
 	unsigned short            fighter_id; //战斗者id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -12214,8 +12343,11 @@ struct DelFighterNtf:Protocol<DelFighterNtf>
     }
 };
 
-struct AddFightPetData:Protocol<AddFightPetData>
+struct AddFightPetData:TProtocol<AddFightPetData>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 44;
+
 	FightPetData              pet; //战斗宠物数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -12456,8 +12588,11 @@ struct AddFightPetData:Protocol<AddFightPetData>
     }
 };
 
-struct UpdateFightPetData:Protocol<UpdateFightPetData>
+struct UpdateFightPetData:TProtocol<UpdateFightPetData>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 45;
+
 	FightPetData              pet; //战斗宠物数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -12698,8 +12833,11 @@ struct UpdateFightPetData:Protocol<UpdateFightPetData>
     }
 };
 
-struct PlayerKillReq:Protocol<PlayerKillReq>
+struct PlayerKillReq:TProtocol<PlayerKillReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 46;
+
 	unsigned long long        target; //玩家guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -12922,8 +13060,11 @@ struct PlayerKillReq:Protocol<PlayerKillReq>
     }
 };
 
-struct PlayerKillAck:Protocol<PlayerKillAck>
+struct PlayerKillAck:TProtocol<PlayerKillAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 47;
+
 	unsigned long long        target; //玩家guid
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -13214,8 +13355,11 @@ struct PlayerKillAck:Protocol<PlayerKillAck>
     }
 };
 
-struct EnterFightViewReq:Protocol<EnterFightViewReq>
+struct EnterFightViewReq:TProtocol<EnterFightViewReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 48;
+
 	unsigned long long        target; //观战目标guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -13438,8 +13582,11 @@ struct EnterFightViewReq:Protocol<EnterFightViewReq>
     }
 };
 
-struct EnterFightViewAck:Protocol<EnterFightViewAck>
+struct EnterFightViewAck:TProtocol<EnterFightViewAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 49;
+
 	unsigned long long        target; //观战目标guid
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -13730,8 +13877,11 @@ struct EnterFightViewAck:Protocol<EnterFightViewAck>
     }
 };
 
-struct LeaveFightViewReq:Protocol<LeaveFightViewReq>
+struct LeaveFightViewReq:TProtocol<LeaveFightViewReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 50;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -13877,8 +14027,11 @@ struct LeaveFightViewReq:Protocol<LeaveFightViewReq>
     }
 };
 
-struct LeaveFightViewAck:Protocol<LeaveFightViewAck>
+struct LeaveFightViewAck:TProtocol<LeaveFightViewAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 51;
+
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
 	bool EnCode(NetEnCode& net_data)
@@ -14141,8 +14294,11 @@ struct LeaveFightViewAck:Protocol<LeaveFightViewAck>
     }
 };
 
-struct TeamLeaderOprReq:Protocol<TeamLeaderOprReq>
+struct TeamLeaderOprReq:TProtocol<TeamLeaderOprReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 52;
+
 	unsigned char             opr; //队长操作
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -14365,8 +14521,11 @@ struct TeamLeaderOprReq:Protocol<TeamLeaderOprReq>
     }
 };
 
-struct TeamNtf:Protocol<TeamNtf>
+struct TeamNtf:TProtocol<TeamNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 53;
+
 	unsigned long long        team_guid; //队伍GUID
 	unsigned short            target; //目标ID
 	unsigned short            permission; //1=开启队友招人权限 0=关闭
@@ -14927,8 +15086,11 @@ struct TeamNtf:Protocol<TeamNtf>
     }
 };
 
-struct TeamLeaderNtf:Protocol<TeamLeaderNtf>
+struct TeamLeaderNtf:TProtocol<TeamLeaderNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 54;
+
 	unsigned long long        leader_guid; //队长GUID
 	DataArray<unsigned long long, unsigned char> leader_guards; //队长侍从GUID列表
 	bool EnCode(NetEnCode& net_data)
@@ -15203,8 +15365,11 @@ struct TeamLeaderNtf:Protocol<TeamLeaderNtf>
     }
 };
 
-struct TeamDestroyNtf:Protocol<TeamDestroyNtf>
+struct TeamDestroyNtf:TProtocol<TeamDestroyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 55;
+
 	unsigned long long        team_guid; //队伍GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -15427,8 +15592,11 @@ struct TeamDestroyNtf:Protocol<TeamDestroyNtf>
     }
 };
 
-struct TeamMemberNtf:Protocol<TeamMemberNtf>
+struct TeamMemberNtf:TProtocol<TeamMemberNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 56;
+
 	MemberData                member; //队伍成员信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -15669,8 +15837,11 @@ struct TeamMemberNtf:Protocol<TeamMemberNtf>
     }
 };
 
-struct TeamMemberLeaveNtf:Protocol<TeamMemberLeaveNtf>
+struct TeamMemberLeaveNtf:TProtocol<TeamMemberLeaveNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 57;
+
 	unsigned char             action; //1=被踢，2=主动退出, 3=暂离, 4=归队
 	unsigned long long        player_guid; //成员guid
 	bool EnCode(NetEnCode& net_data)
@@ -15921,8 +16092,11 @@ struct TeamMemberLeaveNtf:Protocol<TeamMemberLeaveNtf>
     }
 };
 
-struct NpcSelectReq:Protocol<NpcSelectReq>
+struct NpcSelectReq:TProtocol<NpcSelectReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 58;
+
 	unsigned long long        npc_guid; //NPC guid
 	unsigned short            select_id; //选择项id 0表示获取初始选项
 	bool EnCode(NetEnCode& net_data)
@@ -16173,8 +16347,11 @@ struct NpcSelectReq:Protocol<NpcSelectReq>
     }
 };
 
-struct NpcSelectAck:Protocol<NpcSelectAck>
+struct NpcSelectAck:TProtocol<NpcSelectAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 59;
+
 	unsigned long long        npc_guid; //NPC guid
 	DataArray<OptionData, unsigned short> options; //NPC选项
 	char                      msg[4096]; //回应消息,没有就从npc表中读取
@@ -16490,8 +16667,11 @@ struct NpcSelectAck:Protocol<NpcSelectAck>
     }
 };
 
-struct NpcTalkReq:Protocol<NpcTalkReq>
+struct NpcTalkReq:TProtocol<NpcTalkReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 60;
+
 	unsigned long long        npc_guid; //NPC guid
 	unsigned char             compressed; //是否压缩：1-压缩，0-未压缩
 	DataArray<unsigned char, unsigned short> talk; //对话内容
@@ -16780,8 +16960,11 @@ struct NpcTalkReq:Protocol<NpcTalkReq>
     }
 };
 
-struct NpcTalkAck:Protocol<NpcTalkAck>
+struct NpcTalkAck:TProtocol<NpcTalkAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 61;
+
 	unsigned long long        npc_guid; //NPC guid
 	unsigned char             compressed; //是否压缩：1-压缩，0-未压缩
 	DataArray<unsigned char, unsigned short> talk; //对话内容
@@ -17070,8 +17253,11 @@ struct NpcTalkAck:Protocol<NpcTalkAck>
     }
 };
 
-struct InviteMsgNtf:Protocol<InviteMsgNtf>
+struct InviteMsgNtf:TProtocol<InviteMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 62;
+
 	unsigned long long        inviter_guid; //邀请人guid
 	unsigned long long        type; //邀请类型
 	DataArray<unsigned char, unsigned short> msg; //邀请内容
@@ -17388,8 +17574,11 @@ struct InviteMsgNtf:Protocol<InviteMsgNtf>
     }
 };
 
-struct ReplyInvite:Protocol<ReplyInvite>
+struct ReplyInvite:TProtocol<ReplyInvite>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 63;
+
 	unsigned long long        inviter_guid; //邀请人guid
 	unsigned int              type; //邀请类型
 	unsigned char             agreed; //1:表示同意邀请 0:表示不同意
@@ -17668,8 +17857,11 @@ struct ReplyInvite:Protocol<ReplyInvite>
     }
 };
 
-struct MoveItem:Protocol<MoveItem>
+struct MoveItem:TProtocol<MoveItem>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 64;
+
 	unsigned long long        item_guid; //物品guid
 	unsigned short            container_type; //item容器类型
 	bool EnCode(NetEnCode& net_data)
@@ -17920,8 +18112,11 @@ struct MoveItem:Protocol<MoveItem>
     }
 };
 
-struct UseItem:Protocol<UseItem>
+struct UseItem:TProtocol<UseItem>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 65;
+
 	unsigned long long        item_guid; //物品guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -18144,8 +18339,11 @@ struct UseItem:Protocol<UseItem>
     }
 };
 
-struct RearrangeItem:Protocol<RearrangeItem>
+struct RearrangeItem:TProtocol<RearrangeItem>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 66;
+
 	unsigned short            container_type; //item容器类型
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -18368,8 +18566,11 @@ struct RearrangeItem:Protocol<RearrangeItem>
     }
 };
 
-struct SkillContainerNtf:Protocol<SkillContainerNtf>
+struct SkillContainerNtf:TProtocol<SkillContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 67;
+
 	unsigned long long        guid; //技能容器属于谁(玩家、宠物)
 	DataArray<SkillData, unsigned short> skills; //技能列表
 	bool EnCode(NetEnCode& net_data)
@@ -18645,8 +18846,11 @@ struct SkillContainerNtf:Protocol<SkillContainerNtf>
     }
 };
 
-struct AddSkillNtf:Protocol<AddSkillNtf>
+struct AddSkillNtf:TProtocol<AddSkillNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 68;
+
 	unsigned long long        guid; //技能属于谁(玩家、宠物)
 	SkillData                 skill; //技能数据
 	bool EnCode(NetEnCode& net_data)
@@ -18922,8 +19126,11 @@ struct AddSkillNtf:Protocol<AddSkillNtf>
     }
 };
 
-struct UpdateSkillNtf:Protocol<UpdateSkillNtf>
+struct UpdateSkillNtf:TProtocol<UpdateSkillNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 69;
+
 	unsigned long long        guid; //技能属于谁(玩家、宠物)
 	unsigned short            id; //技能id
 	unsigned short            attr; //技能属性名 1:当前熟练度 2:最大熟练度 3:是否激活
@@ -19230,8 +19437,11 @@ struct UpdateSkillNtf:Protocol<UpdateSkillNtf>
     }
 };
 
-struct DelSkillNtf:Protocol<DelSkillNtf>
+struct DelSkillNtf:TProtocol<DelSkillNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 70;
+
 	unsigned long long        guid; //技能属于谁(玩家、宠物)
 	unsigned short            id; //技能id
 	bool EnCode(NetEnCode& net_data)
@@ -19482,8 +19692,11 @@ struct DelSkillNtf:Protocol<DelSkillNtf>
     }
 };
 
-struct PetAppearNtf:Protocol<PetAppearNtf>
+struct PetAppearNtf:TProtocol<PetAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 71;
+
 	unsigned long long        guid; //宠物guid
 	char                      name[256]; //宠物名字
 	unsigned short            x; //x坐标
@@ -19908,8 +20121,11 @@ struct PetAppearNtf:Protocol<PetAppearNtf>
     }
 };
 
-struct PetContainerNtf:Protocol<PetContainerNtf>
+struct PetContainerNtf:TProtocol<PetContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 72;
+
 	unsigned short            container_type; //pet容器类型
 	unsigned short            capacity; //pet容器容量
 	DataArray<PetData, unsigned short> pets; //宠物列表
@@ -20213,8 +20429,11 @@ struct PetContainerNtf:Protocol<PetContainerNtf>
     }
 };
 
-struct PetContainerUpdateNtf:Protocol<PetContainerUpdateNtf>
+struct PetContainerUpdateNtf:TProtocol<PetContainerUpdateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 73;
+
 	unsigned short            container_type; //pet容器类型
 	unsigned short            capacity; //pet容器容量
 	bool EnCode(NetEnCode& net_data)
@@ -20465,8 +20684,11 @@ struct PetContainerUpdateNtf:Protocol<PetContainerUpdateNtf>
     }
 };
 
-struct PetAddNtf:Protocol<PetAddNtf>
+struct PetAddNtf:TProtocol<PetAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 74;
+
 	unsigned short            container_type; //pet容器类型
 	PetData                   pet; //物品列表
 	bool EnCode(NetEnCode& net_data)
@@ -20742,8 +20964,11 @@ struct PetAddNtf:Protocol<PetAddNtf>
     }
 };
 
-struct PetDestroyNtf:Protocol<PetDestroyNtf>
+struct PetDestroyNtf:TProtocol<PetDestroyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 75;
+
 	unsigned short            container_type; //pet容器类型
 	unsigned long long        guid; //宠物guid
 	bool EnCode(NetEnCode& net_data)
@@ -20994,8 +21219,11 @@ struct PetDestroyNtf:Protocol<PetDestroyNtf>
     }
 };
 
-struct SetPetLineup:Protocol<SetPetLineup>
+struct SetPetLineup:TProtocol<SetPetLineup>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 76;
+
 	unsigned long long        guid; //宠物guid
 	unsigned char             lineup; //上阵：0 下阵，1 上阵
 	bool EnCode(NetEnCode& net_data)
@@ -21246,8 +21474,11 @@ struct SetPetLineup:Protocol<SetPetLineup>
     }
 };
 
-struct ShowPet:Protocol<ShowPet>
+struct ShowPet:TProtocol<ShowPet>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 77;
+
 	unsigned long long        guid; //宠物guid
 	unsigned char             show; //显示：0 隐藏，1 显示
 	bool EnCode(NetEnCode& net_data)
@@ -21498,8 +21729,11 @@ struct ShowPet:Protocol<ShowPet>
     }
 };
 
-struct ReleasePet:Protocol<ReleasePet>
+struct ReleasePet:TProtocol<ReleasePet>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 78;
+
 	unsigned long long        guid; //宠物guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -21722,8 +21956,11 @@ struct ReleasePet:Protocol<ReleasePet>
     }
 };
 
-struct MovePet:Protocol<MovePet>
+struct MovePet:TProtocol<MovePet>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 79;
+
 	unsigned long long        guid; //宠物guid
 	unsigned short            container_type; //pet容器类型
 	bool EnCode(NetEnCode& net_data)
@@ -21974,8 +22211,11 @@ struct MovePet:Protocol<MovePet>
     }
 };
 
-struct ShopOpenNtf:Protocol<ShopOpenNtf>
+struct ShopOpenNtf:TProtocol<ShopOpenNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 80;
+
 	unsigned short            shop_id; //商店id
 	unsigned short            def_item_id; //默认选中商品id
 	unsigned char             type; //商店类型0=宠物商店 1=道具商店 2=随身商店
@@ -22344,8 +22584,11 @@ struct ShopOpenNtf:Protocol<ShopOpenNtf>
     }
 };
 
-struct ShopBuyNtf:Protocol<ShopBuyNtf>
+struct ShopBuyNtf:TProtocol<ShopBuyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 81;
+
 	unsigned short            shop_id; //商店id
 	unsigned short            shop_item_id; //商品id
 	unsigned short            shop_item_num; //商品数量
@@ -22624,8 +22867,11 @@ struct ShopBuyNtf:Protocol<ShopBuyNtf>
     }
 };
 
-struct SellNtf:Protocol<SellNtf>
+struct SellNtf:TProtocol<SellNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 82;
+
 	DataArray<SellItemData, unsigned short> sell_items; //出售物品列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -22866,8 +23112,11 @@ struct SellNtf:Protocol<SellNtf>
     }
 };
 
-struct BuyBackNtf:Protocol<BuyBackNtf>
+struct BuyBackNtf:TProtocol<BuyBackNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 83;
+
 	unsigned long long        buy_guid; //出售物品guid
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -23090,8 +23339,11 @@ struct BuyBackNtf:Protocol<BuyBackNtf>
     }
 };
 
-struct BuyBackListNtf:Protocol<BuyBackListNtf>
+struct BuyBackListNtf:TProtocol<BuyBackListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 84;
+
 	DataArray<ItemData, unsigned short> buy_back_list; //回购列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -23332,8 +23584,11 @@ struct BuyBackListNtf:Protocol<BuyBackListNtf>
     }
 };
 
-struct TeamAttrNtf:Protocol<TeamAttrNtf>
+struct TeamAttrNtf:TProtocol<TeamAttrNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 85;
+
 	unsigned long long        guid; //角色guid
 	DataArray<AttrData, unsigned short> attrs; //属性数据
 	bool EnCode(NetEnCode& net_data)
@@ -23609,8 +23864,11 @@ struct TeamAttrNtf:Protocol<TeamAttrNtf>
     }
 };
 
-struct TipsMsgExNtf:Protocol<TipsMsgExNtf>
+struct TipsMsgExNtf:TProtocol<TipsMsgExNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 86;
+
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -23836,8 +24094,11 @@ struct TipsMsgExNtf:Protocol<TipsMsgExNtf>
     }
 };
 
-struct ItemNewAddNtf:Protocol<ItemNewAddNtf>
+struct ItemNewAddNtf:TProtocol<ItemNewAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 87;
+
 	unsigned long long        item_guid; //物品GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -24060,8 +24321,11 @@ struct ItemNewAddNtf:Protocol<ItemNewAddNtf>
     }
 };
 
-struct QuestContainerNtf:Protocol<QuestContainerNtf>
+struct QuestContainerNtf:TProtocol<QuestContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 88;
+
 	DataArray<unsigned char, unsigned short> buffer; //任务列表: QuestClientData[]
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -24287,8 +24551,11 @@ struct QuestContainerNtf:Protocol<QuestContainerNtf>
     }
 };
 
-struct QuestAddNtf:Protocol<QuestAddNtf>
+struct QuestAddNtf:TProtocol<QuestAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 89;
+
 	DataArray<unsigned char, unsigned short> buffer; //任务列表: QuestClientData
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -24514,8 +24781,11 @@ struct QuestAddNtf:Protocol<QuestAddNtf>
     }
 };
 
-struct QuestStateNtf:Protocol<QuestStateNtf>
+struct QuestStateNtf:TProtocol<QuestStateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 90;
+
 	unsigned int              quest_id; //任务ID
 	unsigned char             quest_state; //任务状态
 	unsigned int              changed_time; //状态改变时间
@@ -24794,8 +25064,11 @@ struct QuestStateNtf:Protocol<QuestStateNtf>
     }
 };
 
-struct QuestNpcStateNtf:Protocol<QuestNpcStateNtf>
+struct QuestNpcStateNtf:TProtocol<QuestNpcStateNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 91;
+
 	unsigned int              npc_id; //npc id
 	unsigned char             state; //任务状态
 	unsigned long long        logo; //任务logo
@@ -25074,8 +25347,11 @@ struct QuestNpcStateNtf:Protocol<QuestNpcStateNtf>
     }
 };
 
-struct QuestTrackCountNtf:Protocol<QuestTrackCountNtf>
+struct QuestTrackCountNtf:TProtocol<QuestTrackCountNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 92;
+
 	unsigned int              quest_id; //任务ID
 	unsigned int              track_id; //追踪目标ID
 	unsigned int              track_count; //追踪数量
@@ -25354,8 +25630,11 @@ struct QuestTrackCountNtf:Protocol<QuestTrackCountNtf>
     }
 };
 
-struct QuestTalkSelectReq:Protocol<QuestTalkSelectReq>
+struct QuestTalkSelectReq:TProtocol<QuestTalkSelectReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 93;
+
 	unsigned long long        npc_guid; //NPC guid
 	unsigned int              quest_id; //任务ID
 	unsigned int              option_id; //对话选项ID
@@ -25634,8 +25913,11 @@ struct QuestTalkSelectReq:Protocol<QuestTalkSelectReq>
     }
 };
 
-struct QuestTalkSelectAck:Protocol<QuestTalkSelectAck>
+struct QuestTalkSelectAck:TProtocol<QuestTalkSelectAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 94;
+
 	unsigned long long        npc_guid; //NPC guid
 	unsigned int              quest_id; //任务ID
 	DataArray<unsigned char, unsigned short> talk; //npc对话压缩: QuestTalkData[]
@@ -25924,8 +26206,11 @@ struct QuestTalkSelectAck:Protocol<QuestTalkSelectAck>
     }
 };
 
-struct ObjStrCustomNtf:Protocol<ObjStrCustomNtf>
+struct ObjStrCustomNtf:TProtocol<ObjStrCustomNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 95;
+
 	unsigned long long        guid; //角色guid
 	CustomStrData             custom; //自定义变量
 	bool EnCode(NetEnCode& net_data)
@@ -26201,8 +26486,11 @@ struct ObjStrCustomNtf:Protocol<ObjStrCustomNtf>
     }
 };
 
-struct ObjIntCustomNtf:Protocol<ObjIntCustomNtf>
+struct ObjIntCustomNtf:TProtocol<ObjIntCustomNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 96;
+
 	unsigned long long        guid; //角色guid
 	CustomIntData             custom; //自定义变量
 	bool EnCode(NetEnCode& net_data)
@@ -26478,8 +26766,11 @@ struct ObjIntCustomNtf:Protocol<ObjIntCustomNtf>
     }
 };
 
-struct ObjDynAttrNtf:Protocol<ObjDynAttrNtf>
+struct ObjDynAttrNtf:TProtocol<ObjDynAttrNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 97;
+
 	unsigned long long        guid; //角色guid
 	DynAttrData               dyn_attr; //动态属性
 	bool EnCode(NetEnCode& net_data)
@@ -26755,8 +27046,11 @@ struct ObjDynAttrNtf:Protocol<ObjDynAttrNtf>
     }
 };
 
-struct CommitQuestItemRsp:Protocol<CommitQuestItemRsp>
+struct CommitQuestItemRsp:TProtocol<CommitQuestItemRsp>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 98;
+
 	unsigned int              quest_id; //任务ID
 	DataArray<GUIDCountData, unsigned char> items; //上交物品
 	bool EnCode(NetEnCode& net_data)
@@ -27032,8 +27326,11 @@ struct CommitQuestItemRsp:Protocol<CommitQuestItemRsp>
     }
 };
 
-struct CommitQuestItemNtf:Protocol<CommitQuestItemNtf>
+struct CommitQuestItemNtf:TProtocol<CommitQuestItemNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 99;
+
 	unsigned int              quest_id; //任务ID
 	DataArray<IDCountData, unsigned char> items; //上交物品
 	bool EnCode(NetEnCode& net_data)
@@ -27309,8 +27606,11 @@ struct CommitQuestItemNtf:Protocol<CommitQuestItemNtf>
     }
 };
 
-struct CommitQuestPetRsp:Protocol<CommitQuestPetRsp>
+struct CommitQuestPetRsp:TProtocol<CommitQuestPetRsp>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 100;
+
 	unsigned int              quest_id; //任务ID
 	DataArray<GUIDCountData, unsigned char> pets; //上交宠物
 	bool EnCode(NetEnCode& net_data)
@@ -27586,8 +27886,11 @@ struct CommitQuestPetRsp:Protocol<CommitQuestPetRsp>
     }
 };
 
-struct CommitQuestPetNtf:Protocol<CommitQuestPetNtf>
+struct CommitQuestPetNtf:TProtocol<CommitQuestPetNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 101;
+
 	unsigned int              quest_id; //任务ID
 	DataArray<IDCountData, unsigned char> pets; //上交宠物
 	bool EnCode(NetEnCode& net_data)
@@ -27863,8 +28166,11 @@ struct CommitQuestPetNtf:Protocol<CommitQuestPetNtf>
     }
 };
 
-struct AbandonQuest:Protocol<AbandonQuest>
+struct AbandonQuest:TProtocol<AbandonQuest>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 102;
+
 	unsigned int              quest_id; //任务ID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -28087,8 +28393,11 @@ struct AbandonQuest:Protocol<AbandonQuest>
     }
 };
 
-struct SkillTipsReq:Protocol<SkillTipsReq>
+struct SkillTipsReq:TProtocol<SkillTipsReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 103;
+
 	unsigned long long        actor; //宠物guid,自己填0
 	unsigned short            skill_id; //技能ID
 	bool EnCode(NetEnCode& net_data)
@@ -28339,8 +28648,11 @@ struct SkillTipsReq:Protocol<SkillTipsReq>
     }
 };
 
-struct SkillTipsAck:Protocol<SkillTipsAck>
+struct SkillTipsAck:TProtocol<SkillTipsAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 104;
+
 	unsigned short            skill_id; //技能ID
 	DataArray<SkillTipsData, unsigned char> tips; //tip属性
 	int                       errcode; //错误码
@@ -28684,8 +28996,11 @@ struct SkillTipsAck:Protocol<SkillTipsAck>
     }
 };
 
-struct TeamLeaderOprNtf:Protocol<TeamLeaderOprNtf>
+struct TeamLeaderOprNtf:TProtocol<TeamLeaderOprNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 105;
+
 	unsigned char             opr; //队长操作
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -28908,8 +29223,11 @@ struct TeamLeaderOprNtf:Protocol<TeamLeaderOprNtf>
     }
 };
 
-struct KeepAliveCtrlNtf:Protocol<KeepAliveCtrlNtf>
+struct KeepAliveCtrlNtf:TProtocol<KeepAliveCtrlNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 106;
+
 	unsigned char             opt; //0=关闭心跳 1=开启心跳
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -29132,8 +29450,11 @@ struct KeepAliveCtrlNtf:Protocol<KeepAliveCtrlNtf>
     }
 };
 
-struct NetDelayReq:Protocol<NetDelayReq>
+struct NetDelayReq:TProtocol<NetDelayReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 107;
+
 	unsigned int              gs_tick; //GS发送此请求tick
 	unsigned int              gt_tick; //GT发送此请求tick
 	unsigned int              sg_tick; //SG发送此请求tick
@@ -29440,8 +29761,11 @@ struct NetDelayReq:Protocol<NetDelayReq>
     }
 };
 
-struct NetDelayAck:Protocol<NetDelayAck>
+struct NetDelayAck:TProtocol<NetDelayAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 108;
+
 	int                       gs_elpase; //GS从发出NetDelayReq到收到NetDelayAck的耗时
 	int                       gt_elpase; //GT从发出NetDelayReq到收到NetDelayAck的耗时
 	int                       sg_elpase; //SG从发出NetDelayReq到收到NetDelayAck的耗时
@@ -29844,8 +30168,11 @@ struct NetDelayAck:Protocol<NetDelayAck>
     }
 };
 
-struct SystemSetupNtf:Protocol<SystemSetupNtf>
+struct SystemSetupNtf:TProtocol<SystemSetupNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 109;
+
 	DataArray<AttrData, unsigned short> attrs; //属性数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -30086,8 +30413,11 @@ struct SystemSetupNtf:Protocol<SystemSetupNtf>
     }
 };
 
-struct BuffListNtf:Protocol<BuffListNtf>
+struct BuffListNtf:TProtocol<BuffListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 110;
+
 	unsigned long long        guid; //玩家或宠物guid
 	DataArray<BuffData, unsigned short> buffs; //BUFF列表
 	bool EnCode(NetEnCode& net_data)
@@ -30363,8 +30693,11 @@ struct BuffListNtf:Protocol<BuffListNtf>
     }
 };
 
-struct BuffAddNtf:Protocol<BuffAddNtf>
+struct BuffAddNtf:TProtocol<BuffAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 111;
+
 	unsigned long long        guid; //玩家或宠物guid
 	BuffData                  buff; //BUFF列表
 	bool EnCode(NetEnCode& net_data)
@@ -30640,8 +30973,11 @@ struct BuffAddNtf:Protocol<BuffAddNtf>
     }
 };
 
-struct BuffDurationNtf:Protocol<BuffDurationNtf>
+struct BuffDurationNtf:TProtocol<BuffDurationNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 112;
+
 	unsigned long long        guid; //玩家或宠物guid
 	unsigned short            id; //buff的id
 	unsigned int              duration; //持续数值
@@ -30920,8 +31256,11 @@ struct BuffDurationNtf:Protocol<BuffDurationNtf>
     }
 };
 
-struct BuffDynAttrNtf:Protocol<BuffDynAttrNtf>
+struct BuffDynAttrNtf:TProtocol<BuffDynAttrNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 113;
+
 	unsigned long long        guid; //玩家或宠物guid
 	unsigned short            id; //buff的id
 	DataArray<DynAttrData, unsigned short> dyn_attrs; //动态属性数据
@@ -31225,8 +31564,11 @@ struct BuffDynAttrNtf:Protocol<BuffDynAttrNtf>
     }
 };
 
-struct StopBuff:Protocol<StopBuff>
+struct StopBuff:TProtocol<StopBuff>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 114;
+
 	unsigned long long        guid; //玩家或宠物guid,玩家的填0
 	unsigned short            id; //buff的id
 	bool EnCode(NetEnCode& net_data)
@@ -31477,8 +31819,11 @@ struct StopBuff:Protocol<StopBuff>
     }
 };
 
-struct BuffDelNtf:Protocol<BuffDelNtf>
+struct BuffDelNtf:TProtocol<BuffDelNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 115;
+
 	unsigned long long        guid; //玩家或宠物guid
 	unsigned short            id; //buff的id
 	bool EnCode(NetEnCode& net_data)
@@ -31729,8 +32074,11 @@ struct BuffDelNtf:Protocol<BuffDelNtf>
     }
 };
 
-struct ActivityListReq:Protocol<ActivityListReq>
+struct ActivityListReq:TProtocol<ActivityListReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 116;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -31876,8 +32224,11 @@ struct ActivityListReq:Protocol<ActivityListReq>
     }
 };
 
-struct ActivityListAck:Protocol<ActivityListAck>
+struct ActivityListAck:TProtocol<ActivityListAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 117;
+
 	DataArray<ActivityData, unsigned short> datas; //活动数据
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -32193,8 +32544,11 @@ struct ActivityListAck:Protocol<ActivityListAck>
     }
 };
 
-struct ActivityJoinNtf:Protocol<ActivityJoinNtf>
+struct ActivityJoinNtf:TProtocol<ActivityJoinNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 118;
+
 	unsigned short            id; //活动的id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -32417,8 +32771,11 @@ struct ActivityJoinNtf:Protocol<ActivityJoinNtf>
     }
 };
 
-struct GuildListNtf:Protocol<GuildListNtf>
+struct GuildListNtf:TProtocol<GuildListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 119;
+
 	int                       pos; //帮派索引
 	unsigned short            count; //帮派总数
 	DataArray<GuildBriefData, unsigned short> guilds; //帮派简略信息
@@ -32722,8 +33079,11 @@ struct GuildListNtf:Protocol<GuildListNtf>
     }
 };
 
-struct GuildNtf:Protocol<GuildNtf>
+struct GuildNtf:TProtocol<GuildNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 120;
+
 	GuildData                 guild; //帮派数据
 	GuildMemberData           self; //帮派成员信息
 	bool EnCode(NetEnCode& net_data)
@@ -33001,8 +33361,11 @@ struct GuildNtf:Protocol<GuildNtf>
     }
 };
 
-struct GuildBaseNtf:Protocol<GuildBaseNtf>
+struct GuildBaseNtf:TProtocol<GuildBaseNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 121;
+
 	unsigned long long        guid; //帮派guid
 	char                      name[32]; //帮派名称
 	bool EnCode(NetEnCode& net_data)
@@ -33265,8 +33628,11 @@ struct GuildBaseNtf:Protocol<GuildBaseNtf>
     }
 };
 
-struct GuildNoticeNtf:Protocol<GuildNoticeNtf>
+struct GuildNoticeNtf:TProtocol<GuildNoticeNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 122;
+
 	unsigned long long        guid; //帮派guid
 	char                      notice[1024]; //通知内容
 	bool EnCode(NetEnCode& net_data)
@@ -33529,8 +33895,11 @@ struct GuildNoticeNtf:Protocol<GuildNoticeNtf>
     }
 };
 
-struct GuildBriefNtf:Protocol<GuildBriefNtf>
+struct GuildBriefNtf:TProtocol<GuildBriefNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 123;
+
 	GuildBriefData            guild; //帮派简略信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -33771,8 +34140,11 @@ struct GuildBriefNtf:Protocol<GuildBriefNtf>
     }
 };
 
-struct GuildMemberListNtf:Protocol<GuildMemberListNtf>
+struct GuildMemberListNtf:TProtocol<GuildMemberListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 124;
+
 	unsigned long long        guid; //帮派GUID
 	int                       pos; //成员索引
 	unsigned short            count; //帮派成员总数
@@ -34104,8 +34476,11 @@ struct GuildMemberListNtf:Protocol<GuildMemberListNtf>
     }
 };
 
-struct GuildMemberNtf:Protocol<GuildMemberNtf>
+struct GuildMemberNtf:TProtocol<GuildMemberNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 125;
+
 	unsigned long long        guid; //帮派GUID
 	DataArray<GuildMemberData, unsigned short> members; //帮派成员数据
 	bool EnCode(NetEnCode& net_data)
@@ -34381,8 +34756,11 @@ struct GuildMemberNtf:Protocol<GuildMemberNtf>
     }
 };
 
-struct GuildApplicantListNtf:Protocol<GuildApplicantListNtf>
+struct GuildApplicantListNtf:TProtocol<GuildApplicantListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 126;
+
 	unsigned long long        guid; //帮派GUID
 	DataArray<GuildApplicantData, unsigned short> applicants; //帮派申请列表
 	bool EnCode(NetEnCode& net_data)
@@ -34658,8 +35036,11 @@ struct GuildApplicantListNtf:Protocol<GuildApplicantListNtf>
     }
 };
 
-struct GuildOperationNtf:Protocol<GuildOperationNtf>
+struct GuildOperationNtf:TProtocol<GuildOperationNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 127;
+
 	unsigned short            type; //操作通知
 	char                      param1[256]; //参数1
 	char                      param2[256]; //参数2
@@ -35014,8 +35395,11 @@ struct GuildOperationNtf:Protocol<GuildOperationNtf>
     }
 };
 
-struct GetTimestampReq:Protocol<GetTimestampReq>
+struct GetTimestampReq:TProtocol<GetTimestampReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 128;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -35161,8 +35545,11 @@ struct GetTimestampReq:Protocol<GetTimestampReq>
     }
 };
 
-struct GetTimestampAck:Protocol<GetTimestampAck>
+struct GetTimestampAck:TProtocol<GetTimestampAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 129;
+
 	unsigned int              now; //当前时间
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -35385,8 +35772,11 @@ struct GetTimestampAck:Protocol<GetTimestampAck>
     }
 };
 
-struct ContactListNtf:Protocol<ContactListNtf>
+struct ContactListNtf:TProtocol<ContactListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 130;
+
 	unsigned char             contact_type; //联系人类型：对应枚举contact_type的陌生人、好友、申请者
 	DataArray<ContactData, unsigned short> contacts; //联系人列表
 	bool EnCode(NetEnCode& net_data)
@@ -35662,8 +36052,11 @@ struct ContactListNtf:Protocol<ContactListNtf>
     }
 };
 
-struct AddContactNtf:Protocol<AddContactNtf>
+struct AddContactNtf:TProtocol<AddContactNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 131;
+
 	ContactData               contact; //联系人
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -35904,8 +36297,11 @@ struct AddContactNtf:Protocol<AddContactNtf>
     }
 };
 
-struct UpdateContactNtf:Protocol<UpdateContactNtf>
+struct UpdateContactNtf:TProtocol<UpdateContactNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 132;
+
 	ContactData               contact; //联系人
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -36146,8 +36542,11 @@ struct UpdateContactNtf:Protocol<UpdateContactNtf>
     }
 };
 
-struct DelContactNtf:Protocol<DelContactNtf>
+struct DelContactNtf:TProtocol<DelContactNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 133;
+
 	unsigned long long        target_guid; //玩家GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -36370,8 +36769,11 @@ struct DelContactNtf:Protocol<DelContactNtf>
     }
 };
 
-struct AddContactMessageNtf:Protocol<AddContactMessageNtf>
+struct AddContactMessageNtf:TProtocol<AddContactMessageNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 134;
+
 	MessageData               messages; //消息内容
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -36612,8 +37014,11 @@ struct AddContactMessageNtf:Protocol<AddContactMessageNtf>
     }
 };
 
-struct ItemQueryNtf:Protocol<ItemQueryNtf>
+struct ItemQueryNtf:TProtocol<ItemQueryNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 135;
+
 	ItemData                  item; //物品数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -36854,8 +37259,11 @@ struct ItemQueryNtf:Protocol<ItemQueryNtf>
     }
 };
 
-struct PetQueryNtf:Protocol<PetQueryNtf>
+struct PetQueryNtf:TProtocol<PetQueryNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 136;
+
 	PetData                   pet; //宠物数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -37096,8 +37504,11 @@ struct PetQueryNtf:Protocol<PetQueryNtf>
     }
 };
 
-struct ContactInfoNtf:Protocol<ContactInfoNtf>
+struct ContactInfoNtf:TProtocol<ContactInfoNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 137;
+
 	ContactInfoData           data; //联系人信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -37338,8 +37749,11 @@ struct ContactInfoNtf:Protocol<ContactInfoNtf>
     }
 };
 
-struct MailListNtf:Protocol<MailListNtf>
+struct MailListNtf:TProtocol<MailListNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 138;
+
 	DataArray<MailHeadData, unsigned char> mails; //邮件标题列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -37580,8 +37994,11 @@ struct MailListNtf:Protocol<MailListNtf>
     }
 };
 
-struct AddMailNtf:Protocol<AddMailNtf>
+struct AddMailNtf:TProtocol<AddMailNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 139;
+
 	MailHeadData              mail; //邮件标题
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -37822,8 +38239,11 @@ struct AddMailNtf:Protocol<AddMailNtf>
     }
 };
 
-struct DelMailNtf:Protocol<DelMailNtf>
+struct DelMailNtf:TProtocol<DelMailNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 140;
+
 	unsigned long long        mail_guid; //邮件GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -38046,8 +38466,11 @@ struct DelMailNtf:Protocol<DelMailNtf>
     }
 };
 
-struct MailBodyNtf:Protocol<MailBodyNtf>
+struct MailBodyNtf:TProtocol<MailBodyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 141;
+
 	unsigned long long        mail_guid; //邮件GUID
 	MailBodyData              mail; //邮件内容
 	bool EnCode(NetEnCode& net_data)
@@ -38323,8 +38746,11 @@ struct MailBodyNtf:Protocol<MailBodyNtf>
     }
 };
 
-struct UpdateMailBodyNtf:Protocol<UpdateMailBodyNtf>
+struct UpdateMailBodyNtf:TProtocol<UpdateMailBodyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 142;
+
 	unsigned long long        mail_guid; //邮件GUID
 	MailBodyData              mail; //邮件内容
 	bool EnCode(NetEnCode& net_data)
@@ -38600,8 +39026,11 @@ struct UpdateMailBodyNtf:Protocol<UpdateMailBodyNtf>
     }
 };
 
-struct UpdateMailHeadNtf:Protocol<UpdateMailHeadNtf>
+struct UpdateMailHeadNtf:TProtocol<UpdateMailHeadNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 143;
+
 	unsigned long long        mail_guid; //邮件GUID
 	MailHeadData              mail; //邮件标题
 	bool EnCode(NetEnCode& net_data)
@@ -38877,8 +39306,11 @@ struct UpdateMailHeadNtf:Protocol<UpdateMailHeadNtf>
     }
 };
 
-struct RanklistReq:Protocol<RanklistReq>
+struct RanklistReq:TProtocol<RanklistReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 144;
+
 	int                       type; //榜单类型 
 	unsigned short            begin; //获取排行开始
 	unsigned short            end; //获取排行结束
@@ -39157,8 +39589,11 @@ struct RanklistReq:Protocol<RanklistReq>
     }
 };
 
-struct RanklistAck:Protocol<RanklistAck>
+struct RanklistAck:TProtocol<RanklistAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 145;
+
 	int                       type; //榜单类型 1=等级总榜 2=等级人榜 3=等级魔榜 4=等级仙榜 5=等级鬼榜 6=等级龙榜 7=装备总榜 8=装备人榜 9=装备魔榜 10=装备仙榜 11=装备鬼榜 12=装备龙榜 13=帮派榜 14=宠物榜 15=水陆大会榜 16=竞技场榜 16以后是其他自定义榜
 	unsigned short            total; //排行榜总数
 	unsigned short            begin; //获取排行开始
@@ -39518,8 +39953,11 @@ struct RanklistAck:Protocol<RanklistAck>
     }
 };
 
-struct GetRankReq:Protocol<GetRankReq>
+struct GetRankReq:TProtocol<GetRankReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 146;
+
 	int                       type; //榜单类型 
 	unsigned long long        guid; //玩家宠物或者其他榜单上对象的GUID
 	bool EnCode(NetEnCode& net_data)
@@ -39770,8 +40208,11 @@ struct GetRankReq:Protocol<GetRankReq>
     }
 };
 
-struct GetRankAck:Protocol<GetRankAck>
+struct GetRankAck:TProtocol<GetRankAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 147;
+
 	int                       type; //榜单类型 
 	unsigned short            rank; //玩家宠物或者其他榜单上排名数, 0=未上榜
 	RanklistData              data; //榜单数据
@@ -40075,8 +40516,11 @@ struct GetRankAck:Protocol<GetRankAck>
     }
 };
 
-struct TitleContainerNtf:Protocol<TitleContainerNtf>
+struct TitleContainerNtf:TProtocol<TitleContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 148;
+
 	DataArray<TitleData, unsigned short> titles; //称号列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -40317,8 +40761,11 @@ struct TitleContainerNtf:Protocol<TitleContainerNtf>
     }
 };
 
-struct TitleAddNtf:Protocol<TitleAddNtf>
+struct TitleAddNtf:TProtocol<TitleAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 149;
+
 	TitleData                 title; //称号数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -40559,8 +41006,11 @@ struct TitleAddNtf:Protocol<TitleAddNtf>
     }
 };
 
-struct TitleDelNtf:Protocol<TitleDelNtf>
+struct TitleDelNtf:TProtocol<TitleDelNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 150;
+
 	unsigned short            title_id; //称号ID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -40783,8 +41233,11 @@ struct TitleDelNtf:Protocol<TitleDelNtf>
     }
 };
 
-struct AgentKeyReq:Protocol<AgentKeyReq>
+struct AgentKeyReq:TProtocol<AgentKeyReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 151;
+
 	bool EnCode(NetEnCode& net_data)
 	{
 		(void)(net_data);
@@ -40930,8 +41383,11 @@ struct AgentKeyReq:Protocol<AgentKeyReq>
     }
 };
 
-struct AgentKeyAck:Protocol<AgentKeyAck>
+struct AgentKeyAck:TProtocol<AgentKeyAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 152;
+
 	DataArray<unsigned char, unsigned char> key; //代理Key值
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -41157,8 +41613,11 @@ struct AgentKeyAck:Protocol<AgentKeyAck>
     }
 };
 
-struct HeadMsgNtf:Protocol<HeadMsgNtf>
+struct HeadMsgNtf:TProtocol<HeadMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 153;
+
 	unsigned long long        guid; //对象GUID
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -41419,8 +41878,11 @@ struct HeadMsgNtf:Protocol<HeadMsgNtf>
     }
 };
 
-struct AutoContainerNtf:Protocol<AutoContainerNtf>
+struct AutoContainerNtf:TProtocol<AutoContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 154;
+
 	unsigned long long        guid; //自己或自己的宠物
 	unsigned char             is_auto; //是否开启了自动(宠物跟随主人自动)
 	unsigned short            auto_skill; //自动战斗技能
@@ -41699,8 +42161,11 @@ struct AutoContainerNtf:Protocol<AutoContainerNtf>
     }
 };
 
-struct PlayerQueryNtf:Protocol<PlayerQueryNtf>
+struct PlayerQueryNtf:TProtocol<PlayerQueryNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 155;
+
 	PlayerBrief               brief; //玩家简略数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -41941,8 +42406,11 @@ struct PlayerQueryNtf:Protocol<PlayerQueryNtf>
     }
 };
 
-struct UseAllItem:Protocol<UseAllItem>
+struct UseAllItem:TProtocol<UseAllItem>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 156;
+
 	unsigned long long        item_guid; //物品guid
 	unsigned short            item_amount; //物品数量
 	bool EnCode(NetEnCode& net_data)
@@ -42193,8 +42661,11 @@ struct UseAllItem:Protocol<UseAllItem>
     }
 };
 
-struct GuardContainerNtf:Protocol<GuardContainerNtf>
+struct GuardContainerNtf:TProtocol<GuardContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 157;
+
 	DataArray<GuardData, unsigned short> guards; //侍从
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -42435,8 +42906,11 @@ struct GuardContainerNtf:Protocol<GuardContainerNtf>
     }
 };
 
-struct GuardAddNtf:Protocol<GuardAddNtf>
+struct GuardAddNtf:TProtocol<GuardAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 158;
+
 	GuardData                 guard; //侍从列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -42677,8 +43151,11 @@ struct GuardAddNtf:Protocol<GuardAddNtf>
     }
 };
 
-struct SetGuardLineup:Protocol<SetGuardLineup>
+struct SetGuardLineup:TProtocol<SetGuardLineup>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 159;
+
 	unsigned long long        guid; //侍从guid
 	unsigned char             lineup; //上阵：0 下阵，1 上阵
 	bool EnCode(NetEnCode& net_data)
@@ -42929,8 +43406,11 @@ struct SetGuardLineup:Protocol<SetGuardLineup>
     }
 };
 
-struct PetNewAddNtf:Protocol<PetNewAddNtf>
+struct PetNewAddNtf:TProtocol<PetNewAddNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 160;
+
 	unsigned long long        pet_guid; //宠物GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -43153,8 +43633,11 @@ struct PetNewAddNtf:Protocol<PetNewAddNtf>
     }
 };
 
-struct TeamPlatformNtf:Protocol<TeamPlatformNtf>
+struct TeamPlatformNtf:TProtocol<TeamPlatformNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 161;
+
 	DataArray<TeamBriefData, unsigned short> teams; //队伍列表
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -43395,8 +43878,11 @@ struct TeamPlatformNtf:Protocol<TeamPlatformNtf>
     }
 };
 
-struct TeamApplicantsNtf:Protocol<TeamApplicantsNtf>
+struct TeamApplicantsNtf:TProtocol<TeamApplicantsNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 162;
+
 	unsigned long long        team_guid; //队伍GUID
 	DataArray<TeamApplicantData, unsigned short> applicants; //申请人列表
 	bool EnCode(NetEnCode& net_data)
@@ -43672,8 +44158,11 @@ struct TeamApplicantsNtf:Protocol<TeamApplicantsNtf>
     }
 };
 
-struct TeamOperationNtf:Protocol<TeamOperationNtf>
+struct TeamOperationNtf:TProtocol<TeamOperationNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 163;
+
 	unsigned short            type; //操作通知
 	int                       errcode; //0=成功, 其他表示错误码
 	char                      errmsg[256]; //错误码不为0时表示 错误消息
@@ -43964,8 +44453,11 @@ struct TeamOperationNtf:Protocol<TeamOperationNtf>
     }
 };
 
-struct TeamTargetNtf:Protocol<TeamTargetNtf>
+struct TeamTargetNtf:TProtocol<TeamTargetNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 164;
+
 	unsigned long long        team_guid; //队伍GUID
 	unsigned short            target; //目标ID
 	unsigned short            permission; //1=开启队友招人权限 0=关闭
@@ -44384,8 +44876,11 @@ struct TeamTargetNtf:Protocol<TeamTargetNtf>
     }
 };
 
-struct ChangedNameNtf:Protocol<ChangedNameNtf>
+struct ChangedNameNtf:TProtocol<ChangedNameNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 165;
+
 	unsigned long long        guid; //对象 guid
 	char                      name[256]; //玩家名字
 	bool EnCode(NetEnCode& net_data)
@@ -44648,8 +45143,11 @@ struct ChangedNameNtf:Protocol<ChangedNameNtf>
     }
 };
 
-struct CustomDataNtf:Protocol<CustomDataNtf>
+struct CustomDataNtf:TProtocol<CustomDataNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 166;
+
 	unsigned long long        guid; //玩家guid
 	CustomData                custom; //自定义数据
 	bool EnCode(NetEnCode& net_data)
@@ -44925,8 +45423,11 @@ struct CustomDataNtf:Protocol<CustomDataNtf>
     }
 };
 
-struct SpeedCheckNtf:Protocol<SpeedCheckNtf>
+struct SpeedCheckNtf:TProtocol<SpeedCheckNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 167;
+
 	unsigned char             type; //1=加速 2=超时 3=异常
 	unsigned char             pct; //加速百分比
 	bool EnCode(NetEnCode& net_data)
@@ -45177,8 +45678,11 @@ struct SpeedCheckNtf:Protocol<SpeedCheckNtf>
     }
 };
 
-struct ConsoleMsgNtf:Protocol<ConsoleMsgNtf>
+struct ConsoleMsgNtf:TProtocol<ConsoleMsgNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 168;
+
 	DataArray<unsigned char, unsigned short> msg; //控制台消息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -45404,8 +45908,11 @@ struct ConsoleMsgNtf:Protocol<ConsoleMsgNtf>
     }
 };
 
-struct PetSwapNtf:Protocol<PetSwapNtf>
+struct PetSwapNtf:TProtocol<PetSwapNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 169;
+
 	unsigned short            container_type; //pet容器类型
 	unsigned long long        pet_guid1; //宠物1guid
 	unsigned long long        pet_guid2; //宠物2guid
@@ -45684,8 +46191,11 @@ struct PetSwapNtf:Protocol<PetSwapNtf>
     }
 };
 
-struct GuardDestroyNtf:Protocol<GuardDestroyNtf>
+struct GuardDestroyNtf:TProtocol<GuardDestroyNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 170;
+
 	unsigned long long        guid; //侍从GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -45908,8 +46418,11 @@ struct GuardDestroyNtf:Protocol<GuardDestroyNtf>
     }
 };
 
-struct ActivateGuard:Protocol<ActivateGuard>
+struct ActivateGuard:TProtocol<ActivateGuard>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 171;
+
 	unsigned int              guard_id; //侍从ID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -46132,8 +46645,11 @@ struct ActivateGuard:Protocol<ActivateGuard>
     }
 };
 
-struct ReleaseGuard:Protocol<ReleaseGuard>
+struct ReleaseGuard:TProtocol<ReleaseGuard>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 172;
+
 	unsigned long long        guard_guid; //侍从GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -46356,8 +46872,11 @@ struct ReleaseGuard:Protocol<ReleaseGuard>
     }
 };
 
-struct TeamMemberSwapNtf:Protocol<TeamMemberSwapNtf>
+struct TeamMemberSwapNtf:TProtocol<TeamMemberSwapNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 173;
+
 	unsigned long long        member_guid1; //队伍成员GUID1
 	unsigned long long        member_guid2; //队伍成员GUID2
 	bool EnCode(NetEnCode& net_data)
@@ -46608,8 +47127,11 @@ struct TeamMemberSwapNtf:Protocol<TeamMemberSwapNtf>
     }
 };
 
-struct GuardSwapNtf:Protocol<GuardSwapNtf>
+struct GuardSwapNtf:TProtocol<GuardSwapNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 174;
+
 	unsigned long long        guard_guid1; //侍从1guid
 	unsigned long long        guard_guid2; //侍从2guid
 	bool EnCode(NetEnCode& net_data)
@@ -46860,8 +47382,11 @@ struct GuardSwapNtf:Protocol<GuardSwapNtf>
     }
 };
 
-struct PetReplaceNtf:Protocol<PetReplaceNtf>
+struct PetReplaceNtf:TProtocol<PetReplaceNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 175;
+
 	unsigned short            container_type; //pet容器类型
 	unsigned long long        dst_pet_guid; //目标宠物GUID
 	PetData                   src_pet; //替换宠物
@@ -47165,8 +47690,11 @@ struct PetReplaceNtf:Protocol<PetReplaceNtf>
     }
 };
 
-struct GuardAppearNtf:Protocol<GuardAppearNtf>
+struct GuardAppearNtf:TProtocol<GuardAppearNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 176;
+
 	unsigned long long        guid; //侍从guid
 	char                      name[256]; //侍从名字
 	unsigned short            x; //x坐标
@@ -47628,8 +48156,11 @@ struct GuardAppearNtf:Protocol<GuardAppearNtf>
     }
 };
 
-struct InstructionContainerNtf:Protocol<InstructionContainerNtf>
+struct InstructionContainerNtf:TProtocol<InstructionContainerNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 177;
+
 	InstructionData           datas; //指令数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -47870,8 +48401,11 @@ struct InstructionContainerNtf:Protocol<InstructionContainerNtf>
     }
 };
 
-struct InstructionAddReq:Protocol<InstructionAddReq>
+struct InstructionAddReq:TProtocol<InstructionAddReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 178;
+
 	unsigned char             type; //指令类型
 	char                      content[32]; //指令内容
 	bool EnCode(NetEnCode& net_data)
@@ -48134,8 +48668,11 @@ struct InstructionAddReq:Protocol<InstructionAddReq>
     }
 };
 
-struct InstructionAddAck:Protocol<InstructionAddAck>
+struct InstructionAddAck:TProtocol<InstructionAddAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 179;
+
 	unsigned char             type; //指令类型
 	char                      content[32]; //指令内容
 	int                       errcode; //0=成功, 其他表示错误码
@@ -48458,8 +48995,11 @@ struct InstructionAddAck:Protocol<InstructionAddAck>
     }
 };
 
-struct InstructionDeleteReq:Protocol<InstructionDeleteReq>
+struct InstructionDeleteReq:TProtocol<InstructionDeleteReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 180;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	bool EnCode(NetEnCode& net_data)
@@ -48710,8 +49250,11 @@ struct InstructionDeleteReq:Protocol<InstructionDeleteReq>
     }
 };
 
-struct InstructionDeleteAck:Protocol<InstructionDeleteAck>
+struct InstructionDeleteAck:TProtocol<InstructionDeleteAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 181;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	int                       errcode; //0=成功, 其他表示错误码
@@ -49030,8 +49573,11 @@ struct InstructionDeleteAck:Protocol<InstructionDeleteAck>
     }
 };
 
-struct InstructionModfityReq:Protocol<InstructionModfityReq>
+struct InstructionModfityReq:TProtocol<InstructionModfityReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 182;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	char                      content[32]; //指令内容
@@ -49322,8 +49868,11 @@ struct InstructionModfityReq:Protocol<InstructionModfityReq>
     }
 };
 
-struct InstructionModifyAck:Protocol<InstructionModifyAck>
+struct InstructionModifyAck:TProtocol<InstructionModifyAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 183;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	char                      content[32]; //指令内容
@@ -49674,8 +50223,11 @@ struct InstructionModifyAck:Protocol<InstructionModifyAck>
     }
 };
 
-struct InstructionDefaultReq:Protocol<InstructionDefaultReq>
+struct InstructionDefaultReq:TProtocol<InstructionDefaultReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 184;
+
 	unsigned char             type; //指令类型
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -49898,8 +50450,11 @@ struct InstructionDefaultReq:Protocol<InstructionDefaultReq>
     }
 };
 
-struct InstructionDefaultAck:Protocol<InstructionDefaultAck>
+struct InstructionDefaultAck:TProtocol<InstructionDefaultAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 185;
+
 	unsigned char             type; //指令类型
 	DataArray<InstructionBasic, unsigned char> datas; //恢复后的指令
 	int                       errcode; //0=成功, 其他表示错误码
@@ -50243,8 +50798,11 @@ struct InstructionDefaultAck:Protocol<InstructionDefaultAck>
     }
 };
 
-struct InstructionAttachReq:Protocol<InstructionAttachReq>
+struct InstructionAttachReq:TProtocol<InstructionAttachReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 186;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	unsigned long long        target; //目标GUID
@@ -50523,8 +51081,11 @@ struct InstructionAttachReq:Protocol<InstructionAttachReq>
     }
 };
 
-struct InstructionAttachAck:Protocol<InstructionAttachAck>
+struct InstructionAttachAck:TProtocol<InstructionAttachAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 187;
+
 	unsigned char             type; //指令类型
 	unsigned char             index; //指令索引
 	unsigned long long        target; //目标GUID
@@ -50871,8 +51432,11 @@ struct InstructionAttachAck:Protocol<InstructionAttachAck>
     }
 };
 
-struct InstructionAttachNtf:Protocol<InstructionAttachNtf>
+struct InstructionAttachNtf:TProtocol<InstructionAttachNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 188;
+
 	unsigned int              fighter_id; //战斗者id
 	char                      content[32]; //指令内容
 	bool EnCode(NetEnCode& net_data)
@@ -51135,8 +51699,11 @@ struct InstructionAttachNtf:Protocol<InstructionAttachNtf>
     }
 };
 
-struct InstructionDetachReq:Protocol<InstructionDetachReq>
+struct InstructionDetachReq:TProtocol<InstructionDetachReq>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 189;
+
 	unsigned long long        target; //目标GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -51359,8 +51926,11 @@ struct InstructionDetachReq:Protocol<InstructionDetachReq>
     }
 };
 
-struct InstructionDetachAck:Protocol<InstructionDetachAck>
+struct InstructionDetachAck:TProtocol<InstructionDetachAck>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 190;
+
 	unsigned long long        target; //目标GUID
 	int                       errcode; //0=成功, 其他表示错误码
 	char                      errmsg[256]; //错误码不为0时表示 错误消息
@@ -51651,8 +52221,11 @@ struct InstructionDetachAck:Protocol<InstructionDetachAck>
     }
 };
 
-struct InstructionDetachNtf:Protocol<InstructionDetachNtf>
+struct InstructionDetachNtf:TProtocol<InstructionDetachNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 191;
+
 	unsigned int              fighter_id; //战斗者id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -51875,8 +52448,11 @@ struct InstructionDetachNtf:Protocol<InstructionDetachNtf>
     }
 };
 
-struct PlayerDetailNtf:Protocol<PlayerDetailNtf>
+struct PlayerDetailNtf:TProtocol<PlayerDetailNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 192;
+
 	PlayerDetail              data; //玩家详细信息
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -52117,8 +52693,11 @@ struct PlayerDetailNtf:Protocol<PlayerDetailNtf>
     }
 };
 
-struct MapDynBlockPtNtf:Protocol<MapDynBlockPtNtf>
+struct MapDynBlockPtNtf:TProtocol<MapDynBlockPtNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 193;
+
 	unsigned short            map_id; //地图id
 	DataArray<Pt, unsigned short> block_pt_list; //玩家详细信息
 	bool EnCode(NetEnCode& net_data)
@@ -52394,8 +52973,11 @@ struct MapDynBlockPtNtf:Protocol<MapDynBlockPtNtf>
     }
 };
 
-struct GuardQueryNtf:Protocol<GuardQueryNtf>
+struct GuardQueryNtf:TProtocol<GuardQueryNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 194;
+
 	GuardData                 guard; //侍从数据
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -52636,8 +53218,11 @@ struct GuardQueryNtf:Protocol<GuardQueryNtf>
     }
 };
 
-struct BuyBackNtfEx:Protocol<BuyBackNtfEx>
+struct BuyBackNtfEx:TProtocol<BuyBackNtfEx>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 195;
+
 	unsigned long long        buy_guid; //出售物品guid
 	unsigned short            buy_amount; //出售物品数量
 	bool EnCode(NetEnCode& net_data)
@@ -52888,8 +53473,11 @@ struct BuyBackNtfEx:Protocol<BuyBackNtfEx>
     }
 };
 
-struct GuildCustomNtf:Protocol<GuildCustomNtf>
+struct GuildCustomNtf:TProtocol<GuildCustomNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 196;
+
 	unsigned long long        player_guid; //角色guid
 	unsigned char             is_guild; //是否是帮派：0-帮派成员，1-帮派
 	CustomData                customs; //自定义变量
@@ -53193,8 +53781,11 @@ struct GuildCustomNtf:Protocol<GuildCustomNtf>
     }
 };
 
-struct PreTurnRoundNtf:Protocol<PreTurnRoundNtf>
+struct PreTurnRoundNtf:TProtocol<PreTurnRoundNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 197;
+
 	unsigned short            round; //回合数
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -53417,8 +54008,11 @@ struct PreTurnRoundNtf:Protocol<PreTurnRoundNtf>
     }
 };
 
-struct FighterSpecialPetNtf:Protocol<FighterSpecialPetNtf>
+struct FighterSpecialPetNtf:TProtocol<FighterSpecialPetNtf>
 {
+	static constexpr unsigned short module_id = 102;
+	static constexpr unsigned short protocol_id = 198;
+
 	unsigned long long        special_pet; //指定主宠
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -53643,7 +54237,7 @@ struct FighterSpecialPetNtf:Protocol<FighterSpecialPetNtf>
 
 //===============数据定义结束===============
 template<typename D>
-class CClientGS
+class CClientGS: public ProtocolModule
 {
 public:
 	CClientGS()
@@ -54255,1023 +54849,1000 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 102)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 102)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case KeepAliveReq::protocol_id:
 		{
-			return KeepAliveReq::SName();
+			return KeepAliveReq::Name();
 		}
 		break;
-		case 2:
+		case KeepAliveAck::protocol_id:
 		{
-			return KeepAliveAck::SName();
+			return KeepAliveAck::Name();
 		}
 		break;
-		case 3:
+		case AttrNtf::protocol_id:
 		{
-			return AttrNtf::SName();
+			return AttrNtf::Name();
 		}
 		break;
-		case 4:
+		case PlayerAppearNtf::protocol_id:
 		{
-			return PlayerAppearNtf::SName();
+			return PlayerAppearNtf::Name();
 		}
 		break;
-		case 5:
+		case NPCAppearNtf::protocol_id:
 		{
-			return NPCAppearNtf::SName();
+			return NPCAppearNtf::Name();
 		}
 		break;
-		case 6:
+		case ItemAppearNtf::protocol_id:
 		{
-			return ItemAppearNtf::SName();
+			return ItemAppearNtf::Name();
 		}
 		break;
-		case 7:
+		case ObjDisAppearNtf::protocol_id:
 		{
-			return ObjDisAppearNtf::SName();
+			return ObjDisAppearNtf::Name();
 		}
 		break;
-		case 8:
+		case ObjMoveNtf::protocol_id:
 		{
-			return ObjMoveNtf::SName();
+			return ObjMoveNtf::Name();
 		}
 		break;
-		case 9:
+		case EnterMapNtf::protocol_id:
 		{
-			return EnterMapNtf::SName();
+			return EnterMapNtf::Name();
 		}
 		break;
-		case 10:
+		case MoveReq::protocol_id:
 		{
-			return MoveReq::SName();
+			return MoveReq::Name();
 		}
 		break;
-		case 11:
+		case MoveAck::protocol_id:
 		{
-			return MoveAck::SName();
+			return MoveAck::Name();
 		}
 		break;
-		case 12:
+		case JumpMapReq::protocol_id:
 		{
-			return JumpMapReq::SName();
+			return JumpMapReq::Name();
 		}
 		break;
-		case 13:
+		case JumpMapAck::protocol_id:
 		{
-			return JumpMapAck::SName();
+			return JumpMapAck::Name();
 		}
 		break;
-		case 14:
+		case AddJumpMapRegionNtf::protocol_id:
 		{
-			return AddJumpMapRegionNtf::SName();
+			return AddJumpMapRegionNtf::Name();
 		}
 		break;
-		case 15:
+		case DelJumpMapRegionNtf::protocol_id:
 		{
-			return DelJumpMapRegionNtf::SName();
+			return DelJumpMapRegionNtf::Name();
 		}
 		break;
-		case 16:
+		case ItemAddNtf::protocol_id:
 		{
-			return ItemAddNtf::SName();
+			return ItemAddNtf::Name();
 		}
 		break;
-		case 17:
+		case ItemUpdateNtf::protocol_id:
 		{
-			return ItemUpdateNtf::SName();
+			return ItemUpdateNtf::Name();
 		}
 		break;
-		case 18:
+		case ItemDestroyNtf::protocol_id:
 		{
-			return ItemDestroyNtf::SName();
+			return ItemDestroyNtf::Name();
 		}
 		break;
-		case 19:
+		case TipsMsgNtf::protocol_id:
 		{
-			return TipsMsgNtf::SName();
+			return TipsMsgNtf::Name();
 		}
 		break;
-		case 20:
+		case TopMsgNtf::protocol_id:
 		{
-			return TopMsgNtf::SName();
+			return TopMsgNtf::Name();
 		}
 		break;
-		case 21:
+		case SysMsgNtf::protocol_id:
 		{
-			return SysMsgNtf::SName();
+			return SysMsgNtf::Name();
 		}
 		break;
-		case 22:
+		case PopupMsgNtf::protocol_id:
 		{
-			return PopupMsgNtf::SName();
+			return PopupMsgNtf::Name();
 		}
 		break;
-		case 23:
+		case ItemContainerNtf::protocol_id:
 		{
-			return ItemContainerNtf::SName();
+			return ItemContainerNtf::Name();
 		}
 		break;
-		case 24:
+		case ItemContainerUpdateNtf::protocol_id:
 		{
-			return ItemContainerUpdateNtf::SName();
+			return ItemContainerUpdateNtf::Name();
 		}
 		break;
-		case 25:
+		case SubmitForm::protocol_id:
 		{
-			return SubmitForm::SName();
+			return SubmitForm::Name();
 		}
 		break;
-		case 26:
+		case ShowFormNtf::protocol_id:
 		{
-			return ShowFormNtf::SName();
+			return ShowFormNtf::Name();
 		}
 		break;
-		case 27:
+		case ExecuteGMReq::protocol_id:
 		{
-			return ExecuteGMReq::SName();
+			return ExecuteGMReq::Name();
 		}
 		break;
-		case 28:
+		case FightBeginNtf::protocol_id:
 		{
-			return FightBeginNtf::SName();
+			return FightBeginNtf::Name();
 		}
 		break;
-		case 29:
+		case TurnRoundNtf::protocol_id:
 		{
-			return TurnRoundNtf::SName();
+			return TurnRoundNtf::Name();
 		}
 		break;
-		case 30:
+		case FightOperateListNtf::protocol_id:
 		{
-			return FightOperateListNtf::SName();
+			return FightOperateListNtf::Name();
 		}
 		break;
-		case 31:
+		case FightOperateReq::protocol_id:
 		{
-			return FightOperateReq::SName();
+			return FightOperateReq::Name();
 		}
 		break;
-		case 32:
+		case FightOperateAck::protocol_id:
 		{
-			return FightOperateAck::SName();
+			return FightOperateAck::Name();
 		}
 		break;
-		case 33:
+		case FightOperateNtf::protocol_id:
 		{
-			return FightOperateNtf::SName();
+			return FightOperateNtf::Name();
 		}
 		break;
-		case 34:
+		case FightDisplayNtf::protocol_id:
 		{
-			return FightDisplayNtf::SName();
+			return FightDisplayNtf::Name();
 		}
 		break;
-		case 35:
+		case FightDisplayCompleteNtf::protocol_id:
 		{
-			return FightDisplayCompleteNtf::SName();
+			return FightDisplayCompleteNtf::Name();
 		}
 		break;
-		case 36:
+		case FightAutoReq::protocol_id:
 		{
-			return FightAutoReq::SName();
+			return FightAutoReq::Name();
 		}
 		break;
-		case 37:
+		case FightAutoAck::protocol_id:
 		{
-			return FightAutoAck::SName();
+			return FightAutoAck::Name();
 		}
 		break;
-		case 38:
+		case FightAutoNtf::protocol_id:
 		{
-			return FightAutoNtf::SName();
+			return FightAutoNtf::Name();
 		}
 		break;
-		case 39:
+		case FightAutoSkillReq::protocol_id:
 		{
-			return FightAutoSkillReq::SName();
+			return FightAutoSkillReq::Name();
 		}
 		break;
-		case 40:
+		case FightAutoSkillAck::protocol_id:
 		{
-			return FightAutoSkillAck::SName();
+			return FightAutoSkillAck::Name();
 		}
 		break;
-		case 41:
+		case FightEndNtf::protocol_id:
 		{
-			return FightEndNtf::SName();
+			return FightEndNtf::Name();
 		}
 		break;
-		case 42:
+		case AddFighterNtf::protocol_id:
 		{
-			return AddFighterNtf::SName();
+			return AddFighterNtf::Name();
 		}
 		break;
-		case 43:
+		case DelFighterNtf::protocol_id:
 		{
-			return DelFighterNtf::SName();
+			return DelFighterNtf::Name();
 		}
 		break;
-		case 44:
+		case AddFightPetData::protocol_id:
 		{
-			return AddFightPetData::SName();
+			return AddFightPetData::Name();
 		}
 		break;
-		case 45:
+		case UpdateFightPetData::protocol_id:
 		{
-			return UpdateFightPetData::SName();
+			return UpdateFightPetData::Name();
 		}
 		break;
-		case 46:
+		case PlayerKillReq::protocol_id:
 		{
-			return PlayerKillReq::SName();
+			return PlayerKillReq::Name();
 		}
 		break;
-		case 47:
+		case PlayerKillAck::protocol_id:
 		{
-			return PlayerKillAck::SName();
+			return PlayerKillAck::Name();
 		}
 		break;
-		case 48:
+		case EnterFightViewReq::protocol_id:
 		{
-			return EnterFightViewReq::SName();
+			return EnterFightViewReq::Name();
 		}
 		break;
-		case 49:
+		case EnterFightViewAck::protocol_id:
 		{
-			return EnterFightViewAck::SName();
+			return EnterFightViewAck::Name();
 		}
 		break;
-		case 50:
+		case LeaveFightViewReq::protocol_id:
 		{
-			return LeaveFightViewReq::SName();
+			return LeaveFightViewReq::Name();
 		}
 		break;
-		case 51:
+		case LeaveFightViewAck::protocol_id:
 		{
-			return LeaveFightViewAck::SName();
+			return LeaveFightViewAck::Name();
 		}
 		break;
-		case 52:
+		case TeamLeaderOprReq::protocol_id:
 		{
-			return TeamLeaderOprReq::SName();
+			return TeamLeaderOprReq::Name();
 		}
 		break;
-		case 53:
+		case TeamNtf::protocol_id:
 		{
-			return TeamNtf::SName();
+			return TeamNtf::Name();
 		}
 		break;
-		case 54:
+		case TeamLeaderNtf::protocol_id:
 		{
-			return TeamLeaderNtf::SName();
+			return TeamLeaderNtf::Name();
 		}
 		break;
-		case 55:
+		case TeamDestroyNtf::protocol_id:
 		{
-			return TeamDestroyNtf::SName();
+			return TeamDestroyNtf::Name();
 		}
 		break;
-		case 56:
+		case TeamMemberNtf::protocol_id:
 		{
-			return TeamMemberNtf::SName();
+			return TeamMemberNtf::Name();
 		}
 		break;
-		case 57:
+		case TeamMemberLeaveNtf::protocol_id:
 		{
-			return TeamMemberLeaveNtf::SName();
+			return TeamMemberLeaveNtf::Name();
 		}
 		break;
-		case 58:
+		case NpcSelectReq::protocol_id:
 		{
-			return NpcSelectReq::SName();
+			return NpcSelectReq::Name();
 		}
 		break;
-		case 59:
+		case NpcSelectAck::protocol_id:
 		{
-			return NpcSelectAck::SName();
+			return NpcSelectAck::Name();
 		}
 		break;
-		case 60:
+		case NpcTalkReq::protocol_id:
 		{
-			return NpcTalkReq::SName();
+			return NpcTalkReq::Name();
 		}
 		break;
-		case 61:
+		case NpcTalkAck::protocol_id:
 		{
-			return NpcTalkAck::SName();
+			return NpcTalkAck::Name();
 		}
 		break;
-		case 62:
+		case InviteMsgNtf::protocol_id:
 		{
-			return InviteMsgNtf::SName();
+			return InviteMsgNtf::Name();
 		}
 		break;
-		case 63:
+		case ReplyInvite::protocol_id:
 		{
-			return ReplyInvite::SName();
+			return ReplyInvite::Name();
 		}
 		break;
-		case 64:
+		case MoveItem::protocol_id:
 		{
-			return MoveItem::SName();
+			return MoveItem::Name();
 		}
 		break;
-		case 65:
+		case UseItem::protocol_id:
 		{
-			return UseItem::SName();
+			return UseItem::Name();
 		}
 		break;
-		case 66:
+		case RearrangeItem::protocol_id:
 		{
-			return RearrangeItem::SName();
+			return RearrangeItem::Name();
 		}
 		break;
-		case 67:
+		case SkillContainerNtf::protocol_id:
 		{
-			return SkillContainerNtf::SName();
+			return SkillContainerNtf::Name();
 		}
 		break;
-		case 68:
+		case AddSkillNtf::protocol_id:
 		{
-			return AddSkillNtf::SName();
+			return AddSkillNtf::Name();
 		}
 		break;
-		case 69:
+		case UpdateSkillNtf::protocol_id:
 		{
-			return UpdateSkillNtf::SName();
+			return UpdateSkillNtf::Name();
 		}
 		break;
-		case 70:
+		case DelSkillNtf::protocol_id:
 		{
-			return DelSkillNtf::SName();
+			return DelSkillNtf::Name();
 		}
 		break;
-		case 71:
+		case PetAppearNtf::protocol_id:
 		{
-			return PetAppearNtf::SName();
+			return PetAppearNtf::Name();
 		}
 		break;
-		case 72:
+		case PetContainerNtf::protocol_id:
 		{
-			return PetContainerNtf::SName();
+			return PetContainerNtf::Name();
 		}
 		break;
-		case 73:
+		case PetContainerUpdateNtf::protocol_id:
 		{
-			return PetContainerUpdateNtf::SName();
+			return PetContainerUpdateNtf::Name();
 		}
 		break;
-		case 74:
+		case PetAddNtf::protocol_id:
 		{
-			return PetAddNtf::SName();
+			return PetAddNtf::Name();
 		}
 		break;
-		case 75:
+		case PetDestroyNtf::protocol_id:
 		{
-			return PetDestroyNtf::SName();
+			return PetDestroyNtf::Name();
 		}
 		break;
-		case 76:
+		case SetPetLineup::protocol_id:
 		{
-			return SetPetLineup::SName();
+			return SetPetLineup::Name();
 		}
 		break;
-		case 77:
+		case ShowPet::protocol_id:
 		{
-			return ShowPet::SName();
+			return ShowPet::Name();
 		}
 		break;
-		case 78:
+		case ReleasePet::protocol_id:
 		{
-			return ReleasePet::SName();
+			return ReleasePet::Name();
 		}
 		break;
-		case 79:
+		case MovePet::protocol_id:
 		{
-			return MovePet::SName();
+			return MovePet::Name();
 		}
 		break;
-		case 80:
+		case ShopOpenNtf::protocol_id:
 		{
-			return ShopOpenNtf::SName();
+			return ShopOpenNtf::Name();
 		}
 		break;
-		case 81:
+		case ShopBuyNtf::protocol_id:
 		{
-			return ShopBuyNtf::SName();
+			return ShopBuyNtf::Name();
 		}
 		break;
-		case 82:
+		case SellNtf::protocol_id:
 		{
-			return SellNtf::SName();
+			return SellNtf::Name();
 		}
 		break;
-		case 83:
+		case BuyBackNtf::protocol_id:
 		{
-			return BuyBackNtf::SName();
+			return BuyBackNtf::Name();
 		}
 		break;
-		case 84:
+		case BuyBackListNtf::protocol_id:
 		{
-			return BuyBackListNtf::SName();
+			return BuyBackListNtf::Name();
 		}
 		break;
-		case 85:
+		case TeamAttrNtf::protocol_id:
 		{
-			return TeamAttrNtf::SName();
+			return TeamAttrNtf::Name();
 		}
 		break;
-		case 86:
+		case TipsMsgExNtf::protocol_id:
 		{
-			return TipsMsgExNtf::SName();
+			return TipsMsgExNtf::Name();
 		}
 		break;
-		case 87:
+		case ItemNewAddNtf::protocol_id:
 		{
-			return ItemNewAddNtf::SName();
+			return ItemNewAddNtf::Name();
 		}
 		break;
-		case 88:
+		case QuestContainerNtf::protocol_id:
 		{
-			return QuestContainerNtf::SName();
+			return QuestContainerNtf::Name();
 		}
 		break;
-		case 89:
+		case QuestAddNtf::protocol_id:
 		{
-			return QuestAddNtf::SName();
+			return QuestAddNtf::Name();
 		}
 		break;
-		case 90:
+		case QuestStateNtf::protocol_id:
 		{
-			return QuestStateNtf::SName();
+			return QuestStateNtf::Name();
 		}
 		break;
-		case 91:
+		case QuestNpcStateNtf::protocol_id:
 		{
-			return QuestNpcStateNtf::SName();
+			return QuestNpcStateNtf::Name();
 		}
 		break;
-		case 92:
+		case QuestTrackCountNtf::protocol_id:
 		{
-			return QuestTrackCountNtf::SName();
+			return QuestTrackCountNtf::Name();
 		}
 		break;
-		case 93:
+		case QuestTalkSelectReq::protocol_id:
 		{
-			return QuestTalkSelectReq::SName();
+			return QuestTalkSelectReq::Name();
 		}
 		break;
-		case 94:
+		case QuestTalkSelectAck::protocol_id:
 		{
-			return QuestTalkSelectAck::SName();
+			return QuestTalkSelectAck::Name();
 		}
 		break;
-		case 95:
+		case ObjStrCustomNtf::protocol_id:
 		{
-			return ObjStrCustomNtf::SName();
+			return ObjStrCustomNtf::Name();
 		}
 		break;
-		case 96:
+		case ObjIntCustomNtf::protocol_id:
 		{
-			return ObjIntCustomNtf::SName();
+			return ObjIntCustomNtf::Name();
 		}
 		break;
-		case 97:
+		case ObjDynAttrNtf::protocol_id:
 		{
-			return ObjDynAttrNtf::SName();
+			return ObjDynAttrNtf::Name();
 		}
 		break;
-		case 98:
+		case CommitQuestItemRsp::protocol_id:
 		{
-			return CommitQuestItemRsp::SName();
+			return CommitQuestItemRsp::Name();
 		}
 		break;
-		case 99:
+		case CommitQuestItemNtf::protocol_id:
 		{
-			return CommitQuestItemNtf::SName();
+			return CommitQuestItemNtf::Name();
 		}
 		break;
-		case 100:
+		case CommitQuestPetRsp::protocol_id:
 		{
-			return CommitQuestPetRsp::SName();
+			return CommitQuestPetRsp::Name();
 		}
 		break;
-		case 101:
+		case CommitQuestPetNtf::protocol_id:
 		{
-			return CommitQuestPetNtf::SName();
+			return CommitQuestPetNtf::Name();
 		}
 		break;
-		case 102:
+		case AbandonQuest::protocol_id:
 		{
-			return AbandonQuest::SName();
+			return AbandonQuest::Name();
 		}
 		break;
-		case 103:
+		case SkillTipsReq::protocol_id:
 		{
-			return SkillTipsReq::SName();
+			return SkillTipsReq::Name();
 		}
 		break;
-		case 104:
+		case SkillTipsAck::protocol_id:
 		{
-			return SkillTipsAck::SName();
+			return SkillTipsAck::Name();
 		}
 		break;
-		case 105:
+		case TeamLeaderOprNtf::protocol_id:
 		{
-			return TeamLeaderOprNtf::SName();
+			return TeamLeaderOprNtf::Name();
 		}
 		break;
-		case 106:
+		case KeepAliveCtrlNtf::protocol_id:
 		{
-			return KeepAliveCtrlNtf::SName();
+			return KeepAliveCtrlNtf::Name();
 		}
 		break;
-		case 107:
+		case NetDelayReq::protocol_id:
 		{
-			return NetDelayReq::SName();
+			return NetDelayReq::Name();
 		}
 		break;
-		case 108:
+		case NetDelayAck::protocol_id:
 		{
-			return NetDelayAck::SName();
+			return NetDelayAck::Name();
 		}
 		break;
-		case 109:
+		case SystemSetupNtf::protocol_id:
 		{
-			return SystemSetupNtf::SName();
+			return SystemSetupNtf::Name();
 		}
 		break;
-		case 110:
+		case BuffListNtf::protocol_id:
 		{
-			return BuffListNtf::SName();
+			return BuffListNtf::Name();
 		}
 		break;
-		case 111:
+		case BuffAddNtf::protocol_id:
 		{
-			return BuffAddNtf::SName();
+			return BuffAddNtf::Name();
 		}
 		break;
-		case 112:
+		case BuffDurationNtf::protocol_id:
 		{
-			return BuffDurationNtf::SName();
+			return BuffDurationNtf::Name();
 		}
 		break;
-		case 113:
+		case BuffDynAttrNtf::protocol_id:
 		{
-			return BuffDynAttrNtf::SName();
+			return BuffDynAttrNtf::Name();
 		}
 		break;
-		case 114:
+		case StopBuff::protocol_id:
 		{
-			return StopBuff::SName();
+			return StopBuff::Name();
 		}
 		break;
-		case 115:
+		case BuffDelNtf::protocol_id:
 		{
-			return BuffDelNtf::SName();
+			return BuffDelNtf::Name();
 		}
 		break;
-		case 116:
+		case ActivityListReq::protocol_id:
 		{
-			return ActivityListReq::SName();
+			return ActivityListReq::Name();
 		}
 		break;
-		case 117:
+		case ActivityListAck::protocol_id:
 		{
-			return ActivityListAck::SName();
+			return ActivityListAck::Name();
 		}
 		break;
-		case 118:
+		case ActivityJoinNtf::protocol_id:
 		{
-			return ActivityJoinNtf::SName();
+			return ActivityJoinNtf::Name();
 		}
 		break;
-		case 119:
+		case GuildListNtf::protocol_id:
 		{
-			return GuildListNtf::SName();
+			return GuildListNtf::Name();
 		}
 		break;
-		case 120:
+		case GuildNtf::protocol_id:
 		{
-			return GuildNtf::SName();
+			return GuildNtf::Name();
 		}
 		break;
-		case 121:
+		case GuildBaseNtf::protocol_id:
 		{
-			return GuildBaseNtf::SName();
+			return GuildBaseNtf::Name();
 		}
 		break;
-		case 122:
+		case GuildNoticeNtf::protocol_id:
 		{
-			return GuildNoticeNtf::SName();
+			return GuildNoticeNtf::Name();
 		}
 		break;
-		case 123:
+		case GuildBriefNtf::protocol_id:
 		{
-			return GuildBriefNtf::SName();
+			return GuildBriefNtf::Name();
 		}
 		break;
-		case 124:
+		case GuildMemberListNtf::protocol_id:
 		{
-			return GuildMemberListNtf::SName();
+			return GuildMemberListNtf::Name();
 		}
 		break;
-		case 125:
+		case GuildMemberNtf::protocol_id:
 		{
-			return GuildMemberNtf::SName();
+			return GuildMemberNtf::Name();
 		}
 		break;
-		case 126:
+		case GuildApplicantListNtf::protocol_id:
 		{
-			return GuildApplicantListNtf::SName();
+			return GuildApplicantListNtf::Name();
 		}
 		break;
-		case 127:
+		case GuildOperationNtf::protocol_id:
 		{
-			return GuildOperationNtf::SName();
+			return GuildOperationNtf::Name();
 		}
 		break;
-		case 128:
+		case GetTimestampReq::protocol_id:
 		{
-			return GetTimestampReq::SName();
+			return GetTimestampReq::Name();
 		}
 		break;
-		case 129:
+		case GetTimestampAck::protocol_id:
 		{
-			return GetTimestampAck::SName();
+			return GetTimestampAck::Name();
 		}
 		break;
-		case 130:
+		case ContactListNtf::protocol_id:
 		{
-			return ContactListNtf::SName();
+			return ContactListNtf::Name();
 		}
 		break;
-		case 131:
+		case AddContactNtf::protocol_id:
 		{
-			return AddContactNtf::SName();
+			return AddContactNtf::Name();
 		}
 		break;
-		case 132:
+		case UpdateContactNtf::protocol_id:
 		{
-			return UpdateContactNtf::SName();
+			return UpdateContactNtf::Name();
 		}
 		break;
-		case 133:
+		case DelContactNtf::protocol_id:
 		{
-			return DelContactNtf::SName();
+			return DelContactNtf::Name();
 		}
 		break;
-		case 134:
+		case AddContactMessageNtf::protocol_id:
 		{
-			return AddContactMessageNtf::SName();
+			return AddContactMessageNtf::Name();
 		}
 		break;
-		case 135:
+		case ItemQueryNtf::protocol_id:
 		{
-			return ItemQueryNtf::SName();
+			return ItemQueryNtf::Name();
 		}
 		break;
-		case 136:
+		case PetQueryNtf::protocol_id:
 		{
-			return PetQueryNtf::SName();
+			return PetQueryNtf::Name();
 		}
 		break;
-		case 137:
+		case ContactInfoNtf::protocol_id:
 		{
-			return ContactInfoNtf::SName();
+			return ContactInfoNtf::Name();
 		}
 		break;
-		case 138:
+		case MailListNtf::protocol_id:
 		{
-			return MailListNtf::SName();
+			return MailListNtf::Name();
 		}
 		break;
-		case 139:
+		case AddMailNtf::protocol_id:
 		{
-			return AddMailNtf::SName();
+			return AddMailNtf::Name();
 		}
 		break;
-		case 140:
+		case DelMailNtf::protocol_id:
 		{
-			return DelMailNtf::SName();
+			return DelMailNtf::Name();
 		}
 		break;
-		case 141:
+		case MailBodyNtf::protocol_id:
 		{
-			return MailBodyNtf::SName();
+			return MailBodyNtf::Name();
 		}
 		break;
-		case 142:
+		case UpdateMailBodyNtf::protocol_id:
 		{
-			return UpdateMailBodyNtf::SName();
+			return UpdateMailBodyNtf::Name();
 		}
 		break;
-		case 143:
+		case UpdateMailHeadNtf::protocol_id:
 		{
-			return UpdateMailHeadNtf::SName();
+			return UpdateMailHeadNtf::Name();
 		}
 		break;
-		case 144:
+		case RanklistReq::protocol_id:
 		{
-			return RanklistReq::SName();
+			return RanklistReq::Name();
 		}
 		break;
-		case 145:
+		case RanklistAck::protocol_id:
 		{
-			return RanklistAck::SName();
+			return RanklistAck::Name();
 		}
 		break;
-		case 146:
+		case GetRankReq::protocol_id:
 		{
-			return GetRankReq::SName();
+			return GetRankReq::Name();
 		}
 		break;
-		case 147:
+		case GetRankAck::protocol_id:
 		{
-			return GetRankAck::SName();
+			return GetRankAck::Name();
 		}
 		break;
-		case 148:
+		case TitleContainerNtf::protocol_id:
 		{
-			return TitleContainerNtf::SName();
+			return TitleContainerNtf::Name();
 		}
 		break;
-		case 149:
+		case TitleAddNtf::protocol_id:
 		{
-			return TitleAddNtf::SName();
+			return TitleAddNtf::Name();
 		}
 		break;
-		case 150:
+		case TitleDelNtf::protocol_id:
 		{
-			return TitleDelNtf::SName();
+			return TitleDelNtf::Name();
 		}
 		break;
-		case 151:
+		case AgentKeyReq::protocol_id:
 		{
-			return AgentKeyReq::SName();
+			return AgentKeyReq::Name();
 		}
 		break;
-		case 152:
+		case AgentKeyAck::protocol_id:
 		{
-			return AgentKeyAck::SName();
+			return AgentKeyAck::Name();
 		}
 		break;
-		case 153:
+		case HeadMsgNtf::protocol_id:
 		{
-			return HeadMsgNtf::SName();
+			return HeadMsgNtf::Name();
 		}
 		break;
-		case 154:
+		case AutoContainerNtf::protocol_id:
 		{
-			return AutoContainerNtf::SName();
+			return AutoContainerNtf::Name();
 		}
 		break;
-		case 155:
+		case PlayerQueryNtf::protocol_id:
 		{
-			return PlayerQueryNtf::SName();
+			return PlayerQueryNtf::Name();
 		}
 		break;
-		case 156:
+		case UseAllItem::protocol_id:
 		{
-			return UseAllItem::SName();
+			return UseAllItem::Name();
 		}
 		break;
-		case 157:
+		case GuardContainerNtf::protocol_id:
 		{
-			return GuardContainerNtf::SName();
+			return GuardContainerNtf::Name();
 		}
 		break;
-		case 158:
+		case GuardAddNtf::protocol_id:
 		{
-			return GuardAddNtf::SName();
+			return GuardAddNtf::Name();
 		}
 		break;
-		case 159:
+		case SetGuardLineup::protocol_id:
 		{
-			return SetGuardLineup::SName();
+			return SetGuardLineup::Name();
 		}
 		break;
-		case 160:
+		case PetNewAddNtf::protocol_id:
 		{
-			return PetNewAddNtf::SName();
+			return PetNewAddNtf::Name();
 		}
 		break;
-		case 161:
+		case TeamPlatformNtf::protocol_id:
 		{
-			return TeamPlatformNtf::SName();
+			return TeamPlatformNtf::Name();
 		}
 		break;
-		case 162:
+		case TeamApplicantsNtf::protocol_id:
 		{
-			return TeamApplicantsNtf::SName();
+			return TeamApplicantsNtf::Name();
 		}
 		break;
-		case 163:
+		case TeamOperationNtf::protocol_id:
 		{
-			return TeamOperationNtf::SName();
+			return TeamOperationNtf::Name();
 		}
 		break;
-		case 164:
+		case TeamTargetNtf::protocol_id:
 		{
-			return TeamTargetNtf::SName();
+			return TeamTargetNtf::Name();
 		}
 		break;
-		case 165:
+		case ChangedNameNtf::protocol_id:
 		{
-			return ChangedNameNtf::SName();
+			return ChangedNameNtf::Name();
 		}
 		break;
-		case 166:
+		case CustomDataNtf::protocol_id:
 		{
-			return CustomDataNtf::SName();
+			return CustomDataNtf::Name();
 		}
 		break;
-		case 167:
+		case SpeedCheckNtf::protocol_id:
 		{
-			return SpeedCheckNtf::SName();
+			return SpeedCheckNtf::Name();
 		}
 		break;
-		case 168:
+		case ConsoleMsgNtf::protocol_id:
 		{
-			return ConsoleMsgNtf::SName();
+			return ConsoleMsgNtf::Name();
 		}
 		break;
-		case 169:
+		case PetSwapNtf::protocol_id:
 		{
-			return PetSwapNtf::SName();
+			return PetSwapNtf::Name();
 		}
 		break;
-		case 170:
+		case GuardDestroyNtf::protocol_id:
 		{
-			return GuardDestroyNtf::SName();
+			return GuardDestroyNtf::Name();
 		}
 		break;
-		case 171:
+		case ActivateGuard::protocol_id:
 		{
-			return ActivateGuard::SName();
+			return ActivateGuard::Name();
 		}
 		break;
-		case 172:
+		case ReleaseGuard::protocol_id:
 		{
-			return ReleaseGuard::SName();
+			return ReleaseGuard::Name();
 		}
 		break;
-		case 173:
+		case TeamMemberSwapNtf::protocol_id:
 		{
-			return TeamMemberSwapNtf::SName();
+			return TeamMemberSwapNtf::Name();
 		}
 		break;
-		case 174:
+		case GuardSwapNtf::protocol_id:
 		{
-			return GuardSwapNtf::SName();
+			return GuardSwapNtf::Name();
 		}
 		break;
-		case 175:
+		case PetReplaceNtf::protocol_id:
 		{
-			return PetReplaceNtf::SName();
+			return PetReplaceNtf::Name();
 		}
 		break;
-		case 176:
+		case GuardAppearNtf::protocol_id:
 		{
-			return GuardAppearNtf::SName();
+			return GuardAppearNtf::Name();
 		}
 		break;
-		case 177:
+		case InstructionContainerNtf::protocol_id:
 		{
-			return InstructionContainerNtf::SName();
+			return InstructionContainerNtf::Name();
 		}
 		break;
-		case 178:
+		case InstructionAddReq::protocol_id:
 		{
-			return InstructionAddReq::SName();
+			return InstructionAddReq::Name();
 		}
 		break;
-		case 179:
+		case InstructionAddAck::protocol_id:
 		{
-			return InstructionAddAck::SName();
+			return InstructionAddAck::Name();
 		}
 		break;
-		case 180:
+		case InstructionDeleteReq::protocol_id:
 		{
-			return InstructionDeleteReq::SName();
+			return InstructionDeleteReq::Name();
 		}
 		break;
-		case 181:
+		case InstructionDeleteAck::protocol_id:
 		{
-			return InstructionDeleteAck::SName();
+			return InstructionDeleteAck::Name();
 		}
 		break;
-		case 182:
+		case InstructionModfityReq::protocol_id:
 		{
-			return InstructionModfityReq::SName();
+			return InstructionModfityReq::Name();
 		}
 		break;
-		case 183:
+		case InstructionModifyAck::protocol_id:
 		{
-			return InstructionModifyAck::SName();
+			return InstructionModifyAck::Name();
 		}
 		break;
-		case 184:
+		case InstructionDefaultReq::protocol_id:
 		{
-			return InstructionDefaultReq::SName();
+			return InstructionDefaultReq::Name();
 		}
 		break;
-		case 185:
+		case InstructionDefaultAck::protocol_id:
 		{
-			return InstructionDefaultAck::SName();
+			return InstructionDefaultAck::Name();
 		}
 		break;
-		case 186:
+		case InstructionAttachReq::protocol_id:
 		{
-			return InstructionAttachReq::SName();
+			return InstructionAttachReq::Name();
 		}
 		break;
-		case 187:
+		case InstructionAttachAck::protocol_id:
 		{
-			return InstructionAttachAck::SName();
+			return InstructionAttachAck::Name();
 		}
 		break;
-		case 188:
+		case InstructionAttachNtf::protocol_id:
 		{
-			return InstructionAttachNtf::SName();
+			return InstructionAttachNtf::Name();
 		}
 		break;
-		case 189:
+		case InstructionDetachReq::protocol_id:
 		{
-			return InstructionDetachReq::SName();
+			return InstructionDetachReq::Name();
 		}
 		break;
-		case 190:
+		case InstructionDetachAck::protocol_id:
 		{
-			return InstructionDetachAck::SName();
+			return InstructionDetachAck::Name();
 		}
 		break;
-		case 191:
+		case InstructionDetachNtf::protocol_id:
 		{
-			return InstructionDetachNtf::SName();
+			return InstructionDetachNtf::Name();
 		}
 		break;
-		case 192:
+		case PlayerDetailNtf::protocol_id:
 		{
-			return PlayerDetailNtf::SName();
+			return PlayerDetailNtf::Name();
 		}
 		break;
-		case 193:
+		case MapDynBlockPtNtf::protocol_id:
 		{
-			return MapDynBlockPtNtf::SName();
+			return MapDynBlockPtNtf::Name();
 		}
 		break;
-		case 194:
+		case GuardQueryNtf::protocol_id:
 		{
-			return GuardQueryNtf::SName();
+			return GuardQueryNtf::Name();
 		}
 		break;
-		case 195:
+		case BuyBackNtfEx::protocol_id:
 		{
-			return BuyBackNtfEx::SName();
+			return BuyBackNtfEx::Name();
 		}
 		break;
-		case 196:
+		case GuildCustomNtf::protocol_id:
 		{
-			return GuildCustomNtf::SName();
+			return GuildCustomNtf::Name();
 		}
 		break;
-		case 197:
+		case PreTurnRoundNtf::protocol_id:
 		{
-			return PreTurnRoundNtf::SName();
+			return PreTurnRoundNtf::Name();
 		}
 		break;
-		case 198:
+		case FighterSpecialPetNtf::protocol_id:
 		{
-			return FighterSpecialPetNtf::SName();
+			return FighterSpecialPetNtf::Name();
 		}
 		break;
 		default:
@@ -55302,7 +55873,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case KeepAliveReq::protocol_id:
 		{
 			KeepAliveReq* proto = new(m_protocol_buffer) KeepAliveReq();
 			if (proto->DeCode(net_data))
@@ -55319,7 +55890,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case KeepAliveAck::protocol_id:
 		{
 			KeepAliveAck* proto = new(m_protocol_buffer) KeepAliveAck();
 			if (proto->DeCode(net_data))
@@ -55336,7 +55907,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case AttrNtf::protocol_id:
 		{
 			AttrNtf* proto = new(m_protocol_buffer) AttrNtf();
 			if (proto->DeCode(net_data))
@@ -55353,7 +55924,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case PlayerAppearNtf::protocol_id:
 		{
 			PlayerAppearNtf* proto = new(m_protocol_buffer) PlayerAppearNtf();
 			if (proto->DeCode(net_data))
@@ -55370,7 +55941,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case NPCAppearNtf::protocol_id:
 		{
 			NPCAppearNtf* proto = new(m_protocol_buffer) NPCAppearNtf();
 			if (proto->DeCode(net_data))
@@ -55387,7 +55958,7 @@ public:
 			}
 		}
 		break;
-		case 6:
+		case ItemAppearNtf::protocol_id:
 		{
 			ItemAppearNtf* proto = new(m_protocol_buffer) ItemAppearNtf();
 			if (proto->DeCode(net_data))
@@ -55404,7 +55975,7 @@ public:
 			}
 		}
 		break;
-		case 7:
+		case ObjDisAppearNtf::protocol_id:
 		{
 			ObjDisAppearNtf* proto = new(m_protocol_buffer) ObjDisAppearNtf();
 			if (proto->DeCode(net_data))
@@ -55421,7 +55992,7 @@ public:
 			}
 		}
 		break;
-		case 8:
+		case ObjMoveNtf::protocol_id:
 		{
 			ObjMoveNtf* proto = new(m_protocol_buffer) ObjMoveNtf();
 			if (proto->DeCode(net_data))
@@ -55438,7 +56009,7 @@ public:
 			}
 		}
 		break;
-		case 9:
+		case EnterMapNtf::protocol_id:
 		{
 			EnterMapNtf* proto = new(m_protocol_buffer) EnterMapNtf();
 			if (proto->DeCode(net_data))
@@ -55455,7 +56026,7 @@ public:
 			}
 		}
 		break;
-		case 10:
+		case MoveReq::protocol_id:
 		{
 			MoveReq* proto = new(m_protocol_buffer) MoveReq();
 			if (proto->DeCode(net_data))
@@ -55472,7 +56043,7 @@ public:
 			}
 		}
 		break;
-		case 11:
+		case MoveAck::protocol_id:
 		{
 			MoveAck* proto = new(m_protocol_buffer) MoveAck();
 			if (proto->DeCode(net_data))
@@ -55489,7 +56060,7 @@ public:
 			}
 		}
 		break;
-		case 12:
+		case JumpMapReq::protocol_id:
 		{
 			JumpMapReq* proto = new(m_protocol_buffer) JumpMapReq();
 			if (proto->DeCode(net_data))
@@ -55506,7 +56077,7 @@ public:
 			}
 		}
 		break;
-		case 13:
+		case JumpMapAck::protocol_id:
 		{
 			JumpMapAck* proto = new(m_protocol_buffer) JumpMapAck();
 			if (proto->DeCode(net_data))
@@ -55523,7 +56094,7 @@ public:
 			}
 		}
 		break;
-		case 14:
+		case AddJumpMapRegionNtf::protocol_id:
 		{
 			AddJumpMapRegionNtf* proto = new(m_protocol_buffer) AddJumpMapRegionNtf();
 			if (proto->DeCode(net_data))
@@ -55540,7 +56111,7 @@ public:
 			}
 		}
 		break;
-		case 15:
+		case DelJumpMapRegionNtf::protocol_id:
 		{
 			DelJumpMapRegionNtf* proto = new(m_protocol_buffer) DelJumpMapRegionNtf();
 			if (proto->DeCode(net_data))
@@ -55557,7 +56128,7 @@ public:
 			}
 		}
 		break;
-		case 16:
+		case ItemAddNtf::protocol_id:
 		{
 			ItemAddNtf* proto = new(m_protocol_buffer) ItemAddNtf();
 			if (proto->DeCode(net_data))
@@ -55574,7 +56145,7 @@ public:
 			}
 		}
 		break;
-		case 17:
+		case ItemUpdateNtf::protocol_id:
 		{
 			ItemUpdateNtf* proto = new(m_protocol_buffer) ItemUpdateNtf();
 			if (proto->DeCode(net_data))
@@ -55591,7 +56162,7 @@ public:
 			}
 		}
 		break;
-		case 18:
+		case ItemDestroyNtf::protocol_id:
 		{
 			ItemDestroyNtf* proto = new(m_protocol_buffer) ItemDestroyNtf();
 			if (proto->DeCode(net_data))
@@ -55608,7 +56179,7 @@ public:
 			}
 		}
 		break;
-		case 19:
+		case TipsMsgNtf::protocol_id:
 		{
 			TipsMsgNtf* proto = new(m_protocol_buffer) TipsMsgNtf();
 			if (proto->DeCode(net_data))
@@ -55625,7 +56196,7 @@ public:
 			}
 		}
 		break;
-		case 20:
+		case TopMsgNtf::protocol_id:
 		{
 			TopMsgNtf* proto = new(m_protocol_buffer) TopMsgNtf();
 			if (proto->DeCode(net_data))
@@ -55642,7 +56213,7 @@ public:
 			}
 		}
 		break;
-		case 21:
+		case SysMsgNtf::protocol_id:
 		{
 			SysMsgNtf* proto = new(m_protocol_buffer) SysMsgNtf();
 			if (proto->DeCode(net_data))
@@ -55659,7 +56230,7 @@ public:
 			}
 		}
 		break;
-		case 22:
+		case PopupMsgNtf::protocol_id:
 		{
 			PopupMsgNtf* proto = new(m_protocol_buffer) PopupMsgNtf();
 			if (proto->DeCode(net_data))
@@ -55676,7 +56247,7 @@ public:
 			}
 		}
 		break;
-		case 23:
+		case ItemContainerNtf::protocol_id:
 		{
 			ItemContainerNtf* proto = new(m_protocol_buffer) ItemContainerNtf();
 			if (proto->DeCode(net_data))
@@ -55693,7 +56264,7 @@ public:
 			}
 		}
 		break;
-		case 24:
+		case ItemContainerUpdateNtf::protocol_id:
 		{
 			ItemContainerUpdateNtf* proto = new(m_protocol_buffer) ItemContainerUpdateNtf();
 			if (proto->DeCode(net_data))
@@ -55710,7 +56281,7 @@ public:
 			}
 		}
 		break;
-		case 25:
+		case SubmitForm::protocol_id:
 		{
 			SubmitForm* proto = new(m_protocol_buffer) SubmitForm();
 			if (proto->DeCode(net_data))
@@ -55727,7 +56298,7 @@ public:
 			}
 		}
 		break;
-		case 26:
+		case ShowFormNtf::protocol_id:
 		{
 			ShowFormNtf* proto = new(m_protocol_buffer) ShowFormNtf();
 			if (proto->DeCode(net_data))
@@ -55744,7 +56315,7 @@ public:
 			}
 		}
 		break;
-		case 27:
+		case ExecuteGMReq::protocol_id:
 		{
 			ExecuteGMReq* proto = new(m_protocol_buffer) ExecuteGMReq();
 			if (proto->DeCode(net_data))
@@ -55761,7 +56332,7 @@ public:
 			}
 		}
 		break;
-		case 28:
+		case FightBeginNtf::protocol_id:
 		{
 			FightBeginNtf* proto = new(m_protocol_buffer) FightBeginNtf();
 			if (proto->DeCode(net_data))
@@ -55778,7 +56349,7 @@ public:
 			}
 		}
 		break;
-		case 29:
+		case TurnRoundNtf::protocol_id:
 		{
 			TurnRoundNtf* proto = new(m_protocol_buffer) TurnRoundNtf();
 			if (proto->DeCode(net_data))
@@ -55795,7 +56366,7 @@ public:
 			}
 		}
 		break;
-		case 30:
+		case FightOperateListNtf::protocol_id:
 		{
 			FightOperateListNtf* proto = new(m_protocol_buffer) FightOperateListNtf();
 			if (proto->DeCode(net_data))
@@ -55812,7 +56383,7 @@ public:
 			}
 		}
 		break;
-		case 31:
+		case FightOperateReq::protocol_id:
 		{
 			FightOperateReq* proto = new(m_protocol_buffer) FightOperateReq();
 			if (proto->DeCode(net_data))
@@ -55829,7 +56400,7 @@ public:
 			}
 		}
 		break;
-		case 32:
+		case FightOperateAck::protocol_id:
 		{
 			FightOperateAck* proto = new(m_protocol_buffer) FightOperateAck();
 			if (proto->DeCode(net_data))
@@ -55846,7 +56417,7 @@ public:
 			}
 		}
 		break;
-		case 33:
+		case FightOperateNtf::protocol_id:
 		{
 			FightOperateNtf* proto = new(m_protocol_buffer) FightOperateNtf();
 			if (proto->DeCode(net_data))
@@ -55863,7 +56434,7 @@ public:
 			}
 		}
 		break;
-		case 34:
+		case FightDisplayNtf::protocol_id:
 		{
 			FightDisplayNtf* proto = new(m_protocol_buffer) FightDisplayNtf();
 			if (proto->DeCode(net_data))
@@ -55880,7 +56451,7 @@ public:
 			}
 		}
 		break;
-		case 35:
+		case FightDisplayCompleteNtf::protocol_id:
 		{
 			FightDisplayCompleteNtf* proto = new(m_protocol_buffer) FightDisplayCompleteNtf();
 			if (proto->DeCode(net_data))
@@ -55897,7 +56468,7 @@ public:
 			}
 		}
 		break;
-		case 36:
+		case FightAutoReq::protocol_id:
 		{
 			FightAutoReq* proto = new(m_protocol_buffer) FightAutoReq();
 			if (proto->DeCode(net_data))
@@ -55914,7 +56485,7 @@ public:
 			}
 		}
 		break;
-		case 37:
+		case FightAutoAck::protocol_id:
 		{
 			FightAutoAck* proto = new(m_protocol_buffer) FightAutoAck();
 			if (proto->DeCode(net_data))
@@ -55931,7 +56502,7 @@ public:
 			}
 		}
 		break;
-		case 38:
+		case FightAutoNtf::protocol_id:
 		{
 			FightAutoNtf* proto = new(m_protocol_buffer) FightAutoNtf();
 			if (proto->DeCode(net_data))
@@ -55948,7 +56519,7 @@ public:
 			}
 		}
 		break;
-		case 39:
+		case FightAutoSkillReq::protocol_id:
 		{
 			FightAutoSkillReq* proto = new(m_protocol_buffer) FightAutoSkillReq();
 			if (proto->DeCode(net_data))
@@ -55965,7 +56536,7 @@ public:
 			}
 		}
 		break;
-		case 40:
+		case FightAutoSkillAck::protocol_id:
 		{
 			FightAutoSkillAck* proto = new(m_protocol_buffer) FightAutoSkillAck();
 			if (proto->DeCode(net_data))
@@ -55982,7 +56553,7 @@ public:
 			}
 		}
 		break;
-		case 41:
+		case FightEndNtf::protocol_id:
 		{
 			FightEndNtf* proto = new(m_protocol_buffer) FightEndNtf();
 			if (proto->DeCode(net_data))
@@ -55999,7 +56570,7 @@ public:
 			}
 		}
 		break;
-		case 42:
+		case AddFighterNtf::protocol_id:
 		{
 			AddFighterNtf* proto = new(m_protocol_buffer) AddFighterNtf();
 			if (proto->DeCode(net_data))
@@ -56016,7 +56587,7 @@ public:
 			}
 		}
 		break;
-		case 43:
+		case DelFighterNtf::protocol_id:
 		{
 			DelFighterNtf* proto = new(m_protocol_buffer) DelFighterNtf();
 			if (proto->DeCode(net_data))
@@ -56033,7 +56604,7 @@ public:
 			}
 		}
 		break;
-		case 44:
+		case AddFightPetData::protocol_id:
 		{
 			AddFightPetData* proto = new(m_protocol_buffer) AddFightPetData();
 			if (proto->DeCode(net_data))
@@ -56050,7 +56621,7 @@ public:
 			}
 		}
 		break;
-		case 45:
+		case UpdateFightPetData::protocol_id:
 		{
 			UpdateFightPetData* proto = new(m_protocol_buffer) UpdateFightPetData();
 			if (proto->DeCode(net_data))
@@ -56067,7 +56638,7 @@ public:
 			}
 		}
 		break;
-		case 46:
+		case PlayerKillReq::protocol_id:
 		{
 			PlayerKillReq* proto = new(m_protocol_buffer) PlayerKillReq();
 			if (proto->DeCode(net_data))
@@ -56084,7 +56655,7 @@ public:
 			}
 		}
 		break;
-		case 47:
+		case PlayerKillAck::protocol_id:
 		{
 			PlayerKillAck* proto = new(m_protocol_buffer) PlayerKillAck();
 			if (proto->DeCode(net_data))
@@ -56101,7 +56672,7 @@ public:
 			}
 		}
 		break;
-		case 48:
+		case EnterFightViewReq::protocol_id:
 		{
 			EnterFightViewReq* proto = new(m_protocol_buffer) EnterFightViewReq();
 			if (proto->DeCode(net_data))
@@ -56118,7 +56689,7 @@ public:
 			}
 		}
 		break;
-		case 49:
+		case EnterFightViewAck::protocol_id:
 		{
 			EnterFightViewAck* proto = new(m_protocol_buffer) EnterFightViewAck();
 			if (proto->DeCode(net_data))
@@ -56135,7 +56706,7 @@ public:
 			}
 		}
 		break;
-		case 50:
+		case LeaveFightViewReq::protocol_id:
 		{
 			LeaveFightViewReq* proto = new(m_protocol_buffer) LeaveFightViewReq();
 			if (proto->DeCode(net_data))
@@ -56152,7 +56723,7 @@ public:
 			}
 		}
 		break;
-		case 51:
+		case LeaveFightViewAck::protocol_id:
 		{
 			LeaveFightViewAck* proto = new(m_protocol_buffer) LeaveFightViewAck();
 			if (proto->DeCode(net_data))
@@ -56169,7 +56740,7 @@ public:
 			}
 		}
 		break;
-		case 52:
+		case TeamLeaderOprReq::protocol_id:
 		{
 			TeamLeaderOprReq* proto = new(m_protocol_buffer) TeamLeaderOprReq();
 			if (proto->DeCode(net_data))
@@ -56186,7 +56757,7 @@ public:
 			}
 		}
 		break;
-		case 53:
+		case TeamNtf::protocol_id:
 		{
 			TeamNtf* proto = new(m_protocol_buffer) TeamNtf();
 			if (proto->DeCode(net_data))
@@ -56203,7 +56774,7 @@ public:
 			}
 		}
 		break;
-		case 54:
+		case TeamLeaderNtf::protocol_id:
 		{
 			TeamLeaderNtf* proto = new(m_protocol_buffer) TeamLeaderNtf();
 			if (proto->DeCode(net_data))
@@ -56220,7 +56791,7 @@ public:
 			}
 		}
 		break;
-		case 55:
+		case TeamDestroyNtf::protocol_id:
 		{
 			TeamDestroyNtf* proto = new(m_protocol_buffer) TeamDestroyNtf();
 			if (proto->DeCode(net_data))
@@ -56237,7 +56808,7 @@ public:
 			}
 		}
 		break;
-		case 56:
+		case TeamMemberNtf::protocol_id:
 		{
 			TeamMemberNtf* proto = new(m_protocol_buffer) TeamMemberNtf();
 			if (proto->DeCode(net_data))
@@ -56254,7 +56825,7 @@ public:
 			}
 		}
 		break;
-		case 57:
+		case TeamMemberLeaveNtf::protocol_id:
 		{
 			TeamMemberLeaveNtf* proto = new(m_protocol_buffer) TeamMemberLeaveNtf();
 			if (proto->DeCode(net_data))
@@ -56271,7 +56842,7 @@ public:
 			}
 		}
 		break;
-		case 58:
+		case NpcSelectReq::protocol_id:
 		{
 			NpcSelectReq* proto = new(m_protocol_buffer) NpcSelectReq();
 			if (proto->DeCode(net_data))
@@ -56288,7 +56859,7 @@ public:
 			}
 		}
 		break;
-		case 59:
+		case NpcSelectAck::protocol_id:
 		{
 			NpcSelectAck* proto = new(m_protocol_buffer) NpcSelectAck();
 			if (proto->DeCode(net_data))
@@ -56305,7 +56876,7 @@ public:
 			}
 		}
 		break;
-		case 60:
+		case NpcTalkReq::protocol_id:
 		{
 			NpcTalkReq* proto = new(m_protocol_buffer) NpcTalkReq();
 			if (proto->DeCode(net_data))
@@ -56322,7 +56893,7 @@ public:
 			}
 		}
 		break;
-		case 61:
+		case NpcTalkAck::protocol_id:
 		{
 			NpcTalkAck* proto = new(m_protocol_buffer) NpcTalkAck();
 			if (proto->DeCode(net_data))
@@ -56339,7 +56910,7 @@ public:
 			}
 		}
 		break;
-		case 62:
+		case InviteMsgNtf::protocol_id:
 		{
 			InviteMsgNtf* proto = new(m_protocol_buffer) InviteMsgNtf();
 			if (proto->DeCode(net_data))
@@ -56356,7 +56927,7 @@ public:
 			}
 		}
 		break;
-		case 63:
+		case ReplyInvite::protocol_id:
 		{
 			ReplyInvite* proto = new(m_protocol_buffer) ReplyInvite();
 			if (proto->DeCode(net_data))
@@ -56373,7 +56944,7 @@ public:
 			}
 		}
 		break;
-		case 64:
+		case MoveItem::protocol_id:
 		{
 			MoveItem* proto = new(m_protocol_buffer) MoveItem();
 			if (proto->DeCode(net_data))
@@ -56390,7 +56961,7 @@ public:
 			}
 		}
 		break;
-		case 65:
+		case UseItem::protocol_id:
 		{
 			UseItem* proto = new(m_protocol_buffer) UseItem();
 			if (proto->DeCode(net_data))
@@ -56407,7 +56978,7 @@ public:
 			}
 		}
 		break;
-		case 66:
+		case RearrangeItem::protocol_id:
 		{
 			RearrangeItem* proto = new(m_protocol_buffer) RearrangeItem();
 			if (proto->DeCode(net_data))
@@ -56424,7 +56995,7 @@ public:
 			}
 		}
 		break;
-		case 67:
+		case SkillContainerNtf::protocol_id:
 		{
 			SkillContainerNtf* proto = new(m_protocol_buffer) SkillContainerNtf();
 			if (proto->DeCode(net_data))
@@ -56441,7 +57012,7 @@ public:
 			}
 		}
 		break;
-		case 68:
+		case AddSkillNtf::protocol_id:
 		{
 			AddSkillNtf* proto = new(m_protocol_buffer) AddSkillNtf();
 			if (proto->DeCode(net_data))
@@ -56458,7 +57029,7 @@ public:
 			}
 		}
 		break;
-		case 69:
+		case UpdateSkillNtf::protocol_id:
 		{
 			UpdateSkillNtf* proto = new(m_protocol_buffer) UpdateSkillNtf();
 			if (proto->DeCode(net_data))
@@ -56475,7 +57046,7 @@ public:
 			}
 		}
 		break;
-		case 70:
+		case DelSkillNtf::protocol_id:
 		{
 			DelSkillNtf* proto = new(m_protocol_buffer) DelSkillNtf();
 			if (proto->DeCode(net_data))
@@ -56492,7 +57063,7 @@ public:
 			}
 		}
 		break;
-		case 71:
+		case PetAppearNtf::protocol_id:
 		{
 			PetAppearNtf* proto = new(m_protocol_buffer) PetAppearNtf();
 			if (proto->DeCode(net_data))
@@ -56509,7 +57080,7 @@ public:
 			}
 		}
 		break;
-		case 72:
+		case PetContainerNtf::protocol_id:
 		{
 			PetContainerNtf* proto = new(m_protocol_buffer) PetContainerNtf();
 			if (proto->DeCode(net_data))
@@ -56526,7 +57097,7 @@ public:
 			}
 		}
 		break;
-		case 73:
+		case PetContainerUpdateNtf::protocol_id:
 		{
 			PetContainerUpdateNtf* proto = new(m_protocol_buffer) PetContainerUpdateNtf();
 			if (proto->DeCode(net_data))
@@ -56543,7 +57114,7 @@ public:
 			}
 		}
 		break;
-		case 74:
+		case PetAddNtf::protocol_id:
 		{
 			PetAddNtf* proto = new(m_protocol_buffer) PetAddNtf();
 			if (proto->DeCode(net_data))
@@ -56560,7 +57131,7 @@ public:
 			}
 		}
 		break;
-		case 75:
+		case PetDestroyNtf::protocol_id:
 		{
 			PetDestroyNtf* proto = new(m_protocol_buffer) PetDestroyNtf();
 			if (proto->DeCode(net_data))
@@ -56577,7 +57148,7 @@ public:
 			}
 		}
 		break;
-		case 76:
+		case SetPetLineup::protocol_id:
 		{
 			SetPetLineup* proto = new(m_protocol_buffer) SetPetLineup();
 			if (proto->DeCode(net_data))
@@ -56594,7 +57165,7 @@ public:
 			}
 		}
 		break;
-		case 77:
+		case ShowPet::protocol_id:
 		{
 			ShowPet* proto = new(m_protocol_buffer) ShowPet();
 			if (proto->DeCode(net_data))
@@ -56611,7 +57182,7 @@ public:
 			}
 		}
 		break;
-		case 78:
+		case ReleasePet::protocol_id:
 		{
 			ReleasePet* proto = new(m_protocol_buffer) ReleasePet();
 			if (proto->DeCode(net_data))
@@ -56628,7 +57199,7 @@ public:
 			}
 		}
 		break;
-		case 79:
+		case MovePet::protocol_id:
 		{
 			MovePet* proto = new(m_protocol_buffer) MovePet();
 			if (proto->DeCode(net_data))
@@ -56645,7 +57216,7 @@ public:
 			}
 		}
 		break;
-		case 80:
+		case ShopOpenNtf::protocol_id:
 		{
 			ShopOpenNtf* proto = new(m_protocol_buffer) ShopOpenNtf();
 			if (proto->DeCode(net_data))
@@ -56662,7 +57233,7 @@ public:
 			}
 		}
 		break;
-		case 81:
+		case ShopBuyNtf::protocol_id:
 		{
 			ShopBuyNtf* proto = new(m_protocol_buffer) ShopBuyNtf();
 			if (proto->DeCode(net_data))
@@ -56679,7 +57250,7 @@ public:
 			}
 		}
 		break;
-		case 82:
+		case SellNtf::protocol_id:
 		{
 			SellNtf* proto = new(m_protocol_buffer) SellNtf();
 			if (proto->DeCode(net_data))
@@ -56696,7 +57267,7 @@ public:
 			}
 		}
 		break;
-		case 83:
+		case BuyBackNtf::protocol_id:
 		{
 			BuyBackNtf* proto = new(m_protocol_buffer) BuyBackNtf();
 			if (proto->DeCode(net_data))
@@ -56713,7 +57284,7 @@ public:
 			}
 		}
 		break;
-		case 84:
+		case BuyBackListNtf::protocol_id:
 		{
 			BuyBackListNtf* proto = new(m_protocol_buffer) BuyBackListNtf();
 			if (proto->DeCode(net_data))
@@ -56730,7 +57301,7 @@ public:
 			}
 		}
 		break;
-		case 85:
+		case TeamAttrNtf::protocol_id:
 		{
 			TeamAttrNtf* proto = new(m_protocol_buffer) TeamAttrNtf();
 			if (proto->DeCode(net_data))
@@ -56747,7 +57318,7 @@ public:
 			}
 		}
 		break;
-		case 86:
+		case TipsMsgExNtf::protocol_id:
 		{
 			TipsMsgExNtf* proto = new(m_protocol_buffer) TipsMsgExNtf();
 			if (proto->DeCode(net_data))
@@ -56764,7 +57335,7 @@ public:
 			}
 		}
 		break;
-		case 87:
+		case ItemNewAddNtf::protocol_id:
 		{
 			ItemNewAddNtf* proto = new(m_protocol_buffer) ItemNewAddNtf();
 			if (proto->DeCode(net_data))
@@ -56781,7 +57352,7 @@ public:
 			}
 		}
 		break;
-		case 88:
+		case QuestContainerNtf::protocol_id:
 		{
 			QuestContainerNtf* proto = new(m_protocol_buffer) QuestContainerNtf();
 			if (proto->DeCode(net_data))
@@ -56798,7 +57369,7 @@ public:
 			}
 		}
 		break;
-		case 89:
+		case QuestAddNtf::protocol_id:
 		{
 			QuestAddNtf* proto = new(m_protocol_buffer) QuestAddNtf();
 			if (proto->DeCode(net_data))
@@ -56815,7 +57386,7 @@ public:
 			}
 		}
 		break;
-		case 90:
+		case QuestStateNtf::protocol_id:
 		{
 			QuestStateNtf* proto = new(m_protocol_buffer) QuestStateNtf();
 			if (proto->DeCode(net_data))
@@ -56832,7 +57403,7 @@ public:
 			}
 		}
 		break;
-		case 91:
+		case QuestNpcStateNtf::protocol_id:
 		{
 			QuestNpcStateNtf* proto = new(m_protocol_buffer) QuestNpcStateNtf();
 			if (proto->DeCode(net_data))
@@ -56849,7 +57420,7 @@ public:
 			}
 		}
 		break;
-		case 92:
+		case QuestTrackCountNtf::protocol_id:
 		{
 			QuestTrackCountNtf* proto = new(m_protocol_buffer) QuestTrackCountNtf();
 			if (proto->DeCode(net_data))
@@ -56866,7 +57437,7 @@ public:
 			}
 		}
 		break;
-		case 93:
+		case QuestTalkSelectReq::protocol_id:
 		{
 			QuestTalkSelectReq* proto = new(m_protocol_buffer) QuestTalkSelectReq();
 			if (proto->DeCode(net_data))
@@ -56883,7 +57454,7 @@ public:
 			}
 		}
 		break;
-		case 94:
+		case QuestTalkSelectAck::protocol_id:
 		{
 			QuestTalkSelectAck* proto = new(m_protocol_buffer) QuestTalkSelectAck();
 			if (proto->DeCode(net_data))
@@ -56900,7 +57471,7 @@ public:
 			}
 		}
 		break;
-		case 95:
+		case ObjStrCustomNtf::protocol_id:
 		{
 			ObjStrCustomNtf* proto = new(m_protocol_buffer) ObjStrCustomNtf();
 			if (proto->DeCode(net_data))
@@ -56917,7 +57488,7 @@ public:
 			}
 		}
 		break;
-		case 96:
+		case ObjIntCustomNtf::protocol_id:
 		{
 			ObjIntCustomNtf* proto = new(m_protocol_buffer) ObjIntCustomNtf();
 			if (proto->DeCode(net_data))
@@ -56934,7 +57505,7 @@ public:
 			}
 		}
 		break;
-		case 97:
+		case ObjDynAttrNtf::protocol_id:
 		{
 			ObjDynAttrNtf* proto = new(m_protocol_buffer) ObjDynAttrNtf();
 			if (proto->DeCode(net_data))
@@ -56951,7 +57522,7 @@ public:
 			}
 		}
 		break;
-		case 98:
+		case CommitQuestItemRsp::protocol_id:
 		{
 			CommitQuestItemRsp* proto = new(m_protocol_buffer) CommitQuestItemRsp();
 			if (proto->DeCode(net_data))
@@ -56968,7 +57539,7 @@ public:
 			}
 		}
 		break;
-		case 99:
+		case CommitQuestItemNtf::protocol_id:
 		{
 			CommitQuestItemNtf* proto = new(m_protocol_buffer) CommitQuestItemNtf();
 			if (proto->DeCode(net_data))
@@ -56985,7 +57556,7 @@ public:
 			}
 		}
 		break;
-		case 100:
+		case CommitQuestPetRsp::protocol_id:
 		{
 			CommitQuestPetRsp* proto = new(m_protocol_buffer) CommitQuestPetRsp();
 			if (proto->DeCode(net_data))
@@ -57002,7 +57573,7 @@ public:
 			}
 		}
 		break;
-		case 101:
+		case CommitQuestPetNtf::protocol_id:
 		{
 			CommitQuestPetNtf* proto = new(m_protocol_buffer) CommitQuestPetNtf();
 			if (proto->DeCode(net_data))
@@ -57019,7 +57590,7 @@ public:
 			}
 		}
 		break;
-		case 102:
+		case AbandonQuest::protocol_id:
 		{
 			AbandonQuest* proto = new(m_protocol_buffer) AbandonQuest();
 			if (proto->DeCode(net_data))
@@ -57036,7 +57607,7 @@ public:
 			}
 		}
 		break;
-		case 103:
+		case SkillTipsReq::protocol_id:
 		{
 			SkillTipsReq* proto = new(m_protocol_buffer) SkillTipsReq();
 			if (proto->DeCode(net_data))
@@ -57053,7 +57624,7 @@ public:
 			}
 		}
 		break;
-		case 104:
+		case SkillTipsAck::protocol_id:
 		{
 			SkillTipsAck* proto = new(m_protocol_buffer) SkillTipsAck();
 			if (proto->DeCode(net_data))
@@ -57070,7 +57641,7 @@ public:
 			}
 		}
 		break;
-		case 105:
+		case TeamLeaderOprNtf::protocol_id:
 		{
 			TeamLeaderOprNtf* proto = new(m_protocol_buffer) TeamLeaderOprNtf();
 			if (proto->DeCode(net_data))
@@ -57087,7 +57658,7 @@ public:
 			}
 		}
 		break;
-		case 106:
+		case KeepAliveCtrlNtf::protocol_id:
 		{
 			KeepAliveCtrlNtf* proto = new(m_protocol_buffer) KeepAliveCtrlNtf();
 			if (proto->DeCode(net_data))
@@ -57104,7 +57675,7 @@ public:
 			}
 		}
 		break;
-		case 107:
+		case NetDelayReq::protocol_id:
 		{
 			NetDelayReq* proto = new(m_protocol_buffer) NetDelayReq();
 			if (proto->DeCode(net_data))
@@ -57121,7 +57692,7 @@ public:
 			}
 		}
 		break;
-		case 108:
+		case NetDelayAck::protocol_id:
 		{
 			NetDelayAck* proto = new(m_protocol_buffer) NetDelayAck();
 			if (proto->DeCode(net_data))
@@ -57138,7 +57709,7 @@ public:
 			}
 		}
 		break;
-		case 109:
+		case SystemSetupNtf::protocol_id:
 		{
 			SystemSetupNtf* proto = new(m_protocol_buffer) SystemSetupNtf();
 			if (proto->DeCode(net_data))
@@ -57155,7 +57726,7 @@ public:
 			}
 		}
 		break;
-		case 110:
+		case BuffListNtf::protocol_id:
 		{
 			BuffListNtf* proto = new(m_protocol_buffer) BuffListNtf();
 			if (proto->DeCode(net_data))
@@ -57172,7 +57743,7 @@ public:
 			}
 		}
 		break;
-		case 111:
+		case BuffAddNtf::protocol_id:
 		{
 			BuffAddNtf* proto = new(m_protocol_buffer) BuffAddNtf();
 			if (proto->DeCode(net_data))
@@ -57189,7 +57760,7 @@ public:
 			}
 		}
 		break;
-		case 112:
+		case BuffDurationNtf::protocol_id:
 		{
 			BuffDurationNtf* proto = new(m_protocol_buffer) BuffDurationNtf();
 			if (proto->DeCode(net_data))
@@ -57206,7 +57777,7 @@ public:
 			}
 		}
 		break;
-		case 113:
+		case BuffDynAttrNtf::protocol_id:
 		{
 			BuffDynAttrNtf* proto = new(m_protocol_buffer) BuffDynAttrNtf();
 			if (proto->DeCode(net_data))
@@ -57223,7 +57794,7 @@ public:
 			}
 		}
 		break;
-		case 114:
+		case StopBuff::protocol_id:
 		{
 			StopBuff* proto = new(m_protocol_buffer) StopBuff();
 			if (proto->DeCode(net_data))
@@ -57240,7 +57811,7 @@ public:
 			}
 		}
 		break;
-		case 115:
+		case BuffDelNtf::protocol_id:
 		{
 			BuffDelNtf* proto = new(m_protocol_buffer) BuffDelNtf();
 			if (proto->DeCode(net_data))
@@ -57257,7 +57828,7 @@ public:
 			}
 		}
 		break;
-		case 116:
+		case ActivityListReq::protocol_id:
 		{
 			ActivityListReq* proto = new(m_protocol_buffer) ActivityListReq();
 			if (proto->DeCode(net_data))
@@ -57274,7 +57845,7 @@ public:
 			}
 		}
 		break;
-		case 117:
+		case ActivityListAck::protocol_id:
 		{
 			ActivityListAck* proto = new(m_protocol_buffer) ActivityListAck();
 			if (proto->DeCode(net_data))
@@ -57291,7 +57862,7 @@ public:
 			}
 		}
 		break;
-		case 118:
+		case ActivityJoinNtf::protocol_id:
 		{
 			ActivityJoinNtf* proto = new(m_protocol_buffer) ActivityJoinNtf();
 			if (proto->DeCode(net_data))
@@ -57308,7 +57879,7 @@ public:
 			}
 		}
 		break;
-		case 119:
+		case GuildListNtf::protocol_id:
 		{
 			GuildListNtf* proto = new(m_protocol_buffer) GuildListNtf();
 			if (proto->DeCode(net_data))
@@ -57325,7 +57896,7 @@ public:
 			}
 		}
 		break;
-		case 120:
+		case GuildNtf::protocol_id:
 		{
 			GuildNtf* proto = new(m_protocol_buffer) GuildNtf();
 			if (proto->DeCode(net_data))
@@ -57342,7 +57913,7 @@ public:
 			}
 		}
 		break;
-		case 121:
+		case GuildBaseNtf::protocol_id:
 		{
 			GuildBaseNtf* proto = new(m_protocol_buffer) GuildBaseNtf();
 			if (proto->DeCode(net_data))
@@ -57359,7 +57930,7 @@ public:
 			}
 		}
 		break;
-		case 122:
+		case GuildNoticeNtf::protocol_id:
 		{
 			GuildNoticeNtf* proto = new(m_protocol_buffer) GuildNoticeNtf();
 			if (proto->DeCode(net_data))
@@ -57376,7 +57947,7 @@ public:
 			}
 		}
 		break;
-		case 123:
+		case GuildBriefNtf::protocol_id:
 		{
 			GuildBriefNtf* proto = new(m_protocol_buffer) GuildBriefNtf();
 			if (proto->DeCode(net_data))
@@ -57393,7 +57964,7 @@ public:
 			}
 		}
 		break;
-		case 124:
+		case GuildMemberListNtf::protocol_id:
 		{
 			GuildMemberListNtf* proto = new(m_protocol_buffer) GuildMemberListNtf();
 			if (proto->DeCode(net_data))
@@ -57410,7 +57981,7 @@ public:
 			}
 		}
 		break;
-		case 125:
+		case GuildMemberNtf::protocol_id:
 		{
 			GuildMemberNtf* proto = new(m_protocol_buffer) GuildMemberNtf();
 			if (proto->DeCode(net_data))
@@ -57427,7 +57998,7 @@ public:
 			}
 		}
 		break;
-		case 126:
+		case GuildApplicantListNtf::protocol_id:
 		{
 			GuildApplicantListNtf* proto = new(m_protocol_buffer) GuildApplicantListNtf();
 			if (proto->DeCode(net_data))
@@ -57444,7 +58015,7 @@ public:
 			}
 		}
 		break;
-		case 127:
+		case GuildOperationNtf::protocol_id:
 		{
 			GuildOperationNtf* proto = new(m_protocol_buffer) GuildOperationNtf();
 			if (proto->DeCode(net_data))
@@ -57461,7 +58032,7 @@ public:
 			}
 		}
 		break;
-		case 128:
+		case GetTimestampReq::protocol_id:
 		{
 			GetTimestampReq* proto = new(m_protocol_buffer) GetTimestampReq();
 			if (proto->DeCode(net_data))
@@ -57478,7 +58049,7 @@ public:
 			}
 		}
 		break;
-		case 129:
+		case GetTimestampAck::protocol_id:
 		{
 			GetTimestampAck* proto = new(m_protocol_buffer) GetTimestampAck();
 			if (proto->DeCode(net_data))
@@ -57495,7 +58066,7 @@ public:
 			}
 		}
 		break;
-		case 130:
+		case ContactListNtf::protocol_id:
 		{
 			ContactListNtf* proto = new(m_protocol_buffer) ContactListNtf();
 			if (proto->DeCode(net_data))
@@ -57512,7 +58083,7 @@ public:
 			}
 		}
 		break;
-		case 131:
+		case AddContactNtf::protocol_id:
 		{
 			AddContactNtf* proto = new(m_protocol_buffer) AddContactNtf();
 			if (proto->DeCode(net_data))
@@ -57529,7 +58100,7 @@ public:
 			}
 		}
 		break;
-		case 132:
+		case UpdateContactNtf::protocol_id:
 		{
 			UpdateContactNtf* proto = new(m_protocol_buffer) UpdateContactNtf();
 			if (proto->DeCode(net_data))
@@ -57546,7 +58117,7 @@ public:
 			}
 		}
 		break;
-		case 133:
+		case DelContactNtf::protocol_id:
 		{
 			DelContactNtf* proto = new(m_protocol_buffer) DelContactNtf();
 			if (proto->DeCode(net_data))
@@ -57563,7 +58134,7 @@ public:
 			}
 		}
 		break;
-		case 134:
+		case AddContactMessageNtf::protocol_id:
 		{
 			AddContactMessageNtf* proto = new(m_protocol_buffer) AddContactMessageNtf();
 			if (proto->DeCode(net_data))
@@ -57580,7 +58151,7 @@ public:
 			}
 		}
 		break;
-		case 135:
+		case ItemQueryNtf::protocol_id:
 		{
 			ItemQueryNtf* proto = new(m_protocol_buffer) ItemQueryNtf();
 			if (proto->DeCode(net_data))
@@ -57597,7 +58168,7 @@ public:
 			}
 		}
 		break;
-		case 136:
+		case PetQueryNtf::protocol_id:
 		{
 			PetQueryNtf* proto = new(m_protocol_buffer) PetQueryNtf();
 			if (proto->DeCode(net_data))
@@ -57614,7 +58185,7 @@ public:
 			}
 		}
 		break;
-		case 137:
+		case ContactInfoNtf::protocol_id:
 		{
 			ContactInfoNtf* proto = new(m_protocol_buffer) ContactInfoNtf();
 			if (proto->DeCode(net_data))
@@ -57631,7 +58202,7 @@ public:
 			}
 		}
 		break;
-		case 138:
+		case MailListNtf::protocol_id:
 		{
 			MailListNtf* proto = new(m_protocol_buffer) MailListNtf();
 			if (proto->DeCode(net_data))
@@ -57648,7 +58219,7 @@ public:
 			}
 		}
 		break;
-		case 139:
+		case AddMailNtf::protocol_id:
 		{
 			AddMailNtf* proto = new(m_protocol_buffer) AddMailNtf();
 			if (proto->DeCode(net_data))
@@ -57665,7 +58236,7 @@ public:
 			}
 		}
 		break;
-		case 140:
+		case DelMailNtf::protocol_id:
 		{
 			DelMailNtf* proto = new(m_protocol_buffer) DelMailNtf();
 			if (proto->DeCode(net_data))
@@ -57682,7 +58253,7 @@ public:
 			}
 		}
 		break;
-		case 141:
+		case MailBodyNtf::protocol_id:
 		{
 			MailBodyNtf* proto = new(m_protocol_buffer) MailBodyNtf();
 			if (proto->DeCode(net_data))
@@ -57699,7 +58270,7 @@ public:
 			}
 		}
 		break;
-		case 142:
+		case UpdateMailBodyNtf::protocol_id:
 		{
 			UpdateMailBodyNtf* proto = new(m_protocol_buffer) UpdateMailBodyNtf();
 			if (proto->DeCode(net_data))
@@ -57716,7 +58287,7 @@ public:
 			}
 		}
 		break;
-		case 143:
+		case UpdateMailHeadNtf::protocol_id:
 		{
 			UpdateMailHeadNtf* proto = new(m_protocol_buffer) UpdateMailHeadNtf();
 			if (proto->DeCode(net_data))
@@ -57733,7 +58304,7 @@ public:
 			}
 		}
 		break;
-		case 144:
+		case RanklistReq::protocol_id:
 		{
 			RanklistReq* proto = new(m_protocol_buffer) RanklistReq();
 			if (proto->DeCode(net_data))
@@ -57750,7 +58321,7 @@ public:
 			}
 		}
 		break;
-		case 145:
+		case RanklistAck::protocol_id:
 		{
 			RanklistAck* proto = new(m_protocol_buffer) RanklistAck();
 			if (proto->DeCode(net_data))
@@ -57767,7 +58338,7 @@ public:
 			}
 		}
 		break;
-		case 146:
+		case GetRankReq::protocol_id:
 		{
 			GetRankReq* proto = new(m_protocol_buffer) GetRankReq();
 			if (proto->DeCode(net_data))
@@ -57784,7 +58355,7 @@ public:
 			}
 		}
 		break;
-		case 147:
+		case GetRankAck::protocol_id:
 		{
 			GetRankAck* proto = new(m_protocol_buffer) GetRankAck();
 			if (proto->DeCode(net_data))
@@ -57801,7 +58372,7 @@ public:
 			}
 		}
 		break;
-		case 148:
+		case TitleContainerNtf::protocol_id:
 		{
 			TitleContainerNtf* proto = new(m_protocol_buffer) TitleContainerNtf();
 			if (proto->DeCode(net_data))
@@ -57818,7 +58389,7 @@ public:
 			}
 		}
 		break;
-		case 149:
+		case TitleAddNtf::protocol_id:
 		{
 			TitleAddNtf* proto = new(m_protocol_buffer) TitleAddNtf();
 			if (proto->DeCode(net_data))
@@ -57835,7 +58406,7 @@ public:
 			}
 		}
 		break;
-		case 150:
+		case TitleDelNtf::protocol_id:
 		{
 			TitleDelNtf* proto = new(m_protocol_buffer) TitleDelNtf();
 			if (proto->DeCode(net_data))
@@ -57852,7 +58423,7 @@ public:
 			}
 		}
 		break;
-		case 151:
+		case AgentKeyReq::protocol_id:
 		{
 			AgentKeyReq* proto = new(m_protocol_buffer) AgentKeyReq();
 			if (proto->DeCode(net_data))
@@ -57869,7 +58440,7 @@ public:
 			}
 		}
 		break;
-		case 152:
+		case AgentKeyAck::protocol_id:
 		{
 			AgentKeyAck* proto = new(m_protocol_buffer) AgentKeyAck();
 			if (proto->DeCode(net_data))
@@ -57886,7 +58457,7 @@ public:
 			}
 		}
 		break;
-		case 153:
+		case HeadMsgNtf::protocol_id:
 		{
 			HeadMsgNtf* proto = new(m_protocol_buffer) HeadMsgNtf();
 			if (proto->DeCode(net_data))
@@ -57903,7 +58474,7 @@ public:
 			}
 		}
 		break;
-		case 154:
+		case AutoContainerNtf::protocol_id:
 		{
 			AutoContainerNtf* proto = new(m_protocol_buffer) AutoContainerNtf();
 			if (proto->DeCode(net_data))
@@ -57920,7 +58491,7 @@ public:
 			}
 		}
 		break;
-		case 155:
+		case PlayerQueryNtf::protocol_id:
 		{
 			PlayerQueryNtf* proto = new(m_protocol_buffer) PlayerQueryNtf();
 			if (proto->DeCode(net_data))
@@ -57937,7 +58508,7 @@ public:
 			}
 		}
 		break;
-		case 156:
+		case UseAllItem::protocol_id:
 		{
 			UseAllItem* proto = new(m_protocol_buffer) UseAllItem();
 			if (proto->DeCode(net_data))
@@ -57954,7 +58525,7 @@ public:
 			}
 		}
 		break;
-		case 157:
+		case GuardContainerNtf::protocol_id:
 		{
 			GuardContainerNtf* proto = new(m_protocol_buffer) GuardContainerNtf();
 			if (proto->DeCode(net_data))
@@ -57971,7 +58542,7 @@ public:
 			}
 		}
 		break;
-		case 158:
+		case GuardAddNtf::protocol_id:
 		{
 			GuardAddNtf* proto = new(m_protocol_buffer) GuardAddNtf();
 			if (proto->DeCode(net_data))
@@ -57988,7 +58559,7 @@ public:
 			}
 		}
 		break;
-		case 159:
+		case SetGuardLineup::protocol_id:
 		{
 			SetGuardLineup* proto = new(m_protocol_buffer) SetGuardLineup();
 			if (proto->DeCode(net_data))
@@ -58005,7 +58576,7 @@ public:
 			}
 		}
 		break;
-		case 160:
+		case PetNewAddNtf::protocol_id:
 		{
 			PetNewAddNtf* proto = new(m_protocol_buffer) PetNewAddNtf();
 			if (proto->DeCode(net_data))
@@ -58022,7 +58593,7 @@ public:
 			}
 		}
 		break;
-		case 161:
+		case TeamPlatformNtf::protocol_id:
 		{
 			TeamPlatformNtf* proto = new(m_protocol_buffer) TeamPlatformNtf();
 			if (proto->DeCode(net_data))
@@ -58039,7 +58610,7 @@ public:
 			}
 		}
 		break;
-		case 162:
+		case TeamApplicantsNtf::protocol_id:
 		{
 			TeamApplicantsNtf* proto = new(m_protocol_buffer) TeamApplicantsNtf();
 			if (proto->DeCode(net_data))
@@ -58056,7 +58627,7 @@ public:
 			}
 		}
 		break;
-		case 163:
+		case TeamOperationNtf::protocol_id:
 		{
 			TeamOperationNtf* proto = new(m_protocol_buffer) TeamOperationNtf();
 			if (proto->DeCode(net_data))
@@ -58073,7 +58644,7 @@ public:
 			}
 		}
 		break;
-		case 164:
+		case TeamTargetNtf::protocol_id:
 		{
 			TeamTargetNtf* proto = new(m_protocol_buffer) TeamTargetNtf();
 			if (proto->DeCode(net_data))
@@ -58090,7 +58661,7 @@ public:
 			}
 		}
 		break;
-		case 165:
+		case ChangedNameNtf::protocol_id:
 		{
 			ChangedNameNtf* proto = new(m_protocol_buffer) ChangedNameNtf();
 			if (proto->DeCode(net_data))
@@ -58107,7 +58678,7 @@ public:
 			}
 		}
 		break;
-		case 166:
+		case CustomDataNtf::protocol_id:
 		{
 			CustomDataNtf* proto = new(m_protocol_buffer) CustomDataNtf();
 			if (proto->DeCode(net_data))
@@ -58124,7 +58695,7 @@ public:
 			}
 		}
 		break;
-		case 167:
+		case SpeedCheckNtf::protocol_id:
 		{
 			SpeedCheckNtf* proto = new(m_protocol_buffer) SpeedCheckNtf();
 			if (proto->DeCode(net_data))
@@ -58141,7 +58712,7 @@ public:
 			}
 		}
 		break;
-		case 168:
+		case ConsoleMsgNtf::protocol_id:
 		{
 			ConsoleMsgNtf* proto = new(m_protocol_buffer) ConsoleMsgNtf();
 			if (proto->DeCode(net_data))
@@ -58158,7 +58729,7 @@ public:
 			}
 		}
 		break;
-		case 169:
+		case PetSwapNtf::protocol_id:
 		{
 			PetSwapNtf* proto = new(m_protocol_buffer) PetSwapNtf();
 			if (proto->DeCode(net_data))
@@ -58175,7 +58746,7 @@ public:
 			}
 		}
 		break;
-		case 170:
+		case GuardDestroyNtf::protocol_id:
 		{
 			GuardDestroyNtf* proto = new(m_protocol_buffer) GuardDestroyNtf();
 			if (proto->DeCode(net_data))
@@ -58192,7 +58763,7 @@ public:
 			}
 		}
 		break;
-		case 171:
+		case ActivateGuard::protocol_id:
 		{
 			ActivateGuard* proto = new(m_protocol_buffer) ActivateGuard();
 			if (proto->DeCode(net_data))
@@ -58209,7 +58780,7 @@ public:
 			}
 		}
 		break;
-		case 172:
+		case ReleaseGuard::protocol_id:
 		{
 			ReleaseGuard* proto = new(m_protocol_buffer) ReleaseGuard();
 			if (proto->DeCode(net_data))
@@ -58226,7 +58797,7 @@ public:
 			}
 		}
 		break;
-		case 173:
+		case TeamMemberSwapNtf::protocol_id:
 		{
 			TeamMemberSwapNtf* proto = new(m_protocol_buffer) TeamMemberSwapNtf();
 			if (proto->DeCode(net_data))
@@ -58243,7 +58814,7 @@ public:
 			}
 		}
 		break;
-		case 174:
+		case GuardSwapNtf::protocol_id:
 		{
 			GuardSwapNtf* proto = new(m_protocol_buffer) GuardSwapNtf();
 			if (proto->DeCode(net_data))
@@ -58260,7 +58831,7 @@ public:
 			}
 		}
 		break;
-		case 175:
+		case PetReplaceNtf::protocol_id:
 		{
 			PetReplaceNtf* proto = new(m_protocol_buffer) PetReplaceNtf();
 			if (proto->DeCode(net_data))
@@ -58277,7 +58848,7 @@ public:
 			}
 		}
 		break;
-		case 176:
+		case GuardAppearNtf::protocol_id:
 		{
 			GuardAppearNtf* proto = new(m_protocol_buffer) GuardAppearNtf();
 			if (proto->DeCode(net_data))
@@ -58294,7 +58865,7 @@ public:
 			}
 		}
 		break;
-		case 177:
+		case InstructionContainerNtf::protocol_id:
 		{
 			InstructionContainerNtf* proto = new(m_protocol_buffer) InstructionContainerNtf();
 			if (proto->DeCode(net_data))
@@ -58311,7 +58882,7 @@ public:
 			}
 		}
 		break;
-		case 178:
+		case InstructionAddReq::protocol_id:
 		{
 			InstructionAddReq* proto = new(m_protocol_buffer) InstructionAddReq();
 			if (proto->DeCode(net_data))
@@ -58328,7 +58899,7 @@ public:
 			}
 		}
 		break;
-		case 179:
+		case InstructionAddAck::protocol_id:
 		{
 			InstructionAddAck* proto = new(m_protocol_buffer) InstructionAddAck();
 			if (proto->DeCode(net_data))
@@ -58345,7 +58916,7 @@ public:
 			}
 		}
 		break;
-		case 180:
+		case InstructionDeleteReq::protocol_id:
 		{
 			InstructionDeleteReq* proto = new(m_protocol_buffer) InstructionDeleteReq();
 			if (proto->DeCode(net_data))
@@ -58362,7 +58933,7 @@ public:
 			}
 		}
 		break;
-		case 181:
+		case InstructionDeleteAck::protocol_id:
 		{
 			InstructionDeleteAck* proto = new(m_protocol_buffer) InstructionDeleteAck();
 			if (proto->DeCode(net_data))
@@ -58379,7 +58950,7 @@ public:
 			}
 		}
 		break;
-		case 182:
+		case InstructionModfityReq::protocol_id:
 		{
 			InstructionModfityReq* proto = new(m_protocol_buffer) InstructionModfityReq();
 			if (proto->DeCode(net_data))
@@ -58396,7 +58967,7 @@ public:
 			}
 		}
 		break;
-		case 183:
+		case InstructionModifyAck::protocol_id:
 		{
 			InstructionModifyAck* proto = new(m_protocol_buffer) InstructionModifyAck();
 			if (proto->DeCode(net_data))
@@ -58413,7 +58984,7 @@ public:
 			}
 		}
 		break;
-		case 184:
+		case InstructionDefaultReq::protocol_id:
 		{
 			InstructionDefaultReq* proto = new(m_protocol_buffer) InstructionDefaultReq();
 			if (proto->DeCode(net_data))
@@ -58430,7 +59001,7 @@ public:
 			}
 		}
 		break;
-		case 185:
+		case InstructionDefaultAck::protocol_id:
 		{
 			InstructionDefaultAck* proto = new(m_protocol_buffer) InstructionDefaultAck();
 			if (proto->DeCode(net_data))
@@ -58447,7 +59018,7 @@ public:
 			}
 		}
 		break;
-		case 186:
+		case InstructionAttachReq::protocol_id:
 		{
 			InstructionAttachReq* proto = new(m_protocol_buffer) InstructionAttachReq();
 			if (proto->DeCode(net_data))
@@ -58464,7 +59035,7 @@ public:
 			}
 		}
 		break;
-		case 187:
+		case InstructionAttachAck::protocol_id:
 		{
 			InstructionAttachAck* proto = new(m_protocol_buffer) InstructionAttachAck();
 			if (proto->DeCode(net_data))
@@ -58481,7 +59052,7 @@ public:
 			}
 		}
 		break;
-		case 188:
+		case InstructionAttachNtf::protocol_id:
 		{
 			InstructionAttachNtf* proto = new(m_protocol_buffer) InstructionAttachNtf();
 			if (proto->DeCode(net_data))
@@ -58498,7 +59069,7 @@ public:
 			}
 		}
 		break;
-		case 189:
+		case InstructionDetachReq::protocol_id:
 		{
 			InstructionDetachReq* proto = new(m_protocol_buffer) InstructionDetachReq();
 			if (proto->DeCode(net_data))
@@ -58515,7 +59086,7 @@ public:
 			}
 		}
 		break;
-		case 190:
+		case InstructionDetachAck::protocol_id:
 		{
 			InstructionDetachAck* proto = new(m_protocol_buffer) InstructionDetachAck();
 			if (proto->DeCode(net_data))
@@ -58532,7 +59103,7 @@ public:
 			}
 		}
 		break;
-		case 191:
+		case InstructionDetachNtf::protocol_id:
 		{
 			InstructionDetachNtf* proto = new(m_protocol_buffer) InstructionDetachNtf();
 			if (proto->DeCode(net_data))
@@ -58549,7 +59120,7 @@ public:
 			}
 		}
 		break;
-		case 192:
+		case PlayerDetailNtf::protocol_id:
 		{
 			PlayerDetailNtf* proto = new(m_protocol_buffer) PlayerDetailNtf();
 			if (proto->DeCode(net_data))
@@ -58566,7 +59137,7 @@ public:
 			}
 		}
 		break;
-		case 193:
+		case MapDynBlockPtNtf::protocol_id:
 		{
 			MapDynBlockPtNtf* proto = new(m_protocol_buffer) MapDynBlockPtNtf();
 			if (proto->DeCode(net_data))
@@ -58583,7 +59154,7 @@ public:
 			}
 		}
 		break;
-		case 194:
+		case GuardQueryNtf::protocol_id:
 		{
 			GuardQueryNtf* proto = new(m_protocol_buffer) GuardQueryNtf();
 			if (proto->DeCode(net_data))
@@ -58600,7 +59171,7 @@ public:
 			}
 		}
 		break;
-		case 195:
+		case BuyBackNtfEx::protocol_id:
 		{
 			BuyBackNtfEx* proto = new(m_protocol_buffer) BuyBackNtfEx();
 			if (proto->DeCode(net_data))
@@ -58617,7 +59188,7 @@ public:
 			}
 		}
 		break;
-		case 196:
+		case GuildCustomNtf::protocol_id:
 		{
 			GuildCustomNtf* proto = new(m_protocol_buffer) GuildCustomNtf();
 			if (proto->DeCode(net_data))
@@ -58634,7 +59205,7 @@ public:
 			}
 		}
 		break;
-		case 197:
+		case PreTurnRoundNtf::protocol_id:
 		{
 			PreTurnRoundNtf* proto = new(m_protocol_buffer) PreTurnRoundNtf();
 			if (proto->DeCode(net_data))
@@ -58651,7 +59222,7 @@ public:
 			}
 		}
 		break;
-		case 198:
+		case FighterSpecialPetNtf::protocol_id:
 		{
 			FighterSpecialPetNtf* proto = new(m_protocol_buffer) FighterSpecialPetNtf();
 			if (proto->DeCode(net_data))
@@ -58682,6 +59253,9 @@ public:
 
 	static const unsigned short protocol_num = 198;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_KeepAliveReq(KeepAliveReq& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_KeepAliveAck(KeepAliveAck& rstProtocol){ (void)(rstProtocol); };

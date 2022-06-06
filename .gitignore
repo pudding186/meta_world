@@ -2,3 +2,14 @@
 /bin/*
 /build/*
 /out/*
+/lua-5.4.4/doc/*
+/lua-5.4.4/Makefile
+/lua-5.4.4/README
+/lua-5.4.4/src/Makefile
+/common/version.h
+*.rc
+*.vs/
+*Debug/
+*Release/
+*.sln
+*.vcxproj.user

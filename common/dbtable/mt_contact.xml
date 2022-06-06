@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_contact">
+  <field name="player_guid"       type="uint64" />
+  <field name="contact_guid"      type="uint64" />
+  <field name="contact_type"      type="uint32" />
+  <field name="friendship"        type="uint32" />
+  <field name="last_contact_time" type="uint32" />
+  <field name="customs"           type="longtext" />
+  <key type="primary"             fields="player_guid, contact_guid" />
+</table>

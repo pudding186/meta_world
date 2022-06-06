@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "rb_tree.h"
 #include "utility.hpp"
+#include "smemory.hpp"
 #include "memory_trace.hpp"
 #include "log_system.hpp"
 
@@ -63,6 +64,25 @@ static char ia64_map[] =
     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
     'U', 'V', 'W', 'X', 'Y', 'Z', '+', '#'
 };
+
+void AppUtil::StrSplitEx2(const std::string& str, const std::string& split, std::vector<std::string>& results)
+{
+    size_t max_split_count = str.length() / split.length();
+
+    mem_seg* seg_arry = static_cast<mem_seg*>(S_MALLOC_EX(sizeof(mem_seg) * max_split_count, u8"mem_seg"));
+
+    size_t real_split_count = split_mem_to_segments(str.c_str(), str.length(), split.c_str(), split.length(), seg_arry, max_split_count);
+
+    if (real_split_count > max_split_count)
+    {
+        throw "split string overflow";
+    }
+
+    for (size_t i = 0; i < real_split_count; i++)
+    {
+        results.push_back(std::string(static_cast<const char*>(seg_arry[i].mem), seg_arry[i].mem_size));
+    }
+}
 
 char* AppUtil::UI642A64(uint64_t value, char* buf, size_t buf_size)
 {
@@ -533,7 +553,7 @@ void AppUtil::LogMemoryPool(size_t limit)
             }
         }
 
-        LogSys
+        LogSYS
         (
             u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}$stack${}.",
             trace_info->size,
@@ -553,7 +573,7 @@ void AppUtil::LogMemoryPool(size_t limit)
 void AppUtil::TraceMemoryPool(const std::string& prefix)
 {
     FUNC_PERFORMANCE_CHECK();
-    LogSys(u8"begin dump memory pool [wait].");
+    LogSYS(u8"begin dump memory pool [wait].");
 
     std::string trace_memory_file_name = prefix;
     trace_memory_file_name += u8"_";
@@ -583,7 +603,7 @@ void AppUtil::TraceMemoryPool(const std::string& prefix)
             }
         }
 
-        LogSysEx
+        LogSYSEx
         (
             trace_memory_file_name,
             u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}$stack${}.",
@@ -598,7 +618,7 @@ void AppUtil::TraceMemoryPool(const std::string& prefix)
         );
     }
 
-    LogSysEx(
+    LogSYSEx(
         trace_memory_file_name,
         u8"$alloc${}$total${}",
         memory_alloc_size(),
@@ -606,11 +626,11 @@ void AppUtil::TraceMemoryPool(const std::string& prefix)
     );
 
 #ifdef IsDatabaseServer
-    LogSysEx(trace_memory_file_name, u8"***begin cache trace***");
+    LogSYSEx(trace_memory_file_name, u8"***begin cache trace***");
     CacheQueueBuilder::TraverseTrace([&](const std::string &name, 
         const CacheQueueBuilder::CacheQueueTraceData &data)
     {
-        LogSysEx
+        LogSYSEx
         (
             trace_memory_file_name,
             u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}.",
@@ -628,7 +648,7 @@ void AppUtil::TraceMemoryPool(const std::string& prefix)
     auto cache = sPlayerSystem.GetPlayerCache();
     if (cache)
     {
-        LogSysEx
+        LogSYSEx
         (
             trace_memory_file_name,
             u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}.",
@@ -641,12 +661,12 @@ void AppUtil::TraceMemoryPool(const std::string& prefix)
             0
         );
     }
-    LogSysEx(trace_memory_file_name, u8"***end cache trace***");
+    LogSYSEx(trace_memory_file_name, u8"***end cache trace***");
 #endif
 
     sLogSystem.DestroySpecifiedLogger(trace_memory_file_name);
 
-    LogSys(u8"end dump memory pool [ok].");
+    LogSYS(u8"end dump memory pool [ok].");
 }
 
 void AppUtil::TidyMemoryPool(void)
@@ -656,8 +676,8 @@ void AppUtil::TidyMemoryPool(void)
     size_t before_total_size = memory_total_size();
     size_t before_alloc_size = memory_alloc_size();
 
-    LogSys(u8"{:*^30}", u8"begin memory tidy");
-    LogSys(u8"before tidy alloc= {} total= {} utility= {}%",
+    LogSYS(u8"{:*^30}", u8"begin memory tidy");
+    LogSYS(u8"before tidy alloc= {} total= {} utility= {}%",
         AppUtil::memory_size_format(before_alloc_size),
         AppUtil::memory_size_format(before_total_size),
         before_alloc_size * 100 / before_total_size);
@@ -667,19 +687,19 @@ void AppUtil::TidyMemoryPool(void)
     size_t after_total_size = memory_total_size();
     size_t after_alloc_size = memory_alloc_size();
 
-    LogSys(u8"after tidy alloc= {} total= {} utility= {}%",
+    LogSYS(u8"after tidy alloc= {} total= {} utility= {}%",
         AppUtil::memory_size_format(after_alloc_size),
         AppUtil::memory_size_format(after_total_size),
         after_alloc_size * 100 / after_total_size);
 
-    LogSys(u8"release= {}", AppUtil::memory_size_format(before_total_size - after_total_size));
-    LogSys(u8"{:*^30}", u8"end memory tidy");
+    LogSYS(u8"release= {}", AppUtil::memory_size_format(before_total_size - after_total_size));
+    LogSYS(u8"{:*^30}", u8"end memory tidy");
 }
 
 void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
 {
     FUNC_PERFORMANCE_CHECK();
-    LogSys(u8"begin dump memory pool increment [wait].");
+    LogSYS(u8"begin dump memory pool increment [wait].");
 
     std::string trace_memory_file_name = prefix;
     trace_memory_file_name += u8"_";
@@ -715,7 +735,7 @@ void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
 
         if (dump_trace_info)
         {
-            LogSysEx(
+            LogSYSEx(
                 trace_memory_file_name,
                 u8"$increment${}$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}$stack${}.",
                 (int64_t)((trace_info->alloc - trace_info->free) - (dump_trace_info->alloc - dump_trace_info->free)),
@@ -731,7 +751,7 @@ void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
         }
         else
         {
-            LogSysEx(
+            LogSYSEx(
                 trace_memory_file_name,
                 u8"$increment${}$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}$stack${}.",
                 trace_info->alloc - trace_info->free,
@@ -748,11 +768,11 @@ void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
     }
 
 #ifdef IsDatabaseServer
-    LogSysEx(trace_memory_file_name, u8"***begin cache trace***");
+    LogSYSEx(trace_memory_file_name, u8"***begin cache trace***");
     CacheQueueBuilder::TraverseTrace([&](const std::string &name, 
         const CacheQueueBuilder::CacheQueueTraceData &data)
         {
-            LogSysEx
+            LogSYSEx
             (
                 trace_memory_file_name,
                 u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}.",
@@ -770,7 +790,7 @@ void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
     auto cache = sPlayerSystem.GetPlayerCache();
     if (cache)
     {
-        LogSysEx
+        LogSYSEx
         (
             trace_memory_file_name,
             u8"$size${}$alloc${}$free${}$remain${}$name${}$trace${}:{}.",
@@ -783,12 +803,12 @@ void AppUtil::LogMemoryPoolIncrement(const std::string& prefix)
             0
         );
     }
-    LogSysEx(trace_memory_file_name, u8"***end cache trace***");
+    LogSYSEx(trace_memory_file_name, u8"***end cache trace***");
 #endif
 
     sLogSystem.DestroySpecifiedLogger(trace_memory_file_name);
 
-    LogSys(u8"end dump memory pool increment [ok].");
+    LogSYS(u8"end dump memory pool increment [ok].");
 
     dump_mem_trace_info();
 }
@@ -1198,7 +1218,7 @@ void AppUtil::SplitPath(const std::string &fullpath,
     char dir[MAX_PATH] = { 0 };
     char name[MAX_PATH] = { 0 };
     char ext[MAX_PATH] = { 0 };
-    _splitpath(fullpath.c_str(), drive, dir, name, ext);
+    _splitpath_s(fullpath.c_str(), drive, dir, name, ext);
 
     path = std::string(drive) + "/" + dir;
     file = std::string(name) + ext;

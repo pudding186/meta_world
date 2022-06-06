@@ -1,6 +1,13 @@
 ﻿#include "session.hpp"
 #include "net_system.hpp"
 
+
+/// <summary>
+/// ISession
+/// </summary>
+/// <param name="session"></param>
+/// <param name="listener"></param>
+
 ISession::ISession(HSESSION session /*= nullptr*/, IListener* listener /*= nullptr*/)
     : m_session(session), m_listener(listener), m_data_check_timer(this)
 {
@@ -15,17 +22,83 @@ ISession::~ISession()
     }
 }
 
+uint32_t ISession::ParsePacket(HSESSION session, const char* pData, const uint32_t len)
+{
+    ISession* svr = static_cast<ISession*>(net_tcp_get_session_data(session));
+
+    return svr->OnParsePacket(pData, len);
+}
+
+void ISession::Establish(HLISTENER handle, HSESSION session)
+{
+    ISession* s = nullptr;
+
+    if (handle)
+    {
+        IListener* l = static_cast<IListener*>(net_tcp_get_listener_data(handle));
+
+        s = l->OnOpen(session);
+
+        if (s == nullptr)
+        {
+            net_tcp_close_session(session);
+            return;
+        }
+
+        s->m_session = session;
+        net_tcp_set_session_data(session, s);
+    }
+    else
+    {
+        s = static_cast<ISession*>(net_tcp_get_session_data(session));
+    }
+    s->OnEstablish();
+}
+
+void ISession::Terminate(HSESSION session)
+{
+    ISession* svr = static_cast<ISession*>(net_tcp_get_session_data(session));
+
+    svr->m_session = nullptr;
+
+    svr->OnTerminate();
+
+    if (svr->GetListener())
+    {
+        svr->GetListener()->OnClose(svr);
+    }
+}
+
+void ISession::Error(HSESSION session, net_tcp_error moduleerror, int32_t systemerror)
+{
+    ISession* svr = static_cast<ISession*>(net_tcp_get_session_data(session));
+
+    if (moduleerror == error_connect_fail)
+    {
+        svr->m_session = nullptr;
+    }
+
+    svr->OnError(moduleerror, systemerror);
+}
+
+void ISession::Recv(HSESSION session, const char* data, uint32_t len)
+{
+    ISession* svr = static_cast<ISession*>(net_tcp_get_session_data(session));
+
+    svr->RecvRawData(data, len);
+}
+
 void ISession::RecvRawData(const char* data, uint32_t len)
 {
     if (m_recv_cache.empty())
     {
-        OnRecv(data + sizeof(int32_t), len - sizeof(int32_t));
+        OnRecvRawData(data, len);
     }
     else
     {
         if (*(uint32_t*)m_recv_cache.c_str() == (uint32_t)m_recv_cache.size())
         {
-            OnRecv(m_recv_cache.c_str() + sizeof(int32_t), (uint32_t)(m_recv_cache.size() - sizeof(int32_t)));
+            OnRecvRawData(m_recv_cache.c_str(), (uint32_t)(m_recv_cache.size()));
 
             m_recv_cache.clear();
         }
@@ -88,6 +161,21 @@ bool ISession::SendRawData(const void* data, uint32_t len)
     return true;
 }
 
+void ISession::CacheSendRawData(const void* data, uint32_t len)
+{
+    m_send_cache.append(static_cast<const char*>(data), len);
+}
+
+bool ISession::SendRawDataNoDelay(const void* data, uint32_t len)
+{
+    if (m_session)
+    {
+        return net_tcp_send(m_session, data, len);
+    }
+
+    return false;
+}
+
 bool ISession::Connect(const std::string& ip, uint16_t port, uint32_t recvbuf, uint32_t sendbuf)
 {
     if (m_session)
@@ -95,7 +183,21 @@ bool ISession::Connect(const std::string& ip, uint16_t port, uint32_t recvbuf, u
         return true;
     }
 
-    m_session = sNetSystem.Connect(ip, port, recvbuf, sendbuf);
+    m_session = net_tcp_connect(
+        sNetSystem.GetNetComponent(),
+        ip.c_str(),
+        port,
+        recvbuf,
+        sendbuf,
+        false,
+        nullptr,
+        0,
+        &ISession::Establish,
+        &ISession::Terminate,
+        &ISession::Error,
+        &ISession::Recv,
+        &ISession::ParsePacket
+    );
 
     if (m_session)
     {
@@ -207,6 +309,45 @@ uint32_t ISession::OnParsePacket(const char* data, const uint32_t len)
     }
 }
 
+
+bool ISession::GetPeerIPPort(ip_info& info)
+{
+    return net_tcp_get_peer_ip_port(m_session, &info);
+}
+
+bool ISession::GetLocalIPPort(ip_info& info)
+{
+    return net_tcp_get_local_ip_port(m_session, &info);
+}
+
+
+bool ISession::GetPeerSockAddr(addr_info& info)
+{
+    return net_tcp_get_peer_sock_addr(m_session, &info);
+}
+
+bool ISession::GetLocalSockAddr(addr_info& info)
+{
+    return net_tcp_get_local_sock_addr(m_session, &info);
+}
+
+void ISession::SetSendControl(uint32_t pkg_size, uint32_t delay_tick)
+{
+    FUNC_PERFORMANCE_CHECK();
+
+    net_tcp_set_send_control(m_session, pkg_size, delay_tick);
+}
+
+uint32_t ISession::LeftSendDataSize(void)
+{
+    if (m_session)
+    {
+        return net_tcp_unsend_size(m_session);
+    }
+
+    return 0;
+}
+
 /// <summary>
 /// IListener
 /// </summary>
@@ -223,14 +364,32 @@ IListener::~IListener()
 
 }
 
-bool IListener::Listen(const std::string& ip, uint16_t port, uint32_t sendbuf, uint32_t recvbuf)
+bool IListener::Listen(const std::string& ip, uint16_t port, uint32_t recvbuf, uint32_t sendbuf)
 {
     if (m_listener)
     {
         return true;
     }
 
-    m_listener = sNetSystem.Listen(ip, port, recvbuf, sendbuf);
+    const char* csz_ip = ip.c_str();
+    if (ip.empty() || ip =="0")
+    {
+        csz_ip = 0;
+    }
+
+    m_listener = net_tcp_listen(
+        sNetSystem.GetNetComponent(),
+        csz_ip,
+        port,
+        recvbuf,
+        sendbuf,
+        false,
+        &ISession::Establish,
+        &ISession::Terminate,
+        &ISession::Error,
+        &ISession::Recv,
+        &ISession::ParsePacket
+    );
 
     if (m_listener)
     {

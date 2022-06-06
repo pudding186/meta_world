@@ -1031,12 +1031,12 @@ public:
         return cur_pos;
     }
 
-	inline void* Data()
+	inline void* Data() const
 	{
 		return m_buffer;
 	}
 
-	inline size_t Length()
+	inline size_t Length() const
 	{
 		return m_cur_pos - m_buffer;
 	}
@@ -1442,7 +1442,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1456,7 +1456,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
         m_writer.String(reinterpret_cast<const char*>(array),
             static_cast<rapidjson::SizeType>(max_count), true);
         m_writer.EndArray();
@@ -1467,7 +1467,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
         m_writer.String(reinterpret_cast<const char*>(array),
             static_cast<rapidjson::SizeType>(max_count), true);
         m_writer.EndArray();
@@ -1478,7 +1478,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1493,7 +1493,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1508,7 +1508,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1523,7 +1523,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1538,7 +1538,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1553,7 +1553,7 @@ public:
     {
         m_writer.StartArray();
 
-        size_t max_count = std::min(M, count);
+        size_t max_count = (std::min)(M, count);
 
         for (size_t i = 0; i < max_count; i++)
         {
@@ -1942,7 +1942,7 @@ public:
         :JsonHandler(parent), m_data(data), m_handler(nullptr), m_max_count(max_count), 
         m_cur_count(0), m_element_count(0)
     {
-        m_max_count = std::min(N, max_count);
+        m_max_count = (std::min)(N, max_count);
     }
     ~DataArrayOldHandler()
     {
@@ -2019,14 +2019,14 @@ public:
     DataArrayOldHandler(T(&data)[N], JsonHandler* parent, size_t max_count)
         :JsonHandler(parent), m_data(data), m_max_count(max_count), m_cur_count(0)
     {
-        m_max_count = std::min(N, max_count);
+        m_max_count = (std::min)(N, max_count);
     }
     ~DataArrayOldHandler(){}
 
     bool String(const char* str, rapidjson::SizeType length, bool copy) override
     {
         (void)copy;
-        memcpy(m_data, str, std::min(N, static_cast<size_t>(length)));
+        memcpy(m_data, str, (std::min)(N, static_cast<size_t>(length)));
 
         return true;
     }
@@ -2287,8 +2287,8 @@ public:
         return Name();
     }
 
-    static const unsigned short module_id;
-    static const unsigned short protocol_id;
+    static constexpr unsigned short module_id = 0;
+    static constexpr unsigned short protocol_id = 0;
 
 protected:
 private:
@@ -2296,6 +2296,21 @@ private:
     //    :Protocol(m_id, p_id) {}
     TProtocol() = default;
     friend T;
+};
+
+class ProtocolModule
+{
+public:
+
+    ProtocolModule() = default;
+
+    virtual ~ProtocolModule() = default;
+
+    virtual unsigned short ModuleId() = 0;
+    virtual unsigned short ProtocolNum() = 0;
+    virtual bool Handle(NetDeCode& net_data) = 0;
+protected:
+private:
 };
 
 #endif

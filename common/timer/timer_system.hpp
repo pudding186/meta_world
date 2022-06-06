@@ -1,9 +1,22 @@
 ﻿#pragma once
 #include "utility.hpp"
-#include "special_decay_type.hpp"
 #include "smemory.hpp"
 #include "timer.h"
 #include "meyers_singleton.hpp"
+
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4996)
+#pragma warning( disable : 4505)
+#include "croncpp/croncpp.h"
+#pragma warning( pop )
+#elif __GNUC__
+#include "croncpp/croncpp.h"
+#else
+#error "unknown compiler"
+#endif
+
+
 #include <functional>
 
 class TimerSystem;
@@ -25,38 +38,93 @@ private:
     HTIMERINFO m_timer;
 };
 
-class DelayCaller :
+class TimeCaller :
     public ITimer
 {
 public:
-    DelayCaller() = default;
-    ~DelayCaller() = default;
+
+    TimeCaller(const std::function<void()>& call_back):m_fnFunctor(call_back){}
+
+    ~TimeCaller() = default;
 
     void OnTimer(void) override
     {
         FUNC_PERFORMANCE_CHECK();
-
-        if (!GetRemainCount())
-        {
-            S_DELETE(this);
-            return;
-        }
 
         if (m_fnFunctor)
         {
             m_fnFunctor();
         }
     }
+protected:
+    std::function<void()> m_fnFunctor;
+};
 
-    template<typename T, typename...Args>
-    void SetCallBack(T* cls, void (T::* fn)(Args...), Args&&...args)
+class DelayCaller :
+    public TimeCaller
+{
+public:
+    DelayCaller(const std::function<void()>& call_back) :TimeCaller(call_back) {}
+    ~DelayCaller() = default;
+
+    void OnTimer(void) override
     {
         FUNC_PERFORMANCE_CHECK();
-        m_fnFunctor = std::bind(fn, cls, std::forward<Args>(args)...);
+
+        if (this->m_fnFunctor)
+        {
+            this->m_fnFunctor();
+        }
+
+        if (!this->GetRemainCount())
+        {
+            S_DELETE(this);
+            return;
+        }
     }
 protected:
 private:
-    std::function<void()> m_fnFunctor;
+};
+
+class CronCaller :
+    public TimeCaller
+{
+public:
+    CronCaller(const std::function<void()>& call_back) :TimeCaller(call_back) {}
+
+    ~CronCaller() = default;
+
+    void OnTimer(void) override
+    {
+        FUNC_PERFORMANCE_CHECK();
+
+        if (this->m_fnFunctor)
+        {
+            this->m_fnFunctor();
+        }
+
+        Refresh();
+    }
+
+    bool Init(const std::string& cron_expr)
+    {
+        try
+        {
+            m_cronexpr = cron::make_cron(cron_expr);
+        }
+        catch (cron::bad_cronexpr const& ex)
+        {
+            (void)ex;
+            return false;
+        }
+
+        return true;
+    }
+
+    bool Refresh(void);
+protected:
+private:
+    cron::cronexpr m_cronexpr;
 };
 
 
@@ -83,32 +151,70 @@ public:
 
     int32_t GetRemainCount(ITimer *timer);
 
+    std::string IsValidCronExpr(const std::string& cron_expr);
 public:
-    template <typename T, typename...Args>
-    DelayCaller* AddDelayCaller(
+
+    TimeCaller* CreateTimeCaller(
         uint32_t elapse,
         int32_t count,
-        T* cls,
-        void(T::* fn)(Args...),
-        const Args&...args)
+        const std::function<void()>& call_back
+    )
     {
         FUNC_PERFORMANCE_CHECK();
 
-        DelayCaller* caller = S_NEW(DelayCaller, 1);
-        caller->SetCallBack(cls, fn, (special_decay_type<Args>&&)(args)...);
+        TimeCaller* time_caller = S_NEW(TimeCaller, 1, call_back);
 
-        if (!AddTimer(caller, elapse, count))
+        if (!AddTimer(time_caller, elapse, count))
         {
-            S_DELETE(caller);
+            S_DELETE(time_caller);
             return nullptr;
         }
 
-        return caller;
+        return time_caller;
     }
 
-    bool ModDelayCaller(DelayCaller* caller, uint32_t elapse, int32_t count);
+    CronCaller* CreateCronCaller(
+        const std::string& cron_expr, 
+        const std::function<void()>& call_back)
+    {
+        FUNC_PERFORMANCE_CHECK();
 
-    void DelDelayCaller(DelayCaller* caller);
+        CronCaller* cron_caller = S_NEW(CronCaller, 1, call_back);
+
+        if (!cron_caller->Init(cron_expr))
+        {
+            S_DELETE(cron_caller);
+            return nullptr;
+        }
+
+        if (!cron_caller->Refresh())
+        {
+            S_DELETE(cron_caller);
+            return nullptr;
+        }
+
+        return cron_caller;
+    }
+
+    void DestroyCaller(ITimer* caller);
+
+    bool DelayCall(
+        uint32_t elapse,
+        int32_t count,
+        const std::function<void()>& call_back)
+    {
+        FUNC_PERFORMANCE_CHECK();
+
+        DelayCaller* delay_caller = S_NEW(DelayCaller, 1, call_back);
+
+        if (!AddTimer(delay_caller, elapse, count))
+        {
+            S_DELETE(delay_caller);
+            return false;
+        }
+
+        return true;
+    }
 
 public:
     static void OnTimer(HTIMERINFO timer);
@@ -118,3 +224,7 @@ private:
 };
 
 #define sTimerSystem MeyersSingleton<TimerSystem>::Instance()
+
+
+#define LOCAL_TO_UTC(time) ((time)?local_to_utc(time):0)
+#define UTC_TO_LOCAL(time) ((time)?utc_to_local(time):0)

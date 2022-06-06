@@ -47,6 +47,11 @@
 #define S_FREE(mem) SMemory::Free(mem)
 #endif
 
+#define S_VALID_CLASS_MEM(type, ptr) SMemory::IsValidClassMemory<type>(ptr)
+#define S_VALID_CALSS_PTR(ptr) SMemory::IsValidClassPtr(ptr)
+#define S_VALID_MEM(mem) SMemory::IsValidMemory(mem)
+
+
 #define REP_DEL_SIG 0x19830116
 
 namespace SMemory
@@ -656,12 +661,17 @@ namespace SMemory
 
         if (ptr)
         {
-            return hash_code == 
-                (*(IClassMemory**)((unsigned char*)ptr - sizeof(IClassMemory**)))->IsValid(ptr);
+            IClassMemory* class_memory = *(IClassMemory**)((unsigned char*)ptr - sizeof(IClassMemory**));
+            if (class_memory != (IClassMemory*)REP_DEL_SIG)
+            {
+                return hash_code == class_memory->IsValid(ptr);
+            }
         }
 
         return false;
     }
+
+    extern bool IsValidClassPtr(void* ptr);
 
     extern void Delete(void* ptr);
 

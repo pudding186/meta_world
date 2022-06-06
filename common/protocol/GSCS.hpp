@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct LoginCSNtf:Protocol<LoginCSNtf>
+struct LoginCSNtf:TProtocol<LoginCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 1;
+
 	unsigned int              uid; //账号ID
 	unsigned char             sid; //子区ID
 	unsigned long long        guid; //玩家GUID
@@ -437,8 +440,11 @@ struct LoginCSNtf:Protocol<LoginCSNtf>
     }
 };
 
-struct SyncPlayerU32Ntf:Protocol<SyncPlayerU32Ntf>
+struct SyncPlayerU32Ntf:TProtocol<SyncPlayerU32Ntf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 2;
+
 	unsigned long long        guid; //玩家GUID
 	KeyValueU32               pair; //信息
 	bool EnCode(NetEnCode& net_data)
@@ -714,8 +720,11 @@ struct SyncPlayerU32Ntf:Protocol<SyncPlayerU32Ntf>
     }
 };
 
-struct SyncPlayerU64Ntf:Protocol<SyncPlayerU64Ntf>
+struct SyncPlayerU64Ntf:TProtocol<SyncPlayerU64Ntf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 3;
+
 	unsigned long long        guid; //玩家GUID
 	KeyValueU64               pair; //信息
 	bool EnCode(NetEnCode& net_data)
@@ -991,8 +1000,11 @@ struct SyncPlayerU64Ntf:Protocol<SyncPlayerU64Ntf>
     }
 };
 
-struct SyncPlayerSNtf:Protocol<SyncPlayerSNtf>
+struct SyncPlayerSNtf:TProtocol<SyncPlayerSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned long long        guid; //玩家GUID
 	KeyValueS                 pair; //信息
 	bool EnCode(NetEnCode& net_data)
@@ -1268,8 +1280,11 @@ struct SyncPlayerSNtf:Protocol<SyncPlayerSNtf>
     }
 };
 
-struct GSCSChannelMsgNtf:Protocol<GSCSChannelMsgNtf>
+struct GSCSChannelMsgNtf:TProtocol<GSCSChannelMsgNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 5;
+
 	unsigned long long        guid; //玩家GUID
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	DataArray<unsigned char, unsigned short> msg; //消息内容
@@ -1558,8 +1573,11 @@ struct GSCSChannelMsgNtf:Protocol<GSCSChannelMsgNtf>
     }
 };
 
-struct SubscribeChannelNtf:Protocol<SubscribeChannelNtf>
+struct SubscribeChannelNtf:TProtocol<SubscribeChannelNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 6;
+
 	unsigned long long        guid; //玩家GUID
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	unsigned long long        channel_key; //频道KEY
@@ -1866,8 +1884,11 @@ struct SubscribeChannelNtf:Protocol<SubscribeChannelNtf>
     }
 };
 
-struct LogoutCSNtf:Protocol<LogoutCSNtf>
+struct LogoutCSNtf:TProtocol<LogoutCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 7;
+
 	unsigned long long        guid; //玩家GUID
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -2090,8 +2111,11 @@ struct LogoutCSNtf:Protocol<LogoutCSNtf>
     }
 };
 
-struct HeadMsgGSNtf:Protocol<HeadMsgGSNtf>
+struct HeadMsgGSNtf:TProtocol<HeadMsgGSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 8;
+
 	unsigned long long        guid; //对象GUID
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -2352,8 +2376,11 @@ struct HeadMsgGSNtf:Protocol<HeadMsgGSNtf>
     }
 };
 
-struct SetChannelIntervalNtf:Protocol<SetChannelIntervalNtf>
+struct SetChannelIntervalNtf:TProtocol<SetChannelIntervalNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 9;
+
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	unsigned int              interval; //通道间隔
 	bool EnCode(NetEnCode& net_data)
@@ -2604,8 +2631,11 @@ struct SetChannelIntervalNtf:Protocol<SetChannelIntervalNtf>
     }
 };
 
-struct SetChannelLevelNtf:Protocol<SetChannelLevelNtf>
+struct SetChannelLevelNtf:TProtocol<SetChannelLevelNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 10;
+
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	unsigned int              level; //通道间隔
 	bool EnCode(NetEnCode& net_data)
@@ -2856,8 +2886,11 @@ struct SetChannelLevelNtf:Protocol<SetChannelLevelNtf>
     }
 };
 
-struct SyncPlayerAttrNtf:Protocol<SyncPlayerAttrNtf>
+struct SyncPlayerAttrNtf:TProtocol<SyncPlayerAttrNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 11;
+
 	unsigned long long        guid; //玩家GUID
 	DataArray<AttrData, unsigned short> attrs; //属性数据
 	bool EnCode(NetEnCode& net_data)
@@ -3133,8 +3166,11 @@ struct SyncPlayerAttrNtf:Protocol<SyncPlayerAttrNtf>
     }
 };
 
-struct SyncPlayerNameNtf:Protocol<SyncPlayerNameNtf>
+struct SyncPlayerNameNtf:TProtocol<SyncPlayerNameNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 12;
+
 	unsigned long long        guid; //玩家GUID
 	char                      name[32]; //玩家名字
 	bool EnCode(NetEnCode& net_data)
@@ -3397,8 +3433,11 @@ struct SyncPlayerNameNtf:Protocol<SyncPlayerNameNtf>
     }
 };
 
-struct WorldChannelMsgGSNtf:Protocol<WorldChannelMsgGSNtf>
+struct WorldChannelMsgGSNtf:TProtocol<WorldChannelMsgGSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 13;
+
 	unsigned long long        guid; //玩家GUID
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -3659,8 +3698,11 @@ struct WorldChannelMsgGSNtf:Protocol<WorldChannelMsgGSNtf>
     }
 };
 
-struct WorldChannelMsgCSNtf:Protocol<WorldChannelMsgCSNtf>
+struct WorldChannelMsgCSNtf:TProtocol<WorldChannelMsgCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 14;
+
 	unsigned long long        guid; //玩家GUID
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -3921,8 +3963,11 @@ struct WorldChannelMsgCSNtf:Protocol<WorldChannelMsgCSNtf>
     }
 };
 
-struct NoticeMsgCSNtf:Protocol<NoticeMsgCSNtf>
+struct NoticeMsgCSNtf:TProtocol<NoticeMsgCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 15;
+
 	unsigned char             type; //类型由客户端自定义,对服务器无意义
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	unsigned char             scroll; //消息滚动次数
@@ -4211,8 +4256,11 @@ struct NoticeMsgCSNtf:Protocol<NoticeMsgCSNtf>
     }
 };
 
-struct ChannelSwitchCSNtf:Protocol<ChannelSwitchCSNtf>
+struct ChannelSwitchCSNtf:TProtocol<ChannelSwitchCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 16;
+
 	unsigned long long        guid; //玩家GUID
 	DataArray<ChannelSwitchData, unsigned char> datas; //频道开关数组
 	bool EnCode(NetEnCode& net_data)
@@ -4488,8 +4536,11 @@ struct ChannelSwitchCSNtf:Protocol<ChannelSwitchCSNtf>
     }
 };
 
-struct EmojiDataCSNtf:Protocol<EmojiDataCSNtf>
+struct EmojiDataCSNtf:TProtocol<EmojiDataCSNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 17;
+
 	unsigned long long        guid; //玩家GUID
 	EmojiData                 emojis; //频道开关数组
 	bool EnCode(NetEnCode& net_data)
@@ -4767,7 +4818,7 @@ struct EmojiDataCSNtf:Protocol<EmojiDataCSNtf>
 
 //===============数据定义结束===============
 template<typename D>
-class CGSCS
+class CGSCS: public ProtocolModule
 {
 public:
 	CGSCS()
@@ -4836,118 +4887,95 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 108)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 108)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case LoginCSNtf::protocol_id:
 		{
-			return LoginCSNtf::SName();
+			return LoginCSNtf::Name();
 		}
 		break;
-		case 2:
+		case SyncPlayerU32Ntf::protocol_id:
 		{
-			return SyncPlayerU32Ntf::SName();
+			return SyncPlayerU32Ntf::Name();
 		}
 		break;
-		case 3:
+		case SyncPlayerU64Ntf::protocol_id:
 		{
-			return SyncPlayerU64Ntf::SName();
+			return SyncPlayerU64Ntf::Name();
 		}
 		break;
-		case 4:
+		case SyncPlayerSNtf::protocol_id:
 		{
-			return SyncPlayerSNtf::SName();
+			return SyncPlayerSNtf::Name();
 		}
 		break;
-		case 5:
+		case GSCSChannelMsgNtf::protocol_id:
 		{
-			return GSCSChannelMsgNtf::SName();
+			return GSCSChannelMsgNtf::Name();
 		}
 		break;
-		case 6:
+		case SubscribeChannelNtf::protocol_id:
 		{
-			return SubscribeChannelNtf::SName();
+			return SubscribeChannelNtf::Name();
 		}
 		break;
-		case 7:
+		case LogoutCSNtf::protocol_id:
 		{
-			return LogoutCSNtf::SName();
+			return LogoutCSNtf::Name();
 		}
 		break;
-		case 8:
+		case HeadMsgGSNtf::protocol_id:
 		{
-			return HeadMsgGSNtf::SName();
+			return HeadMsgGSNtf::Name();
 		}
 		break;
-		case 9:
+		case SetChannelIntervalNtf::protocol_id:
 		{
-			return SetChannelIntervalNtf::SName();
+			return SetChannelIntervalNtf::Name();
 		}
 		break;
-		case 10:
+		case SetChannelLevelNtf::protocol_id:
 		{
-			return SetChannelLevelNtf::SName();
+			return SetChannelLevelNtf::Name();
 		}
 		break;
-		case 11:
+		case SyncPlayerAttrNtf::protocol_id:
 		{
-			return SyncPlayerAttrNtf::SName();
+			return SyncPlayerAttrNtf::Name();
 		}
 		break;
-		case 12:
+		case SyncPlayerNameNtf::protocol_id:
 		{
-			return SyncPlayerNameNtf::SName();
+			return SyncPlayerNameNtf::Name();
 		}
 		break;
-		case 13:
+		case WorldChannelMsgGSNtf::protocol_id:
 		{
-			return WorldChannelMsgGSNtf::SName();
+			return WorldChannelMsgGSNtf::Name();
 		}
 		break;
-		case 14:
+		case WorldChannelMsgCSNtf::protocol_id:
 		{
-			return WorldChannelMsgCSNtf::SName();
+			return WorldChannelMsgCSNtf::Name();
 		}
 		break;
-		case 15:
+		case NoticeMsgCSNtf::protocol_id:
 		{
-			return NoticeMsgCSNtf::SName();
+			return NoticeMsgCSNtf::Name();
 		}
 		break;
-		case 16:
+		case ChannelSwitchCSNtf::protocol_id:
 		{
-			return ChannelSwitchCSNtf::SName();
+			return ChannelSwitchCSNtf::Name();
 		}
 		break;
-		case 17:
+		case EmojiDataCSNtf::protocol_id:
 		{
-			return EmojiDataCSNtf::SName();
+			return EmojiDataCSNtf::Name();
 		}
 		break;
 		default:
@@ -4978,7 +5006,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case LoginCSNtf::protocol_id:
 		{
 			LoginCSNtf* proto = new(m_protocol_buffer) LoginCSNtf();
 			if (proto->DeCode(net_data))
@@ -4995,7 +5023,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case SyncPlayerU32Ntf::protocol_id:
 		{
 			SyncPlayerU32Ntf* proto = new(m_protocol_buffer) SyncPlayerU32Ntf();
 			if (proto->DeCode(net_data))
@@ -5012,7 +5040,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case SyncPlayerU64Ntf::protocol_id:
 		{
 			SyncPlayerU64Ntf* proto = new(m_protocol_buffer) SyncPlayerU64Ntf();
 			if (proto->DeCode(net_data))
@@ -5029,7 +5057,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case SyncPlayerSNtf::protocol_id:
 		{
 			SyncPlayerSNtf* proto = new(m_protocol_buffer) SyncPlayerSNtf();
 			if (proto->DeCode(net_data))
@@ -5046,7 +5074,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case GSCSChannelMsgNtf::protocol_id:
 		{
 			GSCSChannelMsgNtf* proto = new(m_protocol_buffer) GSCSChannelMsgNtf();
 			if (proto->DeCode(net_data))
@@ -5063,7 +5091,7 @@ public:
 			}
 		}
 		break;
-		case 6:
+		case SubscribeChannelNtf::protocol_id:
 		{
 			SubscribeChannelNtf* proto = new(m_protocol_buffer) SubscribeChannelNtf();
 			if (proto->DeCode(net_data))
@@ -5080,7 +5108,7 @@ public:
 			}
 		}
 		break;
-		case 7:
+		case LogoutCSNtf::protocol_id:
 		{
 			LogoutCSNtf* proto = new(m_protocol_buffer) LogoutCSNtf();
 			if (proto->DeCode(net_data))
@@ -5097,7 +5125,7 @@ public:
 			}
 		}
 		break;
-		case 8:
+		case HeadMsgGSNtf::protocol_id:
 		{
 			HeadMsgGSNtf* proto = new(m_protocol_buffer) HeadMsgGSNtf();
 			if (proto->DeCode(net_data))
@@ -5114,7 +5142,7 @@ public:
 			}
 		}
 		break;
-		case 9:
+		case SetChannelIntervalNtf::protocol_id:
 		{
 			SetChannelIntervalNtf* proto = new(m_protocol_buffer) SetChannelIntervalNtf();
 			if (proto->DeCode(net_data))
@@ -5131,7 +5159,7 @@ public:
 			}
 		}
 		break;
-		case 10:
+		case SetChannelLevelNtf::protocol_id:
 		{
 			SetChannelLevelNtf* proto = new(m_protocol_buffer) SetChannelLevelNtf();
 			if (proto->DeCode(net_data))
@@ -5148,7 +5176,7 @@ public:
 			}
 		}
 		break;
-		case 11:
+		case SyncPlayerAttrNtf::protocol_id:
 		{
 			SyncPlayerAttrNtf* proto = new(m_protocol_buffer) SyncPlayerAttrNtf();
 			if (proto->DeCode(net_data))
@@ -5165,7 +5193,7 @@ public:
 			}
 		}
 		break;
-		case 12:
+		case SyncPlayerNameNtf::protocol_id:
 		{
 			SyncPlayerNameNtf* proto = new(m_protocol_buffer) SyncPlayerNameNtf();
 			if (proto->DeCode(net_data))
@@ -5182,7 +5210,7 @@ public:
 			}
 		}
 		break;
-		case 13:
+		case WorldChannelMsgGSNtf::protocol_id:
 		{
 			WorldChannelMsgGSNtf* proto = new(m_protocol_buffer) WorldChannelMsgGSNtf();
 			if (proto->DeCode(net_data))
@@ -5199,7 +5227,7 @@ public:
 			}
 		}
 		break;
-		case 14:
+		case WorldChannelMsgCSNtf::protocol_id:
 		{
 			WorldChannelMsgCSNtf* proto = new(m_protocol_buffer) WorldChannelMsgCSNtf();
 			if (proto->DeCode(net_data))
@@ -5216,7 +5244,7 @@ public:
 			}
 		}
 		break;
-		case 15:
+		case NoticeMsgCSNtf::protocol_id:
 		{
 			NoticeMsgCSNtf* proto = new(m_protocol_buffer) NoticeMsgCSNtf();
 			if (proto->DeCode(net_data))
@@ -5233,7 +5261,7 @@ public:
 			}
 		}
 		break;
-		case 16:
+		case ChannelSwitchCSNtf::protocol_id:
 		{
 			ChannelSwitchCSNtf* proto = new(m_protocol_buffer) ChannelSwitchCSNtf();
 			if (proto->DeCode(net_data))
@@ -5250,7 +5278,7 @@ public:
 			}
 		}
 		break;
-		case 17:
+		case EmojiDataCSNtf::protocol_id:
 		{
 			EmojiDataCSNtf* proto = new(m_protocol_buffer) EmojiDataCSNtf();
 			if (proto->DeCode(net_data))
@@ -5281,6 +5309,9 @@ public:
 
 	static const unsigned short protocol_num = 17;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_LoginCSNtf(LoginCSNtf& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_SyncPlayerU32Ntf(SyncPlayerU32Ntf& rstProtocol){ (void)(rstProtocol); };

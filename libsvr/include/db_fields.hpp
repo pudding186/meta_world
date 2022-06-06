@@ -3,11 +3,12 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <functional>
 #include <assert.h>
 #include <fmt/core.h>
 #include <fmt/format.h>
 #include <fmt/printf.h>
-#include "./rb_tree.h"
+#include "./static_string.hpp"
 
 extern "C"
 {
@@ -16,7 +17,7 @@ extern "C"
 }
 
 #include "smemory.hpp"
-#include "list_value_get.hpp"
+#include "list_value_operation.hpp"
 
 #define MAX_ESCAPE_CACHE_SIZE   1024*128
 //////////////////////////////////////////////////////////////////////////
@@ -64,11 +65,8 @@ public:
     FieldINT(const FieldINT<T>& rhs) :m_data(rhs.m_data) {}
     FieldINT(FieldINT<T>&& rhs) :m_data(std::move(rhs.m_data)) {}
 
-    static const std::string& ColumnExtra(void)
-    {
-        static std::string column_attr = u8"NOT NULL DEFAULT '0'";
-        return column_attr;
-    }
+    static constexpr auto ColumnExtra = static_string_literal(u8"NOT NULL DEFAULT '0'");
+
 
     inline T GetData(void) const { return m_data; }
     void SetData(T data)
@@ -123,6 +121,11 @@ public:
 
     std::string ToSQL(HCLIENTMYSQL client_mysql) override
     {
+        return ToSQLImpl(client_mysql);
+    }
+
+    std::string ToSQLImpl(HCLIENTMYSQL client_mysql)
+    {
         (void)client_mysql;
         return fmt::format("{:d}", m_data);
     }
@@ -145,17 +148,16 @@ public:
     FieldTXT(const FieldTXT& rhs) :m_data(rhs.m_data) {}
     FieldTXT(FieldTXT&& rhs) :m_data(std::move(rhs.m_data)) {}
 
-    static const std::string& ColumnExtra(void)
-    {
-        static std::string column_attr = u8"NOT NULL";
-        return column_attr;
-    }
+    static constexpr auto ColumnExtra = static_string_literal(u8"NOT NULL");
 
     inline std::string GetData(void) const { return m_data; }
     void SetData(const std::string& data)
     {
         m_data = data;
     }
+
+    inline const char* CStr(void) const { return m_data.c_str(); }
+    inline size_t Length(void) const { return m_data.length(); }
 
     bool operator < (const FieldTXT& other) const
     {
@@ -210,10 +212,20 @@ public:
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
     {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
+    {
         SetData(std::string(client_mysql_value.value, client_mysql_value.size));
     }
 
     std::string ToSQL(HCLIENTMYSQL client_mysql) override
+    {
+        return ToSQLImpl(client_mysql);
+    }
+
+    std::string ToSQLImpl(HCLIENTMYSQL client_mysql)
     {
         char buf[MAX_ESCAPE_CACHE_SIZE];
         char* cache = buf;
@@ -230,9 +242,9 @@ public:
             client_mysql,
             m_data.c_str(),
             static_cast<unsigned long>(m_data.length()),
-            cache+1,
-            cache_size-3
-            );
+            cache + 1,
+            cache_size - 3
+        );
 
         cache[0] = '\'';
         cache[escape_length + 1] = '\'';
@@ -262,18 +274,17 @@ class FieldINT8
 public:
     FieldINT8() :FieldINT<char>(0) {}
     FieldINT8(char data) :FieldINT<char>(data) {}
-    static const std::string& ColumnType(void)
-    { 
-        static std::string column_type = u8"tinyint(4)"; 
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<char>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"tinyint(4)");
+
+    static constexpr auto ColumnExtra = FieldINT<char>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_int8(client_mysql_value));
     }
@@ -291,18 +302,16 @@ public:
     FieldUINT8() :FieldINT<unsigned char>(0) {}
     FieldUINT8(unsigned char data) :FieldINT<unsigned char>(data) {}
 
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"tinyint(4) unsigned";
-        return column_type;
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"tinyint(4) unsigned");
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<unsigned char>::ColumnExtra();
-    }
+    static constexpr auto ColumnExtra = FieldINT<unsigned char>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_uint8(client_mysql_value));
     }
@@ -319,18 +328,17 @@ class FieldINT16
 public:
     FieldINT16() :FieldINT<short>(0) {}
     FieldINT16(short data) :FieldINT<short>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"smallint(6)";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<short>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"smallint(6)");
+
+    static constexpr auto ColumnExtra = FieldINT<short>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_int16(client_mysql_value));
     }
@@ -347,18 +355,17 @@ class FieldUINT16
 public:
     FieldUINT16() :FieldINT<unsigned short>(0) {}
     FieldUINT16(unsigned short data) :FieldINT<unsigned short>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"smallint(6) unsigned";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<unsigned short>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"smallint(6) unsigned");
+
+    static constexpr auto ColumnExtra = FieldINT<unsigned short>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_uint16(client_mysql_value));
     }
@@ -375,18 +382,17 @@ class FieldINT32
 public:
     FieldINT32() :FieldINT<int>(0) {}
     FieldINT32(int data) :FieldINT<int>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"int(11)";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<int>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"int(11)");
+
+    static constexpr auto ColumnExtra = FieldINT<int>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_int32(client_mysql_value));
     }
@@ -403,18 +409,17 @@ class FieldUINT32
 public:
     FieldUINT32() :FieldINT<unsigned int>(0) {}
     FieldUINT32(unsigned int data) :FieldINT<unsigned int>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"int(11) unsigned";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<unsigned int>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"int(11) unsigned");
+
+    static constexpr auto ColumnExtra = FieldINT<unsigned int>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_uint32(client_mysql_value));
     }
@@ -431,18 +436,17 @@ class FieldINT64
 public:
     FieldINT64() :FieldINT<long long>(0) {}
     FieldINT64(long long data) :FieldINT<long long>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"bigint(20)";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<long long>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"bigint(20)");
+
+    static constexpr auto ColumnExtra = FieldINT<long long>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_int64(client_mysql_value));
     }
@@ -459,18 +463,17 @@ class FieldUINT64
 public:
     FieldUINT64() :FieldINT<unsigned long long>(0) {}
     FieldUINT64(unsigned long long data) :FieldINT<unsigned long long>(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"bigint(20) unsigned";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldINT<unsigned long long>::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"bigint(20) unsigned");
+
+    static constexpr auto ColumnExtra = FieldINT<unsigned long long>::ColumnExtra;
 
     void FromSQL(CLIENTMYSQLVALUE client_mysql_value) override
+    {
+        FromSQLImpl(client_mysql_value);
+    }
+
+    void FromSQLImpl(CLIENTMYSQLVALUE client_mysql_value)
     {
         SetData(client_mysql_value_uint64(client_mysql_value));
     }
@@ -490,16 +493,10 @@ public:
     FieldText(const char* data) :FieldTXT(data) {}
     template<size_t N>
     FieldText(const char(&data)[N]) : FieldTXT(data) {};
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"text";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldTXT::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"text");
+
+    static constexpr auto ColumnExtra = FieldTXT::ColumnExtra;
 
     FieldDataType GetDataType(void) const override
     {
@@ -516,16 +513,10 @@ public:
     FieldLongText(const char* data) :FieldTXT(data) {}
     template<size_t N>
     FieldLongText(const char(&data)[N]) : FieldTXT(data) {};
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type = u8"longtext";
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        return FieldTXT::ColumnExtra();
-    }
+    static constexpr auto ColumnType = static_string_literal(u8"longtext");
+
+    static constexpr auto ColumnExtra = FieldTXT::ColumnExtra;
 
     FieldDataType GetDataType(void) const override
     {
@@ -544,18 +535,10 @@ public:
     FieldVarChar(const char* data) :FieldTXT(data) {}
     template<size_t M>
     FieldVarChar(const char(&data)[M]) : FieldTXT(data) {}
-    static const std::string& ColumnType(void)
-    {
-        static std::string column_type =
-            fmt::format(u8"varchar({})", N);
-        return column_type;
-    }
 
-    static const std::string& ColumnExtra(void)
-    {
-        static std::string column_attr = u8"COLLATE utf8_bin NOT NULL";
-        return column_attr;
-    }
+    static constexpr auto ColumnType = static_string_concat(static_string_literal(u8"varchar("), static_string_concat(static_integer_to_string<N>(), static_string_literal(u8")")));
+
+    static constexpr auto ColumnExtra = static_string_literal(u8"COLLATE utf8mb4_bin NOT NULL");
 
     FieldDataType GetDataType(void) const override
     {
@@ -645,49 +628,78 @@ struct SFieldList<>
         }
     }
 
-    virtual std::string ListSQL(size_t idx = 0)
+    static constexpr auto ColumnNameList()
     {
-        (void)idx;
+        return static_string_literal("");
+    }
+
+    static constexpr auto ColumnNameListNext()
+    {
+        return static_string_literal("");
+    }
+
+    virtual std::string ListSQL()
+    {
         return "";
     }
 
-    virtual std::string ListNameSQL(size_t idx = 0)
+    virtual std::string ListNameSQL()
     {
-        (void)idx;
         return "";
     }
 
-    virtual std::string SetSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0)
+    virtual std::string SetSQL(HCLIENTMYSQL& client_mysql)
+    {
+        return SetSQLImpl(client_mysql);
+    }
+
+    std::string SetSQLImpl(HCLIENTMYSQL& client_mysql)
     {
         (void)client_mysql;
-        (void)idx;
         return "";
     }
 
-    virtual std::string AndSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0)
+    virtual std::string AndSQL(HCLIENTMYSQL& client_mysql)
+    {
+        return AndSQLImpl(client_mysql);
+    }
+
+    std::string AndSQLImpl(HCLIENTMYSQL& client_mysql)
     {
         (void)client_mysql;
-        (void)idx;
         return "";
     }
 
-    virtual std::string OrSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0)
+    virtual std::string OrSQL(HCLIENTMYSQL& client_mysql)
+    {
+        return OrSQLImpl(client_mysql);
+    }
+
+    std::string OrSQLImpl(HCLIENTMYSQL& client_mysql)
     {
         (void)client_mysql;
-        (void)idx;
         return "";
     }
 
-    virtual std::string ValueSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0)
+    virtual std::string ValueSQL(HCLIENTMYSQL& client_mysql)
+    {
+        return ValueSQLImpl(client_mysql);
+    }
+
+    std::string ValueSQLImpl(HCLIENTMYSQL& client_mysql)
     {
         (void)client_mysql;
-        (void)idx;
         return "";
     }
 
     virtual std::string CreateSQL(void)
     {
         return "";
+    }
+
+    static constexpr auto CreateSQLImpl(void)
+    {
+        return static_string_literal(u8"");
     }
 
     virtual void GetDesc(std::vector<std::string>& name_type_list)
@@ -718,42 +730,26 @@ private:
 #endif
 };
 
-struct SDynaFieldList
+//std::map<const char*, IField*> m_dynamic_fields;
+
+struct SDynamicFieldList
     :public SFieldList<>
 {
-    SDynaFieldList()
+    SDynamicFieldList() = default;
+
+    SDynamicFieldList(const SDynamicFieldList& rhs)
     {
-        m_dyna_fields = create_rb_tree(0);
-    }
+        m_dynamic_fields = rhs.m_dynamic_fields;
 
-    SDynaFieldList(const SDynaFieldList& rhs)
-    {
-        m_dyna_fields = create_rb_tree(0);
-
-        HRBNODE rhs_node = rb_first(rhs.m_dyna_fields);
-
-        while (rhs_node)
+        for (auto& it:m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(rhs_node);
-            rb_tree_insert_user(m_dyna_fields, field->GetColumnName().c_str(), field->Clone());
-            rhs_node = rb_next(rhs_node);
+            it.second = it.second->Clone();
         }
     }
 
-    ~SDynaFieldList()
+    ~SDynamicFieldList()
     {
-        if (m_dyna_fields)
-        {
-            HRBNODE node = rb_first(m_dyna_fields);
-            while (node)
-            {
-                S_DELETE(rb_node_value_user(node));
-                node = rb_next(node);
-            }
-
-            destroy_rb_tree(m_dyna_fields);
-            m_dyna_fields = nullptr;
-        }
+        Clear();
     }
 
     template<typename T>
@@ -767,17 +763,16 @@ struct SDynaFieldList
         || std::is_base_of<FieldINT64, T>::value
         || std::is_base_of<FieldTXT, T>::value, bool>::type AddField(const T& field)
     {
-        HRBNODE node = nullptr;
         IField* new_field = S_NEW(T, 1, field);
 
-        if (rb_tree_try_insert_user(m_dyna_fields, new_field->GetColumnName().c_str(), new_field, &node))
+        auto ret = m_dynamic_fields.insert(std::make_pair(T::ColumnName.s, new_field));
+
+        if (!ret.second)
         {
-            return true;
+            S_DELETE(new_field);
         }
 
-        S_DELETE(new_field);
-
-        return false;
+        return ret.second;
     }
 
     template<typename T>
@@ -791,17 +786,16 @@ struct SDynaFieldList
         || std::is_base_of<FieldINT64, T>::value
         || std::is_base_of<FieldTXT, T>::value, void>::type UpdField(const T& field)
     {
-        HRBNODE node = nullptr;
+        auto ret = m_dynamic_fields.insert(std::make_pair(T::ColumnName.s, nullptr));
 
-        if (rb_tree_try_insert_user(m_dyna_fields, field.GetColumnName().c_str(), nullptr, &node))
+        if (ret.second)
         {
-            rb_node_set_value_user(node, S_NEW(T, 1, field));
+            ret.first->second = S_NEW(T, 1, field);
         }
         else
         {
-            IField* old_field = static_cast<IField*>(rb_node_value_user(node));
-            S_DELETE(old_field);
-            rb_node_set_value_user(node, S_NEW(T, 1, field));
+            T* exist_field = dynamic_cast<T*>(ret.first->second);
+            exist_field->SetData(field.GetData());
         }
     }
 
@@ -816,180 +810,161 @@ struct SDynaFieldList
         || std::is_base_of<FieldINT64, T>::value
         || std::is_base_of<FieldTXT, T>::value>::type DelField()
     {
-        T del_field;
+        auto it = m_dynamic_fields.find(T::ColumnName.s);
 
-        HRBNODE node = rb_tree_find_user(m_dyna_fields, del_field.GetColumnName().c_str());
-
-        if (node)
+        if (it != m_dynamic_fields.end())
         {
-            S_DELETE(rb_node_value_user(node));
-            rb_tree_erase(m_dyna_fields, node);
+            S_DELETE(it->second);
+            m_dynamic_fields.erase(it);
         }
     }
 
     void Clear(void)
     {
-        HRBNODE node = rb_first(m_dyna_fields);
-        while (node)
+        for (auto& it : m_dynamic_fields)
         {
-            S_DELETE(rb_node_value_user(node));
-            node = rb_next(node);
+            S_DELETE(it.second);
         }
 
-        rb_tree_clear(m_dyna_fields);
+        m_dynamic_fields.clear();
     }
 
-    std::string ListSQL(size_t idx = 0) override
+    std::string ListSQL(void) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
 
-        while (node)
+        for (auto it:m_dynamic_fields)
         {
-            if (idx == 0)
+            if (is_first)
             {
                 sql += u8" ";
-                idx++;
+                is_first = false;
             }
             else
             {
                 sql += u8", ";
             }
-            IField* field = (IField*)rb_node_value_user(node);
 
-            sql += u8"`" + field->GetColumnName() + u8"`";
-
-            node = rb_next(node);
+            sql += u8"`" + it.second->GetColumnName() + u8"`";
         }
 
         return sql;
     }
 
-    std::string ListNameSQL(size_t idx = 0) override
+    std::string ListNameSQL(void) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            if (idx == 0)
+            if (is_first)
             {
                 sql += u8" ";
-                idx++;
+                is_first = false;
             }
             else
             {
                 sql += u8", ";
             }
-            IField* field = (IField*)rb_node_value_user(node);
 
-            sql += u8"`" + field->GetColumnName() + u8"`";
-
-            node = rb_next(node);
+            sql += u8"`" + it.second->GetColumnName() + u8"`";
         }
 
         return sql;
     }
 
-    std::string SetSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string SetSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-
-            if (idx)
+            if (is_first)
+            {
+                is_first = false;
+            }
+            else
             {
                 sql += u8", ";
             }
 
-            sql += u8"`" + field->GetColumnName() + u8"`";
+            sql += u8"`" + it.second->GetColumnName() + u8"`";
             sql += u8" = ";
-            sql += field->ToSQL(client_mysql);
-
-            node = rb_next(node);
-            ++idx;
+            sql += it.second->ToSQL(client_mysql);
         }
 
         return sql;
     }
 
-    std::string AndSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string AndSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-
-            if (idx)
+            if (is_first)
+            {
+                is_first = false;
+            }
+            else
             {
                 sql += u8" AND ";
             }
 
-            sql += u8"`" + field->GetColumnName() + u8"`";
+            sql += u8"`" + it.second->GetColumnName() + u8"`";
             sql += " = ";
-            sql += field->ToSQL(client_mysql);
-
-            node = rb_next(node);
-            ++idx;
+            sql += it.second->ToSQL(client_mysql);
         }
 
         return sql;
     }
 
-    std::string OrSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string OrSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-
-            if (idx)
+            if (is_first)
+            {
+                is_first = false;
+            }
+            else
             {
                 sql += u8" OR ";
             }
 
-            sql += u8"`" + field->GetColumnName() + u8"`";
+            sql += u8"`" + it.second->GetColumnName() + u8"`";
             sql += " = ";
-            sql += field->ToSQL(client_mysql);
-
-            node = rb_next(node);
-            ++idx;
+            sql += it.second->ToSQL(client_mysql);
         }
 
         return sql;
     }
 
-    std::string ValueSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string ValueSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
+        bool is_first = true;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-
-            if (idx)
+            if (is_first)
+            {
+                is_first = false;
+            }
+            else
             {
                 sql += u8", ";
             }
 
-            sql += field->ToSQL(client_mysql);
-
-            node = rb_next(node);
-            ++idx;
+            sql += it.second->ToSQL(client_mysql);
         }
 
         return sql;
@@ -999,32 +974,26 @@ struct SDynaFieldList
     {
         std::string sql;
 
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-
             sql +=
                 u8"`" +
-                field->GetColumnName() +
+                it.second->GetColumnName() +
                 u8"` " +
-                field->GetColumnType() +
+                it.second->GetColumnType() +
                 u8" " +
-                field->GetColumnExtra() +
+                it.second->GetColumnExtra() +
                 u8" ";
-            if (field->GetColumnComment().length())
+            if (it.second->GetColumnComment().length())
             {
                 sql += u8"COMMENT \"";
-                sql += field->GetColumnComment();
+                sql += it.second->GetColumnComment();
                 sql += u8"\",";
             }
             else
             {
                 sql += u8",";
             }
-
-            node = rb_next(node);
         }
 
         return sql;
@@ -1032,54 +1001,45 @@ struct SDynaFieldList
 
     void GetDesc(std::vector<std::string>& name_type_list) override
     {
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
+            IField* field = it.second;
 
             name_type_list.push_back(field->GetColumnName());
             name_type_list.push_back(field->GetColumnType());
             name_type_list.push_back(field->GetColumnExtra());
-
-            node = rb_next(node);
         }
     }
 
     virtual size_t size() const override
     {
-        return rb_tree_size(m_dyna_fields);
+        return m_dynamic_fields.size();
     }
 
     void LoadData(const CLIENTMYSQLROW& row, unsigned long idx = 0) override
     {
-        HRBNODE node = rb_first(m_dyna_fields);
-
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-            field->FromSQL(client_mysql_value(row, idx));
-            node = rb_next(node);
-            idx++;
+            it.second->FromSQL(client_mysql_value(row, idx));
+            ++idx;
         }
     }
 
-    bool operator == (const SDynaFieldList& rhs) const
+    bool operator == (const SDynamicFieldList& rhs) const
     {
-        if (rb_tree_size(m_dyna_fields) != rb_tree_size(rhs.m_dyna_fields))
+        if (m_dynamic_fields.size() != rhs.m_dynamic_fields.size())
         {
             return false;
         }
 
-        HRBNODE node = rb_first(m_dyna_fields);
-        HRBNODE rhs_node = rb_first(rhs.m_dyna_fields);
+        auto it_rhs = m_dynamic_fields.begin();
 
-        while (node)
+        for (auto it : m_dynamic_fields)
         {
-            IField* field = (IField*)rb_node_value_user(node);
-            IField* rhs_field = (IField*)rb_node_value_user(rhs_node);
+            IField* field = it.second;
+            IField* rhs_field = it_rhs->second;
 
-            if (field->GetColumnName().c_str() != 
+            if (field->GetColumnName().c_str() !=
                 rhs_field->GetColumnName().c_str())
             {
                 return false;
@@ -1197,20 +1157,19 @@ struct SDynaFieldList
                 return false;
             }
 
-
-            node = rb_next(node);
-            rhs_node = rb_next(rhs_node);
+            ++it_rhs;
         }
 
         return true;
     }
 
-    bool operator != (const SDynaFieldList& rhs) const
+    bool operator != (const SDynamicFieldList& rhs) const
     {
         return !(*this == rhs);
     }
 
-    HRBTREE m_dyna_fields;
+    //HRBTREE m_dyna_fields;
+    std::map<const char*, IField*> m_dynamic_fields;
 };
 
 template <typename First, typename... Rest>
@@ -1292,137 +1251,248 @@ struct SFieldList<First, Rest...>
         }
     }
 
-    std::string ListSQL(size_t idx = 0) override
+    static constexpr auto ColumnNameList()
     {
-        std::string sql;
-
-        if (idx == 0)
-        {
-            sql += u8" ";
-        }
-        else
-        {
-            sql += u8", ";
-        }
-
-        sql += u8"`" + First::ColumnName() + u8"`";
-
-        return sql += SFieldList<Rest...>::ListSQL(idx + 1);
+        return
+            static_string_concat(
+                static_string_literal(u8"`"),
+                static_string_concat(
+                    First::ColumnName,
+                    static_string_concat(
+                        static_string_literal(u8"`"),
+                        SFieldList<Rest...>::ColumnNameListNext()
+                    )
+                )
+            );
     }
 
-    std::string ListNameSQL(size_t idx = 0) override
+    static constexpr auto ColumnNameListNext()
     {
-        std::string sql;
-
-        if (idx == 0)
-        {
-            sql += u8" ";
-        }
-        else
-        {
-            sql += u8", ";
-        }
-
-        sql += u8"`" + First::ColumnName() + u8"`";
-
-        return sql += SFieldList<Rest...>::ListNameSQL(idx + 1);
+        return
+            static_string_concat(
+                static_string_literal(u8", `"),
+                static_string_concat(
+                    First::ColumnName,
+                    static_string_concat(
+                        static_string_literal(u8"`"),
+                        SFieldList<Rest...>::ColumnNameListNext()
+                    )
+                )
+            );
     }
 
-    std::string SetSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    //template<bool is_first, typename Dummy=int>
+    //static constexpr auto ColumnNameList()
+    //{
+    //    return static_string_literal("");
+    //}
+
+    //template<typename Dummy = int>
+    //static constexpr auto ColumnNameList<true, Dummy>()
+    //{
+    //    return
+    //        static_string_concat(
+    //            static_string_literal(u8"`"),
+    //            static_string_concat(
+    //                First::ColumnName,
+    //                static_string_concat(
+    //                    static_string_literal(u8"`"),
+    //                    SFieldList<Rest...>::ColumnNameList<false, Dummy>()
+    //                )
+    //            )
+    //        );
+    //}
+
+    //template<typename Dummy = int>
+    //static constexpr auto ColumnNameList<false, Dummy>()
+    //{
+    //    return
+    //        static_string_concat(
+    //            static_string_literal(u8", `"),
+    //            static_string_concat(
+    //                First::ColumnName,
+    //                static_string_concat(
+    //                    static_string_literal(u8"`"),
+    //                    SFieldList<Rest...>::ColumnNameList<false, Dummy>()
+    //                )
+    //            )
+    //        );
+    //}
+
+    std::string ListSQL() override
     {
-        std::string sql;
-
-        if (idx)
-        {
-            sql += u8", ";
-        }
-        
-        sql += u8"`" + First::ColumnName() + u8"`";
-        sql += u8" = ";
-        sql += value.ToSQL(client_mysql);
-
-        return sql += SFieldList<Rest...>::SetSQL(client_mysql, idx + 1);
+        return ColumnNameList().s;
     }
 
-    std::string AndSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string ListNameSQL() override
     {
-        std::string sql;
-
-        if (idx)
-        {
-            sql += u8" AND ";
-        }
-
-        sql += u8"`" + First::ColumnName() + u8"`";
-        sql += " = ";
-        sql += value.ToSQL(client_mysql);
-
-        return sql += SFieldList<Rest...>::AndSQL(client_mysql, idx + 1);
+        return ColumnNameList().s;
     }
 
-    std::string OrSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string SetSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
 
-        if (idx)
-        {
-            sql += u8" OR ";
-        }
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
 
-        sql += u8"`" + First::ColumnName() + u8"`";
-        sql += u8" = ";
-        sql += value.ToSQL(client_mysql);
+        sql += value.ToSQLImpl(client_mysql);
 
-        return sql += SFieldList<Rest...>::OrSQL(client_mysql, idx + 1);
+        return sql += SFieldList<Rest...>::SetSQLImpl(client_mysql);
     }
 
-    std::string ValueSQL(HCLIENTMYSQL& client_mysql, size_t idx = 0) override
+    std::string SetSQLImpl(HCLIENTMYSQL& client_mysql)
+    {
+        std::string sql;
+        sql += u8", ";
+
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
+
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::SetSQLImpl(client_mysql);
+    }
+
+    std::string AndSQL(HCLIENTMYSQL& client_mysql) override
     {
         std::string sql;
 
-        if (idx)
-        {
-            sql += u8", ";
-        }
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
+        sql += value.ToSQLImpl(client_mysql);
 
-        sql += value.ToSQL(client_mysql);
+        return sql += SFieldList<Rest...>::AndSQLImpl(client_mysql);
+    }
 
-        return sql += SFieldList<Rest...>::ValueSQL(client_mysql, idx + 1);
+    std::string AndSQLImpl(HCLIENTMYSQL& client_mysql)
+    {
+        std::string sql;
+
+        sql += u8" AND ";
+
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::AndSQLImpl(client_mysql);
+    }
+
+    std::string OrSQL(HCLIENTMYSQL& client_mysql) override
+    {
+        std::string sql;
+
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::OrSQLImpl(client_mysql);
+    }
+
+    std::string OrSQLImpl(HCLIENTMYSQL& client_mysql)
+    {
+        std::string sql;
+
+        sql += u8" OR ";
+
+        sql += static_string_concat(
+            static_string_literal(u8"`"),
+            static_string_concat(
+                First::ColumnName,
+                static_string_literal(u8"` = ")
+            )
+        ).s;
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::OrSQLImpl(client_mysql);
+    }
+
+    std::string ValueSQL(HCLIENTMYSQL& client_mysql) override
+    {
+        std::string sql;
+
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::ValueSQLImpl(client_mysql);
+    }
+
+    std::string ValueSQLImpl(HCLIENTMYSQL& client_mysql)
+    {
+        std::string sql;
+
+        sql += u8", ";
+
+        sql += value.ToSQLImpl(client_mysql);
+
+        return sql += SFieldList<Rest...>::ValueSQLImpl(client_mysql);
+    }
+
+    static constexpr auto CreateSQLImpl(void)
+    {
+        return static_string_concat(
+            static_string_concat(
+                static_string_literal(u8"`"),
+                static_string_concat(
+                    First::ColumnName,
+                    static_string_concat(
+                        static_string_literal(u8"` "),
+                        static_string_concat(
+                            First::ColumnType,
+                            static_string_concat(
+                                static_string_literal(u8" "),
+                                static_string_concat(
+                                    First::ColumnExtra,
+                                    static_string_concat(
+                                        static_string_literal(u8" COMMENT \""),
+                                        static_string_concat(
+                                            First::ColumnComment,
+                                            static_string_literal(u8"\",")
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            , SFieldList<Rest...>::CreateSQLImpl());
     }
 
     std::string CreateSQL(void) override
     {
-        std::string sql;
-
-        sql +=
-            u8"`" +
-            First::ColumnName() +
-            u8"` " +
-            First::ColumnType() +
-            u8" " +
-            First::ColumnExtra() +
-            u8" ";
-            if (First::ColumnComment().length())
-            {
-                sql += u8"COMMENT \"";
-                sql += First::ColumnComment();
-                sql += u8"\",";
-            }
-            else
-            {
-                sql += u8",";
-            }
-            
-            
-
-        return sql += SFieldList<Rest...>::CreateSQL();
+        return CreateSQLImpl().s;
     }
 
     void GetDesc(std::vector<std::string>& name_type_list) override
     {
-        name_type_list.push_back(First::ColumnName());
-        name_type_list.push_back(First::ColumnType());
-        name_type_list.push_back(First::ColumnExtra());
+        name_type_list.push_back(First::ColumnName.s);
+        name_type_list.push_back(First::ColumnType.s);
+        name_type_list.push_back(First::ColumnExtra.s);
 
         SFieldList<Rest...>::GetDesc(name_type_list);
     }
@@ -1445,7 +1515,7 @@ struct SFieldList<First, Rest...>
     }
 
     template<typename F>
-    void Modify(const F& field, SDynaFieldList* modify_field_list = nullptr)
+    void Modify(const F& field, SDynamicFieldList* modify_field_list = nullptr)
     {
         if (field.GetData() != this-> template Field<F>().GetData())
         {
@@ -1458,14 +1528,14 @@ struct SFieldList<First, Rest...>
     }
 
     template<typename... F>
-    void ModifyList(const SFieldList<F...>& fields, SDynaFieldList* modify_field_list = nullptr)
+    void ModifyList(const SFieldList<F...>& fields, SDynamicFieldList* modify_field_list = nullptr)
     {
         int arr[] = { (Modify(fields.template Field<F>(), modify_field_list), 0)... };
         (void)(arr);
     }
 
     template<typename... F>
-    void ModifyEx(SDynaFieldList* modify_field_list, F&&... fields)
+    void ModifyEx(SDynamicFieldList* modify_field_list, F&&... fields)
     {
         int arr[] = { (Modify(fields, modify_field_list), 0)... };
         (void)(arr);
@@ -1484,12 +1554,6 @@ struct SFieldList<First, Rest...>
         , First>::type value;
 };
 
-//template<typename... F>
-//void SDynaFromFieldList(const SFieldList<F...>& fields, SDynaFieldList& modify_field_list)
-//{
-//    int arr[] = { (modify_field_list.UpdField(fields.Field<F>()), 0)... };
-//}
-
 struct SRecordFieldList
 {
     SRecordFieldList()
@@ -1502,7 +1566,7 @@ struct SRecordFieldList
     {
     }
 
-    void Init(CLIENTMYSQLRES& res)
+    void Init(CLIENTMYSQLRESULT& res)
     {
         unsigned int field_num = mysql_num_fields(res.record_set);
         MYSQL_FIELD* field = mysql_fetch_fields(res.record_set);
@@ -1552,42 +1616,6 @@ struct SRecordFieldList
 
 //////////////////////////////////////////////////////////////////////////
 
-
-//template <typename First, typename... Rest>
-//void SFieldList<First, Rest...>::Modify(const SFieldList<>& fields)
-//{
-//
-//}
-
-//template <typename First, typename... Rest>
-//template<typename... F>
-//void SFieldList<First, Rest...>::Modify(const SFieldList<F...>& fields)
-//{
-//    if (this->Field<F>().GetData() != fields.Field<F>().GetData())
-//    {
-//        this->Field<F>().SetData(fields.Field<F>().GetData());
-//    }
-//    Modify(static_cast<const SFieldList<FRest...>&>(fields));
-//}
-
-//template<typename... F>
-//template <typename First, typename... Rest>
-//void SFieldList<First, Rest...>::Modify(const SFieldList<F...>& fields)
-//{
-//
-//}
-
-//template <typename First, typename... Rest>
-//template<typename... F>
-//void SFieldList<First, Rest...>::Modify(const SFieldList<F...>& fields)
-//{
-//    for (size_t i = 0; i < fields.size(); i++)
-//    {
-//        std::tuple
-//        this->Field<>()
-//    }
-//}
-
 template <typename T>
 ptrdiff_t FieldListCompare(const void* key1, const void* key2)
 {
@@ -1605,7 +1633,7 @@ public:
     IResult():m_err_msg(""),m_wrn_msg(""){}
     virtual ~IResult() {}
     virtual void OnCall(void) = 0;
-    virtual void OnResult(CLIENTMYSQLRES& res) = 0;
+    virtual void OnResult(CLIENTMYSQLRESULT& res) = 0;
     inline void SetError(const std::string& err_msg) { m_err_msg = err_msg; }
     inline const std::string& GetError(void) { return m_err_msg; }
     inline void SetWarn(const std::string& wrn_msg) { m_wrn_msg = wrn_msg; }
@@ -1633,7 +1661,7 @@ public:
         }
     }
 
-    void OnResult(CLIENTMYSQLRES& res) override
+    void OnResult(CLIENTMYSQLRESULT& res) override
     {
         m_err_msg = "";
 
@@ -1657,7 +1685,7 @@ private:
 };
 
 template<typename... Args>
-std::vector<SFieldList<Args...>> Record2FieldList(CLIENTMYSQLRES& res)
+std::vector<SFieldList<Args...>> Record2FieldList(CLIENTMYSQLRESULT& res)
 {
     std::vector<SFieldList<Args...>> datas;
     datas.resize(client_mysql_rows_num(&res));
@@ -1670,7 +1698,7 @@ std::vector<SFieldList<Args...>> Record2FieldList(CLIENTMYSQLRES& res)
     return std::move(datas);
 }
 
-extern std::vector<SRecordFieldList> Record2FieldList(CLIENTMYSQLRES& res);
+extern std::vector<SRecordFieldList> Record2FieldList(CLIENTMYSQLRESULT& res);
 
 class AffectResult
     :public IResult
@@ -1687,7 +1715,7 @@ public:
         }
     }
 
-    void OnResult(CLIENTMYSQLRES& res) override
+    void OnResult(CLIENTMYSQLRESULT& res) override
     {
         m_affect_row = client_mysql_result_affected(&res);
     }
@@ -1704,28 +1732,3 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class ITable
-{
-public:
-    ITable(HMYSQLCONNECTION connection)
-        :m_connection(connection) {}
-public:
-    inline HMYSQLCONNECTION Connection(void) { return m_connection; }
-    static const std::string& TableNull(void) { static std::string table_null = u8""; return table_null; }
-    static const std::string& TableExtra(void) { static std::string table_extra = u8""; return table_extra; }
-    static const std::string& DefTableEngine(void) { static std::string table_engine = u8"InnoDB"; return table_engine; }
-    static const std::string& DefTableCharset(void) { static std::string table_charset = u8"utf8"; return table_charset; }
-    static const std::string& DefTableRowFormat(void) { static std::string table_row_format = u8"compact"; return table_row_format; }
-    virtual const std::string& GetTableName(void) const = 0;
-    virtual const std::string& GetTableExtra(void) const = 0;
-    virtual const std::string& GetTableEngine(void) const = 0;
-    virtual const std::string& GetTableCharset(void) const = 0;
-    virtual const std::string& GetTableRowFormat(void) const = 0;
-    virtual SFieldList<>* FieldList(void) = 0;
-    virtual SFieldList<>* PrimaryKey(void) = 0;
-    virtual std::map<std::string, SFieldList<>*> UniqueKey(void) = 0;
-    virtual std::map<std::string, SFieldList<>*> IndexKey(void) = 0;
-protected:
-private:
-    HMYSQLCONNECTION   m_connection;
-};

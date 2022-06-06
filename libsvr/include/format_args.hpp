@@ -3,7 +3,6 @@
 #include <typeinfo>
 #include <string.h>
 #include "./smemory.hpp"
-#include "special_decay_type.hpp"
 #ifdef _MSC_VER
 #undef max
 #undef min
@@ -218,12 +217,12 @@ struct SFormatArgs<const char(&)[N], Rest...>
         catch (const fmt::format_error& e)
         {
             buffer.clear();
-            fmt::format_to(buffer, u8"fmt::error=[{}] data=[{}]", e.what(), value);
+            fmt::format_to(std::back_inserter(buffer), u8"fmt::error=[{}] data=[{}]", e.what(), value);            
         }
         catch (...)
         {
             buffer.clear();
-            fmt::format_to(buffer, u8"fmt::error=[unknow] data=[{}]", value);
+            fmt::format_to(std::back_inserter(buffer), u8"fmt::error=[unknow] data=[{}]", value);
         }
     }
 
@@ -236,12 +235,12 @@ struct SFormatArgs<const char(&)[N], Rest...>
         catch (const fmt::format_error& e)
         {
             buffer.clear();
-            fmt::format_to(buffer, u8"fmt::error=[{}] data=[{}]", e.what(), value);
+            fmt::format_to(std::back_inserter(buffer), u8"fmt::error=[{}] data=[{}]", e.what(), value);
         }
         catch (...)
         {
             buffer.clear();
-            fmt::format_to(buffer, u8"fmt::error=[unknow] data=[{}]", value);
+            fmt::format_to(std::back_inserter(buffer), u8"fmt::error=[unknow] data=[{}]", value);
         }
     }
 
@@ -305,12 +304,18 @@ typename SFormatElement<N, SFormatArgs<Rest...>>::type& SFormatArgsGet(SFormatAr
 template<typename... Rest, size_t... I>
 void format_to_buffer_impl(my_fmt_memory_buffer& buffer, SFormatArgs<Rest...> &args, idx_seq<I...>)
 {
-    fmt::format_to(buffer, SFormatArgsGet<I>(args)...);
+    fmt::format_to(std::back_inserter(buffer), SFormatArgsGet<I>(args)...);
 }
 
 inline void vprintf_to_buffer(my_fmt_memory_buffer& buffer, fmt::string_view format_str, fmt::printf_args args)
 {
-    fmt::vprintf(buffer, format_str, args);
+#if (FMT_VERSION >= 80000)
+    fmt::v8::detail::vprintf(buffer, format_str, args);
+#elif (FMT_VERSION >= 70000)
+    fmt::v7::detail::vprintf(buffer, format_str, args);
+#else
+#error "MAKE SURE FMT_VERSION >= 7.0.0"
+#endif
 }
 
 template <typename... Args>

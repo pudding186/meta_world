@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_guild_applicant">
+  <field name="player_guid"     type="uint64" />
+  <field name="guild_guid"      type="uint64" />
+  <field name="player_name"     type="varchar" length="32" />
+  <field name="level"           type="uint32" />
+  <field name="role"            type="uint32" />
+  <field name="sn"              type="uint32" />
+  <field name="guild_contrb"    type="uint32" />
+  <field name="last_apply_time" type="uint32" />
+  <field name="vip"             type="int32" />
+  <field name="reincarnation"   type="int32" />
+  <field name="total_fight_value"     type="int64" />
+  <key type="primary"           fields="player_guid, guild_guid" />
+</table>

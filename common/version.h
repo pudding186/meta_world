@@ -2,10 +2,10 @@
 // Microsoft Visual C++ generated include file.
 // Used by ***.rc
 
-#define FILEVER 1
-#define PRODUCTVER 1
-#define STRFILEVER "MH2_meta_world\0"
-#define STRPRODUCTVER "MH2_meta_world\0"
+#define FILEVER 0
+#define PRODUCTVER 0
+#define STRFILEVER "6e4498ce5d86aa80d4757fb489bc3788dcea1899\0"
+#define STRPRODUCTVER "master\0"
 
 // 新对象的下一组默认值
 // 

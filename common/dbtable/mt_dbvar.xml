@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_dbvar">
+  <field name="key"         type="varchar" length="128" />
+  <field name="value"       type="longtext" />
+  <field name="value_type"  type="uint32" />
+  <field name="merge_type"  type="uint32" />
+  <key type="primary"       fields="key, value_type" />
+</table>

@@ -22,6 +22,7 @@ struct Guid
     bool operator < (const Guid& guid) const;
     bool operator == (const Guid& guid) const;
     bool operator != (const Guid& guid) const;
+    Guid& operator=(const Guid& guid);
 
     static bool Marshal(const Guid& guid, std::string& out);
     static bool UnMarshal(Guid& guid, const std::string& in);
@@ -32,7 +33,7 @@ struct Guid
 class GuidSystem
 {
 public:
-    bool Initialize(void);
+    bool Initialize(uint32_t zone_id);
     void Uninitialized(void);
 
     Guid CreateGuid(GuidType type);

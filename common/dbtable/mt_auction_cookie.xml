@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_auction_cookie">
+  <field name="guid"      type="uint64" />
+  <field name="coins"     type="text" />
+  <field name="favorites" type="text" />
+  <field name="records"   type="text" />
+  <key type="primary"     fields="guid" />
+</table>

@@ -53,6 +53,10 @@ extern time_t month_begin_time(time_t month);
 
 extern time_t year_begin_time(time_t year);
 
+extern time_t local_to_utc(time_t local);
+
+extern time_t utc_to_local(time_t utc);
+
 #ifdef  __cplusplus
 }
 #endif

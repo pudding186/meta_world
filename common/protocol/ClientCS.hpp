@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct ChannelMsgReq:Protocol<ChannelMsgReq>
+struct ChannelMsgReq:TProtocol<ChannelMsgReq>
 {
+	static constexpr unsigned short module_id = 104;
+	static constexpr unsigned short protocol_id = 1;
+
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -270,8 +273,11 @@ struct ChannelMsgReq:Protocol<ChannelMsgReq>
     }
 };
 
-struct ChannelMsgNtf:Protocol<ChannelMsgNtf>
+struct ChannelMsgNtf:TProtocol<ChannelMsgNtf>
 {
+	static constexpr unsigned short module_id = 104;
+	static constexpr unsigned short protocol_id = 2;
+
 	unsigned char             channel; //1：当前 2：队伍 3：帮派 4：地图 5：p2p 6：私聊 7：喇叭 8：招募 9：门派 10：世界
 	ChatMsg                   chat_msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -547,8 +553,11 @@ struct ChannelMsgNtf:Protocol<ChannelMsgNtf>
     }
 };
 
-struct TipsMsgCSNtf:Protocol<TipsMsgCSNtf>
+struct TipsMsgCSNtf:TProtocol<TipsMsgCSNtf>
 {
+	static constexpr unsigned short module_id = 104;
+	static constexpr unsigned short protocol_id = 3;
+
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -774,8 +783,11 @@ struct TipsMsgCSNtf:Protocol<TipsMsgCSNtf>
     }
 };
 
-struct NoticeMsgNtf:Protocol<NoticeMsgNtf>
+struct NoticeMsgNtf:TProtocol<NoticeMsgNtf>
 {
+	static constexpr unsigned short module_id = 104;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned char             type; //类型由客户端自定义,对服务器无意义
 	DataArray<unsigned char, unsigned short> msg; //消息内容
 	unsigned char             scroll; //消息滚动次数
@@ -1064,8 +1076,11 @@ struct NoticeMsgNtf:Protocol<NoticeMsgNtf>
     }
 };
 
-struct EmojiDataNtf:Protocol<EmojiDataNtf>
+struct EmojiDataNtf:TProtocol<EmojiDataNtf>
 {
+	static constexpr unsigned short module_id = 104;
+	static constexpr unsigned short protocol_id = 5;
+
 	EmojiData                 emojis; //频道开关数组
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -1308,7 +1323,7 @@ struct EmojiDataNtf:Protocol<EmojiDataNtf>
 
 //===============数据定义结束===============
 template<typename D>
-class CClientCS
+class CClientCS: public ProtocolModule
 {
 public:
 	CClientCS()
@@ -1341,58 +1356,35 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 104)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 104)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case ChannelMsgReq::protocol_id:
 		{
-			return ChannelMsgReq::SName();
+			return ChannelMsgReq::Name();
 		}
 		break;
-		case 2:
+		case ChannelMsgNtf::protocol_id:
 		{
-			return ChannelMsgNtf::SName();
+			return ChannelMsgNtf::Name();
 		}
 		break;
-		case 3:
+		case TipsMsgCSNtf::protocol_id:
 		{
-			return TipsMsgCSNtf::SName();
+			return TipsMsgCSNtf::Name();
 		}
 		break;
-		case 4:
+		case NoticeMsgNtf::protocol_id:
 		{
-			return NoticeMsgNtf::SName();
+			return NoticeMsgNtf::Name();
 		}
 		break;
-		case 5:
+		case EmojiDataNtf::protocol_id:
 		{
-			return EmojiDataNtf::SName();
+			return EmojiDataNtf::Name();
 		}
 		break;
 		default:
@@ -1423,7 +1415,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case ChannelMsgReq::protocol_id:
 		{
 			ChannelMsgReq* proto = new(m_protocol_buffer) ChannelMsgReq();
 			if (proto->DeCode(net_data))
@@ -1440,7 +1432,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case ChannelMsgNtf::protocol_id:
 		{
 			ChannelMsgNtf* proto = new(m_protocol_buffer) ChannelMsgNtf();
 			if (proto->DeCode(net_data))
@@ -1457,7 +1449,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case TipsMsgCSNtf::protocol_id:
 		{
 			TipsMsgCSNtf* proto = new(m_protocol_buffer) TipsMsgCSNtf();
 			if (proto->DeCode(net_data))
@@ -1474,7 +1466,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case NoticeMsgNtf::protocol_id:
 		{
 			NoticeMsgNtf* proto = new(m_protocol_buffer) NoticeMsgNtf();
 			if (proto->DeCode(net_data))
@@ -1491,7 +1483,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case EmojiDataNtf::protocol_id:
 		{
 			EmojiDataNtf* proto = new(m_protocol_buffer) EmojiDataNtf();
 			if (proto->DeCode(net_data))
@@ -1522,6 +1514,9 @@ public:
 
 	static const unsigned short protocol_num = 5;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_ChannelMsgReq(ChannelMsgReq& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_ChannelMsgNtf(ChannelMsgNtf& rstProtocol){ (void)(rstProtocol); };

@@ -1,7 +1,10 @@
+#include "../include/client_mysql.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/client_mysql.h"
+#ifdef __GNUC__
+#include <unistd.h>
+#endif
 #include "../include/memory_pool.h"
 
 
@@ -17,9 +20,131 @@ typedef struct st_client_mysql
     char*               db;
     char*               charact_set;
     unsigned int        port;
+    unsigned int        err_msg_size;
+    char*               err_msg;
+
 }client_mysql;
 
-bool client_mysql_result_success(HCLIENTMYSQLRES result)
+void _close_client_mysql(HCLIENTMYSQL client_mysql_ptr)
+{
+    if (client_mysql_ptr->real_mysql)
+    {
+        mysql_close(client_mysql_ptr->real_mysql);
+        client_mysql_ptr->real_mysql = 0;
+    }
+}
+
+unsigned int _open_client_mysql(HCLIENTMYSQL client_mysql_ptr)
+{
+    int error_code = 0;
+
+    if (client_mysql_ptr->real_mysql)
+    {
+        return 0;
+    }
+
+    client_mysql_ptr->real_mysql = mysql_init(0);
+    if (!client_mysql_ptr->real_mysql)
+    {
+        if (client_mysql_ptr->err_msg_size)
+        {
+            const char* err = "call mysql_init(0) fail!";
+            size_t err_len = strnlen(err, client_mysql_ptr->err_msg_size - 1);
+            memcpy(client_mysql_ptr->err_msg, err, err_len + 1);
+            client_mysql_ptr->err_msg[client_mysql_ptr->err_msg_size - 1] = '\0';
+        }
+
+        return CR_UNKNOWN_ERROR;
+    }
+
+    //mysql_options(client_mysql_ptr->real_mysql, MYSQL_SET_CHARSET_NAME, "utf8mb4");
+    mysql_options(client_mysql_ptr->real_mysql, MYSQL_SET_CHARSET_NAME, client_mysql_ptr->charact_set);
+
+    if (mysql_real_connect(
+        client_mysql_ptr->real_mysql,
+        client_mysql_ptr->host,
+        client_mysql_ptr->user,
+        client_mysql_ptr->passwd,
+        client_mysql_ptr->db,
+        client_mysql_ptr->port,
+        0,
+        CLIENT_MULTI_STATEMENTS
+    ))
+    {
+        if (mysql_autocommit(client_mysql_ptr->real_mysql, 1))
+        {
+            goto ERROR_DEAL;
+        }
+
+        //if (mysql_set_character_set(client_mysql_ptr->real_mysql, "utf8mb4"))
+        if (mysql_set_character_set(client_mysql_ptr->real_mysql, client_mysql_ptr->charact_set))
+        {
+            goto ERROR_DEAL;
+        }
+
+        return 0;
+    }
+
+ERROR_DEAL:
+
+    if (client_mysql_ptr->err_msg_size)
+    {
+        const char* err = mysql_error(client_mysql_ptr->real_mysql);
+
+        size_t err_len = strnlen(err, client_mysql_ptr->err_msg_size - 1);
+        memcpy(client_mysql_ptr->err_msg, err, err_len + 1);
+        client_mysql_ptr->err_msg[client_mysql_ptr->err_msg_size - 1] = '\0';
+    }
+
+    error_code = mysql_errno(client_mysql_ptr->real_mysql);
+    _close_client_mysql(client_mysql_ptr);
+
+    return error_code;
+}
+
+unsigned int _handle_client_mysql_error(HCLIENTMYSQL client_mysql_ptr, unsigned int error_code, unsigned int try_count)
+{
+    switch (error_code)
+    {
+    case CR_SERVER_GONE_ERROR:
+    case CR_SERVER_LOST:
+    case CR_SERVER_LOST_EXTENDED:
+    case CR_CONN_HOST_ERROR:
+    {
+        _close_client_mysql(client_mysql_ptr);
+
+        unsigned int current_error_code = _open_client_mysql(client_mysql_ptr);
+
+        if (!current_error_code)
+        {
+            return current_error_code;
+        }
+
+        if ((--try_count) > 0)
+        {
+#ifdef _MSC_VER
+            Sleep(3000);
+#elif __GNUC__
+            sleep(3);
+#else
+#error "unknown compiler"
+#endif
+            return _handle_client_mysql_error(client_mysql_ptr, current_error_code, try_count);
+        }
+        else
+        {
+            return current_error_code;
+        }
+    }
+    break;
+    default:
+    {
+        return error_code;
+    }
+    }
+}
+
+bool client_mysql_result_success(HCLIENTMYSQLRESULT result)
 {
     if (result)
     {
@@ -31,23 +156,11 @@ bool client_mysql_result_success(HCLIENTMYSQLRES result)
 
 HCLIENTMYSQL create_client_mysql(const char *host, unsigned int port,
     const char *user, const char *passwd, const char* db, const char* charact_set,
-    char* err_info, size_t err_info_size)
+    char* err_info, unsigned int err_info_size)
 {
-    unsigned long long character_set_num = 0;
-
-    unsigned long long i = 0;
-
-    struct st_client_mysql_value value_data;
-
-    bool character_support = false;
-
-    char* character_client;
-    char* character_connection;
-    char* character_result;
-
     if (!charact_set)
     {
-        charact_set = "utf8";
+        charact_set = "utf8mb4";
     }
 
     size_t host_length = strlen(host);
@@ -56,8 +169,6 @@ HCLIENTMYSQL create_client_mysql(const char *host, unsigned int port,
     size_t db_length = strlen(db);
     size_t charact_set_length = strlen(charact_set);
     size_t port_length = sizeof(port);
-
-    CLIENTMYSQLRES mysql_result;
 
     char* ptr = (char*)malloc(
         sizeof(client_mysql)
@@ -69,6 +180,8 @@ HCLIENTMYSQL create_client_mysql(const char *host, unsigned int port,
         + port_length);
 
     client_mysql* client_mysql_ptr = (client_mysql*)ptr;
+    
+    client_mysql_ptr->real_mysql = 0;
     ptr += sizeof(client_mysql);
     
     client_mysql_ptr->host = ptr;
@@ -103,160 +216,26 @@ HCLIENTMYSQL create_client_mysql(const char *host, unsigned int port,
 
     client_mysql_ptr->port = port;
 
-    mysql_result.cur_mysql = 0;
-    mysql_result.record_set = 0;
-    mysql_result.affect_row = 0;
-    mysql_result.error_code = 0;
+    client_mysql_ptr->err_msg_size = err_info_size;
+    client_mysql_ptr->err_msg = err_info;
 
-    client_mysql_ptr->real_mysql = mysql_init(0);
+    unsigned int error_code = _open_client_mysql(client_mysql_ptr);
 
-
-    if (!client_mysql_ptr->real_mysql)
+    if (error_code)
     {
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
-    }
-
-    if (!mysql_real_connect(client_mysql_ptr->real_mysql, host, user,
-        passwd, db, port, 0, CLIENT_MULTI_STATEMENTS))
-    {
-        if (err_info)
-        {
-            const char* err = mysql_error(client_mysql_ptr->real_mysql);
-
-            size_t err_len = strnlen(err, err_info_size - 1);
-            memcpy(err_info, err, err_len + 1);
-            err_info[err_info_size - 1] = '\0';
-        }
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
-    }
-
-    //mysql_result = client_mysql_query(client_mysql_ptr, "SHOW CHARACTER SET", (unsigned long)strlen("SHOW CHARACTER SET"));
-
-    if (mysql_real_query(client_mysql_ptr->real_mysql, "SHOW CHARACTER SET", sizeof("SHOW CHARACTER SET")-1))
-    {
-        if (err_info)
-        {
-            const char* err = mysql_error(client_mysql_ptr->real_mysql);
-
-            size_t err_len = strnlen(err, err_info_size - 1);
-            memcpy(err_info, err, err_len + 1);
-            err_info[err_info_size - 1] = '\0';
-        }
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
+        free(client_mysql_ptr);
+        client_mysql_ptr = 0;
     }
     else
     {
-        mysql_result.cur_mysql = client_mysql_ptr->real_mysql;
-        mysql_result.record_set = mysql_store_result(mysql_result.cur_mysql);
-        mysql_result.error_code = 0;
-        mysql_result.affect_row = 0;
+        client_mysql_ptr->err_msg_size = 0;
     }
 
-    character_set_num = mysql_num_rows(mysql_result.record_set);
-
-    while (i < character_set_num)
-    {
-        value_data = client_mysql_row_field_value(&mysql_result, i, 0);
-
-        if (!strcmp(charact_set, value_data.value))
-        {
-            character_support = true;
-            break;
-        }
-        i++;
-    }
-
-    client_mysql_free_result(&mysql_result);
-
-    if (!character_support)
-    {
-        if (err_info)
-        {
-            snprintf(err_info, err_info_size, "character %s not support", charact_set);
-            err_info[err_info_size - 1] = '\0';
-        }
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
-    }
-
-    if (mysql_set_character_set(client_mysql_ptr->real_mysql, charact_set))
-    {
-        if (err_info)
-        {
-            const char* err = mysql_error(client_mysql_ptr->real_mysql);
-
-            size_t err_len = strnlen(err, err_info_size - 1);
-            memcpy(err_info, err, err_len + 1);
-            err_info[err_info_size - 1] = '\0';
-        }
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
-    }
-
-    //mysql_result = client_mysql_query(client_mysql_ptr,
-    //    "select @@character_set_client, @@character_set_connection, @@character_set_results;",
-    //    (unsigned long)strlen("select @@character_set_client, @@character_set_connection, @@character_set_results;"));
-
-    if (mysql_real_query(client_mysql_ptr->real_mysql,
-        "select @@character_set_client, @@character_set_connection, @@character_set_results;",
-        sizeof("select @@character_set_client, @@character_set_connection, @@character_set_results;")-1))
-    {
-        if (err_info)
-        {
-            const char* err = mysql_error(client_mysql_ptr->real_mysql);
-
-            size_t err_len = strnlen(err, err_info_size - 1);
-            memcpy(err_info, err, err_len + 1);
-            err_info[err_info_size - 1] = '\0';
-        }
-        destroy_client_mysql(client_mysql_ptr);
-        return 0;
-    }
-    else
-    {
-        mysql_result.cur_mysql = client_mysql_ptr->real_mysql;
-        mysql_result.record_set = mysql_store_result(mysql_result.cur_mysql);
-        mysql_result.error_code = 0;
-        mysql_result.affect_row = 0;
-    }
-
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 0);
-    character_client = value_data.value;
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 1);
-    character_connection = value_data.value;
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 2);
-    character_result = value_data.value;
-
-    if (!strcmp(character_client, character_connection))
-    {
-        if (!strcmp(character_connection, character_result))
-        {
-            client_mysql_free_result(&mysql_result);
-            return client_mysql_ptr;
-        }
-    }
-
-    client_mysql_free_result(&mysql_result);
-
-    if (err_info)
-    {
-        snprintf(err_info, err_info_size, "character_client: %s character_connection: %s character_result: %s",
-            character_client, character_connection, character_result);
-    }
-
-    destroy_client_mysql(client_mysql_ptr);
-
-    return 0;
+    return client_mysql_ptr;
 }
 
 HCLIENTMYSQL duplicate_client_mysql(HCLIENTMYSQL client_mysql,
-    char* err_info, size_t err_info_size)
+    char* err_info, unsigned int err_info_size)
 {
     return create_client_mysql(
         client_mysql->host, 
@@ -268,222 +247,47 @@ HCLIENTMYSQL duplicate_client_mysql(HCLIENTMYSQL client_mysql,
         err_info, err_info_size);
 }
 
-bool _re_connect(HCLIENTMYSQL client_mysql_ptr)
-{
-    unsigned long long character_set_num = 0;
-
-    unsigned long long i = 0;
-
-    bool character_support = false;
-
-    struct st_client_mysql_value value_data;
-
-    char* character_client;
-    char* character_connection;
-    char* character_result;
-
-    CLIENTMYSQLRES mysql_result;
-
-    mysql_result.cur_mysql = 0;
-    mysql_result.record_set = 0;
-    mysql_result.affect_row = 0;
-    mysql_result.error_code = 0;
-
-    if (client_mysql_ptr->real_mysql)
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-    }
-
-    client_mysql_ptr->real_mysql = mysql_init(0);
-
-
-    if (!client_mysql_ptr->real_mysql)
-    {
-        return false;
-    }
-
-    if (!mysql_real_connect(client_mysql_ptr->real_mysql, 
-        client_mysql_ptr->host, 
-        client_mysql_ptr->user,
-        client_mysql_ptr->passwd, 
-        client_mysql_ptr->db, 
-        client_mysql_ptr->port, 0, CLIENT_MULTI_STATEMENTS))
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-        client_mysql_ptr->real_mysql = 0;
-        return false;
-    }
-
-    if (mysql_real_query(client_mysql_ptr->real_mysql, "SHOW CHARACTER SET", sizeof("SHOW CHARACTER SET")-1))
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-        client_mysql_ptr->real_mysql = 0;
-        return false;
-    }
-
-    mysql_result.cur_mysql = client_mysql_ptr->real_mysql;
-    mysql_result.record_set = mysql_store_result(mysql_result.cur_mysql);
-    mysql_result.error_code = 0;
-    mysql_result.affect_row = 0;
-
-
-    character_set_num = mysql_num_rows(mysql_result.record_set);
-
-    while (i < character_set_num)
-    {
-        value_data = client_mysql_row_field_value(&mysql_result, i, 0);
-
-        if (!strcmp(client_mysql_ptr->charact_set, value_data.value))
-        {
-            character_support = true;
-            break;
-        }
-        i++;
-    }
-
-    client_mysql_free_result(&mysql_result);
-
-    if (!character_support)
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-        client_mysql_ptr->real_mysql = 0;
-        return false;
-    }
-
-    if (mysql_set_character_set(client_mysql_ptr->real_mysql, client_mysql_ptr->charact_set))
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-        client_mysql_ptr->real_mysql = 0;
-        return false;
-    }
-
-    //mysql_result = client_mysql_query(client_mysql_ptr,
-    //    "select @@character_set_client, @@character_set_connection, @@character_set_results;",
-    //    (unsigned long)strlen("select @@character_set_client, @@character_set_connection, @@character_set_results;"));
-
-    if (mysql_real_query(client_mysql_ptr->real_mysql, 
-        "select @@character_set_client, @@character_set_connection, @@character_set_results;", 
-        sizeof("select @@character_set_client, @@character_set_connection, @@character_set_results;")-1))
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-        client_mysql_ptr->real_mysql = 0;
-        return false;
-    }
-
-    mysql_result.cur_mysql = client_mysql_ptr->real_mysql;
-    mysql_result.record_set = mysql_store_result(mysql_result.cur_mysql);
-    mysql_result.error_code = 0;
-    mysql_result.affect_row = 0;
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 0);
-    character_client = value_data.value;
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 1);
-    character_connection = value_data.value;
-
-    value_data = client_mysql_row_field_value(&mysql_result, 0, 2);
-    character_result = value_data.value;
-
-    if (!strcmp(character_client, character_connection))
-    {
-        if (!strcmp(character_connection, character_result))
-        {
-            client_mysql_free_result(&mysql_result);
-            return true;
-        }
-    }
-
-    client_mysql_free_result(&mysql_result);
-
-    mysql_close(client_mysql_ptr->real_mysql);
-    client_mysql_ptr->real_mysql = 0;
-    return false;
-}
-
 void destroy_client_mysql(HCLIENTMYSQL client_mysql_ptr)
 {
-    if (client_mysql_ptr->real_mysql)
-    {
-        mysql_close(client_mysql_ptr->real_mysql);
-    }
+    _close_client_mysql(client_mysql_ptr);
 
     free(client_mysql_ptr);
 }
 
-CLIENTMYSQLRES client_mysql_query(HCLIENTMYSQL client_mysql_ptr, const char* sql, unsigned long length)
+CLIENTMYSQLRESULT client_mysql_query(HCLIENTMYSQL client_mysql_ptr, const char* sql, unsigned long length)
 {
-    CLIENTMYSQLRES result;
-
-    int query_ret;
+    CLIENTMYSQLRESULT result;
 
     result.cur_mysql = 0;
     result.record_set = 0;
     result.affect_row = 0;
     result.error_code = 0;
 
-QUERY:
-
-
     if (client_mysql_ptr->real_mysql)
     {
-        if (length)
+        if (mysql_real_query(client_mysql_ptr->real_mysql, sql, length))
         {
-            query_ret = mysql_real_query(client_mysql_ptr->real_mysql, sql, length);
-        }
-        else
-        {
-            query_ret = mysql_query(client_mysql_ptr->real_mysql, sql);
+            unsigned int error_code = _handle_client_mysql_error(client_mysql_ptr, mysql_errno(client_mysql_ptr->real_mysql), 5);
+            if (!error_code)
+            {
+                return client_mysql_query(client_mysql_ptr, sql, length);
+            }
+
+            result.error_code = error_code;
+            return result;
         }
     }
     else
     {
-        if (_re_connect(client_mysql_ptr))
-        {
-            result.error_code = 0;
-            goto QUERY;
-        }
-        else
-        {
-            return result;
-        }
-    }
-
-    if (query_ret)
-    {
-        result.error_code = mysql_errno(client_mysql_ptr->real_mysql);
-        switch (result.error_code)
-        {
-        case CR_SERVER_GONE_ERROR:
-        case CR_SERVER_LOST:
-        case CR_INVALID_CONN_HANDLE:
-        case CR_SERVER_LOST_EXTENDED:
-        case CR_CONN_HOST_ERROR:
-        {
-            if (_re_connect(client_mysql_ptr))
-            {
-                result.error_code = 0;
-                goto QUERY;
-            }
-            else
-            {
-                return result;
-            }
-        }
-        break;
-        default:
-            return result;
-        }
+        result.error_code = CR_UNKNOWN_ERROR;
+        return result;
     }
 
     result.cur_mysql = client_mysql_ptr->real_mysql;
 
     result.record_set = mysql_store_result(result.cur_mysql);
 
-    if (result.record_set)
-    {
-        result.affect_row = 0;
-    }
-    else
+    if (!result.record_set)
     {
         if (mysql_field_count(result.cur_mysql) == 0)
         {
@@ -498,7 +302,7 @@ QUERY:
     return result;
 }
 
-HCLIENTMYSQLRES client_mysql_next_result(HCLIENTMYSQLRES last_result)
+HCLIENTMYSQLRESULT client_mysql_next_result(HCLIENTMYSQLRESULT last_result)
 {
     MYSQL* real_mysql = 0;
 
@@ -557,7 +361,7 @@ HCLIENTMYSQLRES client_mysql_next_result(HCLIENTMYSQLRES last_result)
     return last_result;
 }
 
-void client_mysql_free_result(HCLIENTMYSQLRES result)
+void client_mysql_free_result(HCLIENTMYSQLRESULT result)
 {
     if (result)
     {
@@ -571,7 +375,7 @@ void client_mysql_free_result(HCLIENTMYSQLRES result)
     }
 }
 
-bool client_mysql_result_record(HCLIENTMYSQLRES result)
+bool client_mysql_result_record(HCLIENTMYSQLRESULT result)
 {
     if (result->record_set)
     {
@@ -581,14 +385,14 @@ bool client_mysql_result_record(HCLIENTMYSQLRES result)
     return false;
 }
 
-unsigned long long client_mysql_result_affected(HCLIENTMYSQLRES result)
+unsigned long long client_mysql_result_affected(HCLIENTMYSQLRESULT result)
 {
     return result->affect_row;
 }
 
 
 
-CLIENTMYSQLROW client_mysql_fetch_row(HCLIENTMYSQLRES result)
+CLIENTMYSQLROW client_mysql_fetch_row(HCLIENTMYSQLRESULT result)
 {
     CLIENTMYSQLROW row;
 
@@ -605,7 +409,7 @@ CLIENTMYSQLROW client_mysql_fetch_row(HCLIENTMYSQLRES result)
     return row;
 }
 
-CLIENTMYSQLROW client_mysql_row(HCLIENTMYSQLRES result, unsigned long long row_index)
+CLIENTMYSQLROW client_mysql_row(HCLIENTMYSQLRESULT result, unsigned long long row_index)
 {
     mysql_data_seek(result->record_set, row_index);
 
@@ -622,7 +426,7 @@ CLIENTMYSQLVALUE client_mysql_value(CLIENTMYSQLROW row, unsigned long field_inde
     return data;
 }
 
-CLIENTMYSQLVALUE client_mysql_row_field_value(HCLIENTMYSQLRES result, unsigned long long row_index, unsigned long field_index)
+CLIENTMYSQLVALUE client_mysql_row_field_value(HCLIENTMYSQLRESULT result, unsigned long long row_index, unsigned long field_index)
 {
     CLIENTMYSQLVALUE data;
 
@@ -714,7 +518,7 @@ const char* client_mysql_err(HCLIENTMYSQL connection)
     return "mysql is nullptr";
 }
 
-unsigned long long client_mysql_rows_num(HCLIENTMYSQLRES result)
+unsigned long long client_mysql_rows_num(HCLIENTMYSQLRESULT result)
 {
     if (result->record_set)
     {
@@ -724,7 +528,7 @@ unsigned long long client_mysql_rows_num(HCLIENTMYSQLRES result)
     return 0;
 }
 
-unsigned int client_mysql_fields_num(HCLIENTMYSQLRES result)
+unsigned int client_mysql_fields_num(HCLIENTMYSQLRESULT result)
 {
     if (result->record_set)
     {

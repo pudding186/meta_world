@@ -8,8 +8,11 @@
 //===============宏定义结束===============
 
 //===============数据定义开始===============
-struct ActionBegin:Protocol<ActionBegin>
+struct ActionBegin:TProtocol<ActionBegin>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 1;
+
 	unsigned short            target; //目标id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -232,8 +235,11 @@ struct ActionBegin:Protocol<ActionBegin>
     }
 };
 
-struct ActionEnd:Protocol<ActionEnd>
+struct ActionEnd:TProtocol<ActionEnd>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 2;
+
 	unsigned short            target; //目标id
 	unsigned char             state; //0:活着的 1:死亡的 2:离场的
 	bool EnCode(NetEnCode& net_data)
@@ -484,8 +490,11 @@ struct ActionEnd:Protocol<ActionEnd>
     }
 };
 
-struct AddBuff:Protocol<AddBuff>
+struct AddBuff:TProtocol<AddBuff>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 3;
+
 	unsigned short            target; //目标id
 	unsigned short            skill; //技能id
 	unsigned short            buff; //buffid
@@ -820,8 +829,11 @@ struct AddBuff:Protocol<AddBuff>
     }
 };
 
-struct DelBuff:Protocol<DelBuff>
+struct DelBuff:TProtocol<DelBuff>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 4;
+
 	unsigned short            target; //目标id
 	unsigned short            buff; //buffid
 	unsigned char             stack; //堆叠层数
@@ -1128,8 +1140,11 @@ struct DelBuff:Protocol<DelBuff>
     }
 };
 
-struct DiedNtf:Protocol<DiedNtf>
+struct DiedNtf:TProtocol<DiedNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 5;
+
 	unsigned short            target; //目标通知
 	unsigned char             leave; //死亡后是否出场
 	signed long long          effect; //死亡特效ID
@@ -1408,8 +1423,11 @@ struct DiedNtf:Protocol<DiedNtf>
     }
 };
 
-struct ReviveNtf:Protocol<ReviveNtf>
+struct ReviveNtf:TProtocol<ReviveNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 6;
+
 	unsigned short            target; //目标通知
 	int                       hp; //如果为友方则显示血量,敌方为0
 	bool EnCode(NetEnCode& net_data)
@@ -1660,8 +1678,11 @@ struct ReviveNtf:Protocol<ReviveNtf>
     }
 };
 
-struct PaoPaoNtf:Protocol<PaoPaoNtf>
+struct PaoPaoNtf:TProtocol<PaoPaoNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 7;
+
 	unsigned short            target; //消息目标
 	char                      text[512]; //消息内容
 	bool EnCode(NetEnCode& net_data)
@@ -1924,8 +1945,11 @@ struct PaoPaoNtf:Protocol<PaoPaoNtf>
     }
 };
 
-struct FightAttrNtf:Protocol<FightAttrNtf>
+struct FightAttrNtf:TProtocol<FightAttrNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 8;
+
 	unsigned short            target; //目标id
 	unsigned short            attr; //属性名
 	signed long long          value; //属性值 大于0为增加 小于0为减少
@@ -2204,8 +2228,11 @@ struct FightAttrNtf:Protocol<FightAttrNtf>
     }
 };
 
-struct ShotSKillNtf:Protocol<ShotSKillNtf>
+struct ShotSKillNtf:TProtocol<ShotSKillNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 9;
+
 	unsigned short            actor; //施放者id
 	unsigned int              skillid; //施放技能id
 	DataArray<unsigned short, unsigned char> targets; //攻击目标
@@ -2536,8 +2563,11 @@ struct ShotSKillNtf:Protocol<ShotSKillNtf>
     }
 };
 
-struct SkillCooldownNtf:Protocol<SkillCooldownNtf>
+struct SkillCooldownNtf:TProtocol<SkillCooldownNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 10;
+
 	unsigned short            target; //目标id
 	unsigned short            skillid; //技能id
 	unsigned short            cd; //cd
@@ -2816,8 +2846,11 @@ struct SkillCooldownNtf:Protocol<SkillCooldownNtf>
     }
 };
 
-struct ShowAttrChangeNtf:Protocol<ShowAttrChangeNtf>
+struct ShowAttrChangeNtf:TProtocol<ShowAttrChangeNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 11;
+
 	unsigned short            target; //目标id
 	unsigned short            attr; //属性名
 	signed long long          value; //属性值 大于0为增加 小于0为减少
@@ -3180,8 +3213,11 @@ struct ShowAttrChangeNtf:Protocol<ShowAttrChangeNtf>
     }
 };
 
-struct MissNtf:Protocol<MissNtf>
+struct MissNtf:TProtocol<MissNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 12;
+
 	unsigned short            target; //目标id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -3404,8 +3440,11 @@ struct MissNtf:Protocol<MissNtf>
     }
 };
 
-struct DefenseNtf:Protocol<DefenseNtf>
+struct DefenseNtf:TProtocol<DefenseNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 13;
+
 	unsigned short            target; //目标id
 	bool EnCode(NetEnCode& net_data)
 	{
@@ -3628,8 +3667,11 @@ struct DefenseNtf:Protocol<DefenseNtf>
     }
 };
 
-struct EscapeNtf:Protocol<EscapeNtf>
+struct EscapeNtf:TProtocol<EscapeNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 14;
+
 	unsigned short            target; //目标id
 	unsigned char             result; //0:失败 1:成功
 	bool EnCode(NetEnCode& net_data)
@@ -3880,8 +3922,11 @@ struct EscapeNtf:Protocol<EscapeNtf>
     }
 };
 
-struct ProtectNtf:Protocol<ProtectNtf>
+struct ProtectNtf:TProtocol<ProtectNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 15;
+
 	unsigned short            actor; //发起者id
 	unsigned short            target; //目标id
 	bool EnCode(NetEnCode& net_data)
@@ -4132,8 +4177,11 @@ struct ProtectNtf:Protocol<ProtectNtf>
     }
 };
 
-struct HuaWuNtf:Protocol<HuaWuNtf>
+struct HuaWuNtf:TProtocol<HuaWuNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 16;
+
 	unsigned short            target; //目标id
 	unsigned short            skillid; //技能id
 	bool EnCode(NetEnCode& net_data)
@@ -4384,8 +4432,11 @@ struct HuaWuNtf:Protocol<HuaWuNtf>
     }
 };
 
-struct FailNtf:Protocol<FailNtf>
+struct FailNtf:TProtocol<FailNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 17;
+
 	unsigned short            target; //目标id
 	int                       errcode; //错误码
 	char                      errmsg[256]; //错误描述
@@ -4676,8 +4727,11 @@ struct FailNtf:Protocol<FailNtf>
     }
 };
 
-struct SummonNtf:Protocol<SummonNtf>
+struct SummonNtf:TProtocol<SummonNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 18;
+
 	unsigned short            actor; //召唤者id
 	unsigned char             action; //是否有召唤动作
 	unsigned short            target1; //召唤目标1id
@@ -4984,8 +5038,11 @@ struct SummonNtf:Protocol<SummonNtf>
     }
 };
 
-struct ShowFighterNtf:Protocol<ShowFighterNtf>
+struct ShowFighterNtf:TProtocol<ShowFighterNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 19;
+
 	unsigned short            target; //显示者id
 	unsigned short            replace; //替换者id
 	bool EnCode(NetEnCode& net_data)
@@ -5236,8 +5293,11 @@ struct ShowFighterNtf:Protocol<ShowFighterNtf>
     }
 };
 
-struct HideFighterNtf:Protocol<HideFighterNtf>
+struct HideFighterNtf:TProtocol<HideFighterNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 20;
+
 	unsigned short            target; //战斗者id
 	signed long long          effect; //隐藏特效ID
 	bool EnCode(NetEnCode& net_data)
@@ -5488,8 +5548,11 @@ struct HideFighterNtf:Protocol<HideFighterNtf>
     }
 };
 
-struct CatchNtf:Protocol<CatchNtf>
+struct CatchNtf:TProtocol<CatchNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 21;
+
 	unsigned short            actor; //捕捉者id
 	unsigned short            target; //捕捉目标1id
 	unsigned char             result; //0:失败 1:成功
@@ -5768,8 +5831,11 @@ struct CatchNtf:Protocol<CatchNtf>
     }
 };
 
-struct ShowEffectNtf:Protocol<ShowEffectNtf>
+struct ShowEffectNtf:TProtocol<ShowEffectNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 22;
+
 	unsigned char             type; //特效类型
 	unsigned short            actor; //发起者id
 	unsigned short            target; //目标1id
@@ -6104,8 +6170,11 @@ struct ShowEffectNtf:Protocol<ShowEffectNtf>
     }
 };
 
-struct StealSkillNtf:Protocol<StealSkillNtf>
+struct StealSkillNtf:TProtocol<StealSkillNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 23;
+
 	unsigned short            target; //目标id
 	unsigned short            skill; //技能id
 	unsigned int              performance; //技能熟练度
@@ -6384,8 +6453,11 @@ struct StealSkillNtf:Protocol<StealSkillNtf>
     }
 };
 
-struct ForgetNtf:Protocol<ForgetNtf>
+struct ForgetNtf:TProtocol<ForgetNtf>
 {
+	static constexpr unsigned short module_id = 108;
+	static constexpr unsigned short protocol_id = 24;
+
 	unsigned short            target; //目标id
 	unsigned short            skillid; //技能id
 	unsigned char             forget; //0:未遗忘 1:遗忘
@@ -6666,7 +6738,7 @@ struct ForgetNtf:Protocol<ForgetNtf>
 
 //===============数据定义结束===============
 template<typename D>
-class CFightData
+class CFightData: public ProtocolModule
 {
 public:
 	CFightData()
@@ -6756,153 +6828,130 @@ public:
 		}
 	}
 
-	template<typename T>
-	bool BuildProtocol(Protocol<T>& proto, NetEnCode& net_data)
-	{
-		if (proto.module_id != 108)
-			return false;
-
-		net_data.AddIntegral(proto.module_id);
-		net_data.AddIntegral(proto.protocol_id);
-
-		return static_cast<T&>(proto).EnCode(net_data);
-	}
-
-	bool BuildProtocol(protocol_base* proto, NetEnCode& net_data)
-	{
-		if (proto->ModuleId() != 108)
-			return false;
-
-		net_data.AddIntegral(proto->ModuleId());
-		net_data.AddIntegral(proto->ProtocolId());
-
-		return proto->EnCodeEx(net_data);
-	}
-
 	const char* ProtocolName(unsigned short protocol_id) const
 	{
 		static char unknow_protocol[32];
 
 		switch (protocol_id)
 		{
-		case 1:
+		case ActionBegin::protocol_id:
 		{
-			return ActionBegin::SName();
+			return ActionBegin::Name();
 		}
 		break;
-		case 2:
+		case ActionEnd::protocol_id:
 		{
-			return ActionEnd::SName();
+			return ActionEnd::Name();
 		}
 		break;
-		case 3:
+		case AddBuff::protocol_id:
 		{
-			return AddBuff::SName();
+			return AddBuff::Name();
 		}
 		break;
-		case 4:
+		case DelBuff::protocol_id:
 		{
-			return DelBuff::SName();
+			return DelBuff::Name();
 		}
 		break;
-		case 5:
+		case DiedNtf::protocol_id:
 		{
-			return DiedNtf::SName();
+			return DiedNtf::Name();
 		}
 		break;
-		case 6:
+		case ReviveNtf::protocol_id:
 		{
-			return ReviveNtf::SName();
+			return ReviveNtf::Name();
 		}
 		break;
-		case 7:
+		case PaoPaoNtf::protocol_id:
 		{
-			return PaoPaoNtf::SName();
+			return PaoPaoNtf::Name();
 		}
 		break;
-		case 8:
+		case FightAttrNtf::protocol_id:
 		{
-			return FightAttrNtf::SName();
+			return FightAttrNtf::Name();
 		}
 		break;
-		case 9:
+		case ShotSKillNtf::protocol_id:
 		{
-			return ShotSKillNtf::SName();
+			return ShotSKillNtf::Name();
 		}
 		break;
-		case 10:
+		case SkillCooldownNtf::protocol_id:
 		{
-			return SkillCooldownNtf::SName();
+			return SkillCooldownNtf::Name();
 		}
 		break;
-		case 11:
+		case ShowAttrChangeNtf::protocol_id:
 		{
-			return ShowAttrChangeNtf::SName();
+			return ShowAttrChangeNtf::Name();
 		}
 		break;
-		case 12:
+		case MissNtf::protocol_id:
 		{
-			return MissNtf::SName();
+			return MissNtf::Name();
 		}
 		break;
-		case 13:
+		case DefenseNtf::protocol_id:
 		{
-			return DefenseNtf::SName();
+			return DefenseNtf::Name();
 		}
 		break;
-		case 14:
+		case EscapeNtf::protocol_id:
 		{
-			return EscapeNtf::SName();
+			return EscapeNtf::Name();
 		}
 		break;
-		case 15:
+		case ProtectNtf::protocol_id:
 		{
-			return ProtectNtf::SName();
+			return ProtectNtf::Name();
 		}
 		break;
-		case 16:
+		case HuaWuNtf::protocol_id:
 		{
-			return HuaWuNtf::SName();
+			return HuaWuNtf::Name();
 		}
 		break;
-		case 17:
+		case FailNtf::protocol_id:
 		{
-			return FailNtf::SName();
+			return FailNtf::Name();
 		}
 		break;
-		case 18:
+		case SummonNtf::protocol_id:
 		{
-			return SummonNtf::SName();
+			return SummonNtf::Name();
 		}
 		break;
-		case 19:
+		case ShowFighterNtf::protocol_id:
 		{
-			return ShowFighterNtf::SName();
+			return ShowFighterNtf::Name();
 		}
 		break;
-		case 20:
+		case HideFighterNtf::protocol_id:
 		{
-			return HideFighterNtf::SName();
+			return HideFighterNtf::Name();
 		}
 		break;
-		case 21:
+		case CatchNtf::protocol_id:
 		{
-			return CatchNtf::SName();
+			return CatchNtf::Name();
 		}
 		break;
-		case 22:
+		case ShowEffectNtf::protocol_id:
 		{
-			return ShowEffectNtf::SName();
+			return ShowEffectNtf::Name();
 		}
 		break;
-		case 23:
+		case StealSkillNtf::protocol_id:
 		{
-			return StealSkillNtf::SName();
+			return StealSkillNtf::Name();
 		}
 		break;
-		case 24:
+		case ForgetNtf::protocol_id:
 		{
-			return ForgetNtf::SName();
+			return ForgetNtf::Name();
 		}
 		break;
 		default:
@@ -6933,7 +6982,7 @@ public:
 
 		switch(p_id)
 		{
-		case 1:
+		case ActionBegin::protocol_id:
 		{
 			ActionBegin* proto = new(m_protocol_buffer) ActionBegin();
 			if (proto->DeCode(net_data))
@@ -6950,7 +6999,7 @@ public:
 			}
 		}
 		break;
-		case 2:
+		case ActionEnd::protocol_id:
 		{
 			ActionEnd* proto = new(m_protocol_buffer) ActionEnd();
 			if (proto->DeCode(net_data))
@@ -6967,7 +7016,7 @@ public:
 			}
 		}
 		break;
-		case 3:
+		case AddBuff::protocol_id:
 		{
 			AddBuff* proto = new(m_protocol_buffer) AddBuff();
 			if (proto->DeCode(net_data))
@@ -6984,7 +7033,7 @@ public:
 			}
 		}
 		break;
-		case 4:
+		case DelBuff::protocol_id:
 		{
 			DelBuff* proto = new(m_protocol_buffer) DelBuff();
 			if (proto->DeCode(net_data))
@@ -7001,7 +7050,7 @@ public:
 			}
 		}
 		break;
-		case 5:
+		case DiedNtf::protocol_id:
 		{
 			DiedNtf* proto = new(m_protocol_buffer) DiedNtf();
 			if (proto->DeCode(net_data))
@@ -7018,7 +7067,7 @@ public:
 			}
 		}
 		break;
-		case 6:
+		case ReviveNtf::protocol_id:
 		{
 			ReviveNtf* proto = new(m_protocol_buffer) ReviveNtf();
 			if (proto->DeCode(net_data))
@@ -7035,7 +7084,7 @@ public:
 			}
 		}
 		break;
-		case 7:
+		case PaoPaoNtf::protocol_id:
 		{
 			PaoPaoNtf* proto = new(m_protocol_buffer) PaoPaoNtf();
 			if (proto->DeCode(net_data))
@@ -7052,7 +7101,7 @@ public:
 			}
 		}
 		break;
-		case 8:
+		case FightAttrNtf::protocol_id:
 		{
 			FightAttrNtf* proto = new(m_protocol_buffer) FightAttrNtf();
 			if (proto->DeCode(net_data))
@@ -7069,7 +7118,7 @@ public:
 			}
 		}
 		break;
-		case 9:
+		case ShotSKillNtf::protocol_id:
 		{
 			ShotSKillNtf* proto = new(m_protocol_buffer) ShotSKillNtf();
 			if (proto->DeCode(net_data))
@@ -7086,7 +7135,7 @@ public:
 			}
 		}
 		break;
-		case 10:
+		case SkillCooldownNtf::protocol_id:
 		{
 			SkillCooldownNtf* proto = new(m_protocol_buffer) SkillCooldownNtf();
 			if (proto->DeCode(net_data))
@@ -7103,7 +7152,7 @@ public:
 			}
 		}
 		break;
-		case 11:
+		case ShowAttrChangeNtf::protocol_id:
 		{
 			ShowAttrChangeNtf* proto = new(m_protocol_buffer) ShowAttrChangeNtf();
 			if (proto->DeCode(net_data))
@@ -7120,7 +7169,7 @@ public:
 			}
 		}
 		break;
-		case 12:
+		case MissNtf::protocol_id:
 		{
 			MissNtf* proto = new(m_protocol_buffer) MissNtf();
 			if (proto->DeCode(net_data))
@@ -7137,7 +7186,7 @@ public:
 			}
 		}
 		break;
-		case 13:
+		case DefenseNtf::protocol_id:
 		{
 			DefenseNtf* proto = new(m_protocol_buffer) DefenseNtf();
 			if (proto->DeCode(net_data))
@@ -7154,7 +7203,7 @@ public:
 			}
 		}
 		break;
-		case 14:
+		case EscapeNtf::protocol_id:
 		{
 			EscapeNtf* proto = new(m_protocol_buffer) EscapeNtf();
 			if (proto->DeCode(net_data))
@@ -7171,7 +7220,7 @@ public:
 			}
 		}
 		break;
-		case 15:
+		case ProtectNtf::protocol_id:
 		{
 			ProtectNtf* proto = new(m_protocol_buffer) ProtectNtf();
 			if (proto->DeCode(net_data))
@@ -7188,7 +7237,7 @@ public:
 			}
 		}
 		break;
-		case 16:
+		case HuaWuNtf::protocol_id:
 		{
 			HuaWuNtf* proto = new(m_protocol_buffer) HuaWuNtf();
 			if (proto->DeCode(net_data))
@@ -7205,7 +7254,7 @@ public:
 			}
 		}
 		break;
-		case 17:
+		case FailNtf::protocol_id:
 		{
 			FailNtf* proto = new(m_protocol_buffer) FailNtf();
 			if (proto->DeCode(net_data))
@@ -7222,7 +7271,7 @@ public:
 			}
 		}
 		break;
-		case 18:
+		case SummonNtf::protocol_id:
 		{
 			SummonNtf* proto = new(m_protocol_buffer) SummonNtf();
 			if (proto->DeCode(net_data))
@@ -7239,7 +7288,7 @@ public:
 			}
 		}
 		break;
-		case 19:
+		case ShowFighterNtf::protocol_id:
 		{
 			ShowFighterNtf* proto = new(m_protocol_buffer) ShowFighterNtf();
 			if (proto->DeCode(net_data))
@@ -7256,7 +7305,7 @@ public:
 			}
 		}
 		break;
-		case 20:
+		case HideFighterNtf::protocol_id:
 		{
 			HideFighterNtf* proto = new(m_protocol_buffer) HideFighterNtf();
 			if (proto->DeCode(net_data))
@@ -7273,7 +7322,7 @@ public:
 			}
 		}
 		break;
-		case 21:
+		case CatchNtf::protocol_id:
 		{
 			CatchNtf* proto = new(m_protocol_buffer) CatchNtf();
 			if (proto->DeCode(net_data))
@@ -7290,7 +7339,7 @@ public:
 			}
 		}
 		break;
-		case 22:
+		case ShowEffectNtf::protocol_id:
 		{
 			ShowEffectNtf* proto = new(m_protocol_buffer) ShowEffectNtf();
 			if (proto->DeCode(net_data))
@@ -7307,7 +7356,7 @@ public:
 			}
 		}
 		break;
-		case 23:
+		case StealSkillNtf::protocol_id:
 		{
 			StealSkillNtf* proto = new(m_protocol_buffer) StealSkillNtf();
 			if (proto->DeCode(net_data))
@@ -7324,7 +7373,7 @@ public:
 			}
 		}
 		break;
-		case 24:
+		case ForgetNtf::protocol_id:
 		{
 			ForgetNtf* proto = new(m_protocol_buffer) ForgetNtf();
 			if (proto->DeCode(net_data))
@@ -7355,6 +7404,9 @@ public:
 
 	static const unsigned short protocol_num = 24;
 
+	unsigned short ModuleId() override { return D::GetModuleID(); }
+	unsigned short ProtocolNum() override { return D::GetProtocolNum(); }
+	bool Handle(NetDeCode & net_data) override { return static_cast<D*>(this)->HandleProtocol(net_data); }
 //===============以下协议回调函数需要使用者来实现===============
 	void OnRecv_ActionBegin(ActionBegin& rstProtocol){ (void)(rstProtocol); };
 	void OnRecv_ActionEnd(ActionEnd& rstProtocol){ (void)(rstProtocol); };

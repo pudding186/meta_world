@@ -59,7 +59,7 @@ bool LogSystem::CreateDefaultLogger(const std::string& log_dir, const std::strin
     {
         if (m_default_logger)
         {
-            LogErr(u8"create log '{}' fail.\n",
+            LogERR(u8"create log '{}' fail.\n",
                 default_log_name);
         }
         else
@@ -79,12 +79,6 @@ bool LogSystem::CreateDefaultLogger(const std::string& log_dir, const std::strin
 
         m_default_logger = new_default_logger;
     }
-
-    m_switchSys = true;
-    m_switchErr = true;
-    m_switchWrn = true;
-    m_switchInf = true;
-    m_switchDbg = false;
 
     return true;
 }
@@ -148,7 +142,7 @@ void LogSystem::StartFlushTimer(void)
         return;
     }
 
-    m_delay_caller = sTimerSystem.AddDelayCaller(60 * 1000, -1, this, &LogSystem::OnUpdate);
+    m_delay_caller = sTimerSystem.CreateTimeCaller(60 * 1000, -1, std::bind(&LogSystem::OnUpdate, this));
 }
 
 void LogSystem::StopFlushTimer(void)
@@ -157,7 +151,7 @@ void LogSystem::StopFlushTimer(void)
 
     if (m_delay_caller)
     {
-        sTimerSystem.DelDelayCaller(m_delay_caller);
+        sTimerSystem.DestroyCaller(m_delay_caller);
         m_delay_caller = nullptr;
     }
 }
@@ -239,53 +233,4 @@ void LogSystem::DestroySpecifiedLogger(const std::string& specified_log_name)
     }
 }
 
-bool LogSystem::IsSysEnabled(void)
-{
-    return m_switchSys;
-}
-
-bool LogSystem::IsErrEnabled(void)
-{
-    return m_switchErr;
-}
-
-bool LogSystem::IsWrnEnabled(void)
-{
-    return m_switchWrn;
-}
-
-bool LogSystem::IsInfEnabled(void)
-{
-    return m_switchInf;
-}
-
-bool LogSystem::IsDbgEnabled(void)
-{
-    return m_switchDbg;
-}
-
-void LogSystem::EnableSys(bool enable)
-{
-    m_switchSys = enable;
-}
-
-void LogSystem::EnableErr(bool enable)
-{
-    m_switchErr = enable;
-}
-
-void LogSystem::EnableWrn(bool enable)
-{
-    m_switchWrn = enable;
-}
-
-void LogSystem::EnableInf(bool enable)
-{
-    m_switchInf = enable;
-}
-
-void LogSystem::EnableDbg(bool enable)
-{
-    m_switchDbg = enable;
-}
 

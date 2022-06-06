@@ -2780,6 +2780,11 @@ iocp_tcp_listener* net_tcp_listen(
         listener->pkg_parser = mgr->def_parse_packet;
     }
 
+    if (!ip)
+    {
+        ip = u8"0.0.0.0";
+    }
+
     if (!_iocp_tcp_listener_listen(listener, mgr->max_accept_ex_num, ip, port, reuse_addr))
     {
         net_tcp_close_listener(listener);
@@ -2863,6 +2868,11 @@ iocp_tcp_listener* net_ssl_listen(
     else
     {
         listener->pkg_parser = mgr->def_parse_packet;
+    }
+
+    if (!ip)
+    {
+        ip = "0.0.0.0";
     }
 
     if (!_iocp_tcp_listener_listen(listener, mgr->max_accept_ex_num, ip, port, reuse_addr))
@@ -3107,6 +3117,11 @@ void net_tcp_set_send_control(iocp_tcp_socket* sock_ptr, unsigned int pkg_size, 
 {
     sock_ptr->data_delay_send_size = pkg_size;
     _mod_timer_send(sock_ptr, delay_time);
+}
+
+unsigned int net_tcp_unsend_size(iocp_tcp_socket* sock_ptr)
+{
+    return sock_ptr->data_need_send - sock_ptr->data_has_send;
 }
 
 #endif

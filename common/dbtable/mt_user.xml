@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<table name="mt_user">
+  <field name="uid"         type="uint32" comment="用户ID"/>
+  <field name="sid"         type="uint8" comment="小区ID"/>
+  <field name="uname"       type="varchar"  length="255" comment="用户名"/>
+  <field name="billinyb"    type="int64" comment="充值元宝"/>
+  <field name="billoutyb"   type="int64" comment="消费元宝"/>
+  <field name="gameinyb"    type="int64" comment="游戏增加元宝"/>
+  <field name="gameoutyb"   type="int64" comment="游戏消费元宝"/>
+  <field name="createtime"  type="uint32" comment="账号创建时间"/>
+  <field name="lastlogin"   type="uint32" comment="账号上次登录时间"/>
+  <key type="primary"       fields="uid, sid" />
+</table>
